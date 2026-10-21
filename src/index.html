@@ -2707,7 +2707,7 @@ const State = {
   allQuestions: [],
   sessionQuestions: [],
   currentIndex: 0,
-  userAnswers: [],        // { qId, selected, correct, timeUsed }
+  userAnswers: [],        // 依題目位置存放：userAnswers[i] = { qId, q, selected, correct, timeUsed }，未作答為空位
   streak: 0,
   maxStreak: 0,
   timerInterval: null,
@@ -2776,7 +2776,7 @@ function saveSession() {
   const snap = {
     sessionQuestions: State.sessionQuestions.map(q => q.id),
     currentIndex: State.currentIndex,
-    userAnswers: State.userAnswers.map(({ q, ...a }) => a),
+    userAnswers: Array.from(State.userAnswers, a => a ? { qId: a.qId, selected: a.selected, correct: a.correct, timeUsed: a.timeUsed } : null),
     exam: State.exam,
     streak: State.streak,
     maxStreak: State.maxStreak,
@@ -2813,7 +2813,7 @@ function restoreSession(snap) {
 
   State.sessionQuestions = questions;
   State.currentIndex = Math.min(snap.currentIndex, questions.length - 1);
-  State.userAnswers = (snap.userAnswers || []).map(a => ({ ...a, q: idMap.get(a.qId) || a.q })).filter(a => a.q);
+  State.userAnswers = (snap.userAnswers || []).map(a => a && idMap.has(a.qId) ? { ...a, q: idMap.get(a.qId) } : undefined);
   State.exam = snap.exam || null;
   State.streak = snap.streak || 0;
   State.maxStreak = snap.maxStreak || 0;
@@ -3242,8 +3242,9 @@ function renderQuestion(reviewMode = false) {
   const optWrap = document.getElementById('options-wrap');
   const letters = ['A', 'B', 'C', 'D'];
 
-  // 檢查此題是否已作答（回顧模式）
+  // 已作答的題目一律以回顧模式顯示，避免「上一題 → 下一題」後重答、重複計分
   const prevAnswer = State.userAnswers[State.currentIndex];
+  if (prevAnswer) reviewMode = true;
 
   optWrap.innerHTML = letters
     .filter(l => q.options[l])
@@ -3383,7 +3384,7 @@ function renderDeferredExplanations() {
     </div>`;
 
   State.userAnswers.forEach((ans, i) => {
-    const q = ans.q;
+    const q = ans && ans.q;
     if (!q) return;
     const resultColor = ans.correct ? 'var(--color-success-300)' : 'var(--color-error-300)';
     const resultIcon = ans.correct ? '✅' : '❌';
@@ -3548,14 +3549,19 @@ function isCorrect(selected, answer) {
   return selected === ans || ans.includes(selected);
 }
 
-function recordAnswer(q, selected, correct, timeUsed) {
-  State.userAnswers.push({
+// 本次已作答的紀錄（略過空位）
+function answeredList() {
+  return State.userAnswers.filter(Boolean);
+}
+
+function recordAnswer(q, selected, correct, timeUsed, index = State.currentIndex) {
+  State.userAnswers[index] = {
     qId: q.id,
     q: q,
     selected,
     correct,
     timeUsed,
-  });
+  };
 
   if (correct) {
     State.streak++;
@@ -3646,8 +3652,7 @@ function skipQuestion() {
   clearInterval(State.timerInterval);
   const q = State.sessionQuestions[State.currentIndex];
   // 只在尚未記錄時才記錄（避免重複計算）
-  const already = State.userAnswers.find(a => a.qId === q.id && State.userAnswers.indexOf(a) === State.currentIndex);
-  if (!already) {
+  if (!State.userAnswers[State.currentIndex]) {
     recordAnswer(q, null, false, 60);
     State.streak = 0;
   }
@@ -3665,7 +3670,7 @@ function exitToHome() {
 function endSession() {
   clearInterval(State.timerInterval);
   clearSavedSession();
-  const answers = State.userAnswers;
+  const answers = answeredList();
   const total = answers.length;
   const correct = answers.filter(a => a.correct).length;
   const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
@@ -3773,7 +3778,7 @@ function renderRadar() {
 
   // 取本次session的科別表現
   const tagStats = {};
-  State.userAnswers.forEach(a => {
+  answeredList().forEach(a => {
     a.q.tags.forEach(tag => {
       if (!tagStats[tag]) tagStats[tag] = { correct: 0, total: 0 };
       tagStats[tag].total++;
@@ -3889,8 +3894,8 @@ function checkAchievements(correct, timeUsed) {
   if (State.sessionQuestions.length >= 50) unlock('iron_man');
 
   // 本次全對
-  const sessionCorrect = State.userAnswers.filter(a => a.correct).length + (correct ? 1 : 0);
-  const sessionTotal = State.userAnswers.length + 1;
+  const sessionCorrect = answeredList().filter(a => a.correct).length;
+  const sessionTotal = answeredList().length;
   if (sessionTotal >= 30 && sessionCorrect === sessionTotal) unlock('perfect_30');
   if (sessionTotal >= 50 && sessionCorrect === sessionTotal) unlock('perfect_50');
 
@@ -3909,9 +3914,9 @@ function checkAchievements(correct, timeUsed) {
 function generateHandout() {
   showScreen('handout');
 
-  const wrong = State.userAnswers.filter(a => !a.correct);
-  const correct = State.userAnswers.filter(a => a.correct);
-  const total = State.userAnswers.length;
+  const wrong = answeredList().filter(a => !a.correct);
+  const correct = answeredList().filter(a => a.correct);
+  const total = answeredList().length;
   const pct = Math.round((correct.length / total) * 100);
 
   const handout = document.getElementById('handout-content');
@@ -4157,10 +4162,10 @@ function submitExam() {
   State.sessionQuestions.forEach((q, i) => {
     const sel = ex.picks[i];
     // 未作答只計入本次成績（0 分），不寫入長期作答紀錄
-    if (sel) recordAnswer(q, sel, isCorrect(sel, q.answer), 0);
-    else State.userAnswers.push({ qId: q.id, q, selected: null, correct: false, timeUsed: 0 });
+    if (sel) recordAnswer(q, sel, isCorrect(sel, q.answer), 0, i);
+    else State.userAnswers[i] = { qId: q.id, q, selected: null, correct: false, timeUsed: 0 };
   });
-  const score = Math.round(State.userAnswers.filter(a => a.correct).length * 125) / 100;   // 每題 1.25 分
+  const score = Math.round(answeredList().filter(a => a.correct).length * 125) / 100;   // 每題 1.25 分
   const p = State.progress;
   p.mockExams = [{ year: ex.year, examType: ex.examType, score, ts: Date.now() }, ...(p.mockExams || [])].slice(0, 30);
   State.lastExam = { year: ex.year, examType: ex.examType, score, blank: ex.picks.filter(x => !x).length };
@@ -4212,7 +4217,7 @@ function renderSessionWeak() {
   const el = document.getElementById('session-weak');
   if (!el) return;
   const stat = {};
-  State.userAnswers.forEach(a => (a.q.tags || []).forEach(t => {
+  answeredList().forEach(a => (a.q.tags || []).forEach(t => {
     stat[t] = stat[t] || { correct: 0, total: 0 };
     stat[t].total++;
     if (a.correct) stat[t].correct++;
@@ -4732,6 +4737,7 @@ function startTopicPractice(tag, topicName){
   shuffle(pool);
   State.mode='mixed';
   State.selectedCount=pool.length;
+  State.exam=null;
   State.sessionQuestions=pool;
   State.currentIndex=0;
   State.userAnswers=[];
