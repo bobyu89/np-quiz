@@ -794,6 +794,45 @@ body::after {
 }
 
 #q-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+
+.option-btn.picked {
+  background-color: var(--color-bg-overlay);
+  box-shadow: 0 0 0 2px var(--color-primary-500), var(--shadow-glow-primary);
+}
+.option-btn.picked .option-label { color: var(--color-primary-300); }
+
+.exam-palette {
+  position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+}
+.exam-palette-card {
+  width: 100%; max-width: 520px; max-height: 90vh; overflow: auto; padding: 16px 18px;
+  background: var(--color-bg-elevated); border: 2px solid var(--color-bg-border); border-radius: 8px;
+}
+.exam-palette-head {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+  color: var(--color-text-primary); font-size: 14px;
+}
+.exam-palette-head button { background: none; border: none; color: var(--color-text-muted); font-size: 18px; cursor: pointer; }
+.exam-palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 6px; }
+.exam-palette-grid button {
+  height: 40px; border: 1px solid var(--color-bg-border); border-radius: 4px; cursor: pointer;
+  background: var(--color-bg-surface); color: var(--color-text-muted); font-size: 14px;
+}
+.exam-palette-grid button.done { background: rgba(10,90,255,0.25); color: var(--color-text-primary); border-color: var(--color-primary-500); }
+.exam-palette-grid button.current { outline: 2px solid var(--color-secondary-300); outline-offset: 1px; }
+
+.exam-verdict {
+  margin-top: 14px; padding: 12px 16px; border-radius: 6px; line-height: 1.9; font-size: 14px;
+  background: var(--color-bg-elevated); border: 1px solid var(--color-bg-border); color: var(--color-text-secondary);
+}
+
+.swipe-hint { display: none; margin-top: 4px; text-align: center; font-size: 12px; color: var(--color-text-muted); }
+@media (pointer: coarse) { .swipe-hint { display: block; } }
+@media (max-width: 600px) {
+  .option-btn { min-height: 58px; padding: 16px; align-items: center; }
+  .quiz-hud .btn-sm { min-height: 40px; }
+}
 .q-tag, .q-year { white-space: nowrap; }
 .streak-display:empty { display: none; }
 
@@ -1005,7 +1044,7 @@ body:has(#screen-quiz.active) #theme-switcher { display: none !important; }
 }
 .weak-item:last-child { border-bottom: none; }
 .weak-rank { font-family: var(--font-pixel); font-size: 16px; color: var(--color-error-500); width: 28px; }
-.weak-name { flex: 1; font-weight: 500; }
+.weak-name { flex: 1; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .weak-pct  { font-family: var(--font-mono); font-size: 15px; font-weight: bold; }
 
 /* ══════════════════════════════════════════
@@ -2332,6 +2371,9 @@ body.theme-abyss {
         <button class="mode-card" data-mode="srs" onclick="selectMode(this,'srs')">
           <span class="mode-icon">🧠</span><div class="mode-name">智慧複習</div><div class="mode-desc">間隔重複排程</div>
         </button>
+        <button class="mode-card" data-mode="exam" onclick="selectMode(this,'exam')">
+          <span class="mode-icon">📝</span><div class="mode-name">模擬考</div><div class="mode-desc">原卷 80 題・90 分鐘</div>
+        </button>
       </div>
     </div>
 
@@ -2357,6 +2399,16 @@ body.theme-abyss {
         </div>
       </div>
     </div>
+    <div id="exam-section" style="display:none;margin-bottom:16px">
+      <div class="tag-section-title">📅 年度</div>
+      <div class="tag-grid" id="exam-year-grid"></div>
+      <div class="tag-section-title" style="margin-top:12px">📋 科目</div>
+      <div class="tag-grid" id="exam-subject-grid"></div>
+      <div style="margin-top:12px;font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+        依原卷題序作答，整場 90 分鐘（同正式考試每節時間）。作答中不顯示對錯，可隨時改答案、用「題號」跳題；交卷後才計分並開放詳解。<br>
+        及格標準：通論與進階兩科平均 60 分，且每科至少 50 分。
+      </div>
+    </div>
     <div id="srs-section" style="display:none;margin-bottom:16px">
       <div style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:16px 20px;border-radius:6px">
         <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
@@ -2369,7 +2421,7 @@ body.theme-abyss {
     </div>
 
     <!-- 進階設定（折疊） -->
-    <details style="margin-bottom:20px">
+    <details id="advanced-settings" style="margin-bottom:20px">
       <summary style="cursor:pointer;font-family:'Press Start 2P',monospace;font-size:9px;
                       color:var(--color-text-muted);padding:10px 0;user-select:none">
         ⚙️ 進階設定
@@ -2421,7 +2473,8 @@ body.theme-abyss {
     <div class="streak-display" id="streak-display"></div>
     <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto">
       <button id="prev-btn" class="btn btn-sm btn-secondary" onclick="prevQuestion()" style="display:none">← 上一題</button>
-      <button class="btn btn-sm btn-secondary" onclick="skipQuestion()">跳過 →</button>
+      <button id="exam-nav-btn" class="btn btn-sm btn-secondary" onclick="openExamPalette()" style="display:none">🔢 題號</button>
+      <button id="skip-btn" class="btn btn-sm btn-secondary" onclick="skipQuestion()">跳過 →</button>
       <button class="btn btn-sm btn-secondary" onclick="exitToHome()">🏠 首頁</button>
       <button class="btn btn-sm btn-danger" onclick="confirmEnd()">交卷</button>
     </div>
@@ -2451,6 +2504,7 @@ body.theme-abyss {
     </div>
     <div class="options-grid" id="options-wrap"></div>
     <div class="kbd-hint">鍵盤：A–D 或 1–4 作答　Enter 下一題　點圖片可放大</div>
+    <div class="swipe-hint">← 右滑上一題　左滑下一題 →　點圖片可放大</div>
   </div>
   <!-- 詳解面板 -->
   <div id="explanation-panel" style="display:none;width:100%;max-width:800px;padding:0 16px 32px">
@@ -2491,6 +2545,11 @@ body.theme-abyss {
         <div class="result-score" id="result-score">--</div>
         <div class="result-score-sub" id="result-detail"></div>
         <div class="result-rank" id="result-rank">評估中...</div>
+        <div id="exam-verdict" class="exam-verdict" style="display:none"></div>
+      </div>
+      <div class="weak-section" style="margin-bottom:20px">
+        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-error-500);margin-bottom:12px">🎯 本次弱點</div>
+        <div id="session-weak"></div>
       </div>
       <div class="achievement-section" style="margin-bottom:20px">
         <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-secondary-300);margin-bottom:12px">🏆 本次成就</div>
@@ -2687,6 +2746,8 @@ async function init() {
   // 詳解的【選項分析】一行一個選項，單一換行也要保留
   if (typeof marked !== 'undefined') marked.use({ breaks: true });
   document.addEventListener('keydown', handleQuizKeys);
+  document.addEventListener('touchstart', handleQuizTouchStart, { passive: true });
+  document.addEventListener('touchend', handleQuizTouchEnd, { passive: true });
   document.addEventListener('click', e => { if (e.target.classList?.contains('q-figure')) openFigure(e.target.src); });
   loadProgress();
   await loadQuestions();
@@ -2715,7 +2776,8 @@ function saveSession() {
   const snap = {
     sessionQuestions: State.sessionQuestions.map(q => q.id),
     currentIndex: State.currentIndex,
-    userAnswers: State.userAnswers,
+    userAnswers: State.userAnswers.map(({ q, ...a }) => a),
+    exam: State.exam,
     streak: State.streak,
     maxStreak: State.maxStreak,
     mode: State.mode,
@@ -2751,7 +2813,8 @@ function restoreSession(snap) {
 
   State.sessionQuestions = questions;
   State.currentIndex = Math.min(snap.currentIndex, questions.length - 1);
-  State.userAnswers = snap.userAnswers || [];
+  State.userAnswers = (snap.userAnswers || []).map(a => ({ ...a, q: idMap.get(a.qId) || a.q })).filter(a => a.q);
+  State.exam = snap.exam || null;
   State.streak = snap.streak || 0;
   State.maxStreak = snap.maxStreak || 0;
   State.mode = snap.mode;
@@ -2945,6 +3008,14 @@ function initModeScreen() {
     ).join('');
   }
 
+  // 模擬考：年度、科目各單選，預設最新年度的通論
+  State.examYear = years[years.length - 1];
+  State.examType = '通論';
+  setEl('exam-year-grid', years.slice().reverse().map(y =>
+    `<button class="tag-btn${y === State.examYear ? ' selected' : ''}" onclick="pickExamOption(this,'examYear',${y})">${y}年</button>`).join(''));
+  setEl('exam-subject-grid', ['通論', '進階內科', '進階外科'].map(t =>
+    `<button class="tag-btn${t === State.examType ? ' selected' : ''}" onclick="pickExamOption(this,'examType','${t}')">${t}</button>`).join(''));
+
   // 科別第一層：類別按鈕
   renderCategoryBtns();
 
@@ -3012,7 +3083,10 @@ function updateModeUI() {
   const show = id => { const el = document.getElementById(id); if (el) el.style.display = 'block'; };
   const hide = id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; };
 
-  hide('year-section'); hide('exam-type-section'); hide('subject-section'); hide('srs-section');
+  hide('year-section'); hide('exam-type-section'); hide('subject-section'); hide('srs-section'); hide('exam-section');
+  const adv = document.getElementById('advanced-settings');
+  if (adv) adv.style.display = State.mode === 'exam' ? 'none' : '';
+  if (State.mode === 'exam') show('exam-section');
   if (State.mode === 'mixed' || State.mode === 'year') {
     show('year-section');
     show('exam-type-section');
@@ -3069,6 +3143,15 @@ function selectCount(el, count) {
 function startSession() {
   let pool;
 
+  if (State.mode === 'exam') {
+    pool = State.allQuestions.filter(q => q.year === State.examYear && q.exam_type === State.examType)
+      .sort((a, b) => a.number - b.number);
+    if (!pool.length) { alert('找不到這份考卷'); return; }
+    State.exam = { year: State.examYear, examType: State.examType, deadline: Date.now() + EXAM_MINUTES * 60000, picks: pool.map(() => null) };
+    beginSession(pool);
+    return;
+  }
+
   // SRS 智慧複習模式
   if (State.mode === 'srs') {
     const cnt = State.selectedCount >= 9999 ? 40 : Number(State.selectedCount);
@@ -3105,7 +3188,11 @@ function startSession() {
     const cnt = State.selectedCount >= 9999 ? pool.length : Number(State.selectedCount);
     pool = pool.slice(0, Math.min(cnt, pool.length));
   }
+  beginSession(pool);
+}
 
+function beginSession(pool) {
+  if (State.mode !== 'exam') State.exam = null;
   State.sessionQuestions = pool;
   State.currentIndex = 0;
   State.userAnswers = [];
@@ -3133,6 +3220,8 @@ function renderQuestion(reviewMode = false) {
 
   // 連勝
   updateStreakDisplay();
+
+  updateExamHud();
 
   // 題目 meta
   setEl('q-tags', q.tags.map(t => `<span class="q-tag">${t}</span>`).join(''));
@@ -3165,7 +3254,12 @@ function renderQuestion(reviewMode = false) {
       </button>`
     ).join('');
 
-  if (reviewMode && prevAnswer) {
+  if (State.exam) {
+    const pick = State.exam.picks[State.currentIndex];
+    if (pick) document.getElementById(`opt-${pick}`)?.classList.add('picked');
+    updateExamHud();
+    startExamTimer();
+  } else if (reviewMode && prevAnswer) {
     // 回顧已答題目：顯示選擇結果，不允許重新作答
     disableOptions();
     if (prevAnswer.selected) {
@@ -3234,6 +3328,7 @@ function timeUp() {
 }
 
 function selectAnswer(letter) {
+  if (State.exam) { examPick(letter); return; }
   clearInterval(State.timerInterval);
   const q = State.sessionQuestions[State.currentIndex];
   const timeUsed = 60 - State.timeLeft;
@@ -3447,6 +3542,7 @@ function hideExplanation() {
 
 function isCorrect(selected, answer) {
   if (!answer) return false;
+  if (answer === '送分') return !!selected;
   // 支援多選答案（A、B）
   const ans = answer.split('、').sort().join('');
   return selected === ans || ans.includes(selected);
@@ -3527,6 +3623,7 @@ function disableOptions() {
 }
 
 function nextQuestion() {
+  if (State.exam && State.currentIndex >= State.sessionQuestions.length - 1) { openExamPalette(); return; }
   State.currentIndex++;
   if (State.currentIndex >= State.sessionQuestions.length) {
     endSession();
@@ -3537,6 +3634,7 @@ function nextQuestion() {
 
 function prevQuestion() {
   if (State.currentIndex <= 0) return;
+  if (State.exam) { State.currentIndex--; renderQuestion(); saveSession(); return; }
   clearInterval(State.timerInterval);
   hideExplanation();
   State.currentIndex--;
@@ -3544,6 +3642,7 @@ function prevQuestion() {
 }
 
 function skipQuestion() {
+  if (State.exam) { nextQuestion(); saveSession(); return; }
   clearInterval(State.timerInterval);
   const q = State.sessionQuestions[State.currentIndex];
   // 只在尚未記錄時才記錄（避免重複計算）
@@ -3633,7 +3732,9 @@ function renderResult(correct, total, pct) {
   renderRadar();
 
   // 弱點分析
+  renderSessionWeak();
   renderWeakAnalysis();
+  renderExamVerdict();
 }
 
 function getRank(pct) {
@@ -3749,14 +3850,20 @@ function renderWeakAnalysis() {
     weakEl.innerHTML = '<p style="color:var(--clr-text-dim);font-size:13px">資料不足，請多做幾題</p>';
     return;
   }
+  // 正確率 80% 以上不算弱點
+  if (tagRates[0].pct >= 80) {
+    weakEl.innerHTML = '<p style="color:var(--clr-text-dim);font-size:13px">目前各科累計正確率都在 80% 以上 👍</p>';
+    return;
+  }
 
-  weakEl.innerHTML = tagRates.slice(0, 5).map((item, i) => {
+  weakEl.innerHTML = tagRates.filter(t => t.pct < 80).slice(0, 5).map((item, i) => {
     const color = item.pct < 50 ? 'var(--clr-red)' : item.pct < 70 ? 'var(--clr-yellow)' : 'var(--clr-green)';
     return `<div class="weak-item">
       <span class="weak-rank">${['①','②','③','④','⑤'][i]}</span>
       <span class="weak-name">${item.tag}</span>
       <span class="weak-pct" style="color:${color}">${item.pct}%</span>
       <span style="font-size:11px;color:var(--clr-text-dim)">(${item.total}題)</span>
+      <button class="btn btn-sm btn-secondary" style="margin-left:auto" onclick="startFocusPractice(${focusArg([item.tag])})">練習</button>
     </div>`;
   }).join('');
 }
@@ -3944,15 +4051,207 @@ function openFigure(src) {
 
 // ── 鍵盤作答（桌機）：A–D 或 1–4 選答，Enter／→ 下一題，Esc 關閉放大圖 ──
 function handleQuizKeys(e) {
-  if (e.key === 'Escape') { document.querySelector('.figure-lightbox')?.remove(); return; }
+  if (e.key === 'Escape') { document.querySelector('.figure-lightbox')?.remove(); closeExamPalette(); return; }
+  if (document.querySelector('.exam-palette')) return;
   if (e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
   if (!document.getElementById('screen-quiz')?.classList.contains('active')) return;
   const letter = { a: 'A', b: 'B', c: 'C', d: 'D', 1: 'A', 2: 'B', 3: 'C', 4: 'D' }[e.key.toLowerCase()];
   const btn = letter && document.getElementById(`opt-${letter}`);
   if (btn && !btn.disabled) { e.preventDefault(); selectAnswer(letter); return; }
+  if (State.exam) {
+    if (e.key === 'Enter' || e.key === 'ArrowRight') { e.preventDefault(); nextQuestion(); saveSession(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); prevQuestion(); }
+    return;
+  }
   if ((e.key === 'Enter' || e.key === 'ArrowRight') && document.getElementById('explanation-panel')?.style.display === 'block') {
     e.preventDefault(); hideExplanation(); nextQuestion();
   }
+}
+
+// ── 模擬考 ─────────────────────────────────
+const EXAM_MINUTES = 90;   // 正式考試每節 90 分鐘
+const EXAM_PAIRS = { '通論': ['進階內科', '進階外科'], '進階內科': ['通論'], '進階外科': ['通論'] };
+
+function pickExamOption(el, key, val) {
+  el.parentElement.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  State[key] = val;
+}
+
+function examPick(letter) {
+  State.exam.picks[State.currentIndex] = letter;
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.toggle('picked', b.id === `opt-${letter}`));
+  updateExamHud();
+  saveSession();
+}
+
+// 模擬考與一般練習共用作答頁，依模式切換頂部列
+function updateExamHud() {
+  const exam = !!State.exam;
+  const nav = document.getElementById('exam-nav-btn');
+  if (nav) nav.style.display = exam ? '' : 'none';
+  setEl('skip-btn', exam ? '下一題 →' : '跳過 →');
+  if (exam) {
+    const done = State.exam.picks.filter(Boolean).length;
+    setEl('progress-text', `第 ${State.currentIndex + 1} 題　已答 ${done} / ${State.sessionQuestions.length}`);
+    setStyle('progress-fill', 'width', `${done / State.sessionQuestions.length * 100}%`);
+  }
+}
+
+function startExamTimer() {
+  clearInterval(State.timerInterval);
+  const total = EXAM_MINUTES * 60;
+  const tick = () => {
+    if (!State.exam) { clearInterval(State.timerInterval); return; }
+    const left = Math.max(0, Math.round((State.exam.deadline - Date.now()) / 1000));
+    const fill = document.getElementById('timer-fill');
+    if (fill) {
+      fill.style.width = `${left / total * 100}%`;
+      fill.classList.toggle('warn', left <= 600 && left > 300);
+      fill.classList.toggle('danger', left <= 300);
+    }
+    setEl('timer-num', `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`);
+    if (left <= 0) {
+      clearInterval(State.timerInterval);
+      alert('時間到，自動交卷');
+      submitExam();
+    }
+  };
+  tick();
+  State.timerInterval = setInterval(tick, 1000);
+}
+
+function openExamPalette() {
+  if (!State.exam) return;
+  closeExamPalette();
+  const picks = State.exam.picks;
+  const box = document.createElement('div');
+  box.className = 'exam-palette';
+  box.innerHTML = `<div class="exam-palette-card">
+      <div class="exam-palette-head">已答 ${picks.filter(Boolean).length} / ${picks.length}<button onclick="closeExamPalette()" aria-label="關閉">✕</button></div>
+      <div class="exam-palette-grid">${picks.map((p, i) =>
+        `<button class="${p ? 'done' : ''}${i === State.currentIndex ? ' current' : ''}" onclick="jumpExamQuestion(${i})">${i + 1}</button>`).join('')}</div>
+      <div style="text-align:center;margin-top:14px"><button class="btn btn-danger" onclick="closeExamPalette();confirmEnd()">交卷</button></div>
+    </div>`;
+  box.addEventListener('click', e => { if (e.target === box) closeExamPalette(); });
+  document.body.appendChild(box);
+}
+
+function closeExamPalette() { document.querySelector('.exam-palette')?.remove(); }
+
+function jumpExamQuestion(i) {
+  closeExamPalette();
+  State.currentIndex = i;
+  renderQuestion();
+  saveSession();
+}
+
+function submitExam() {
+  clearInterval(State.timerInterval);
+  closeExamPalette();
+  const ex = State.exam;
+  State.exam = null;
+  State.userAnswers = [];
+  State.streak = 0;
+  State.maxStreak = 0;
+  State.sessionQuestions.forEach((q, i) => {
+    const sel = ex.picks[i];
+    // 未作答只計入本次成績（0 分），不寫入長期作答紀錄
+    if (sel) recordAnswer(q, sel, isCorrect(sel, q.answer), 0);
+    else State.userAnswers.push({ qId: q.id, q, selected: null, correct: false, timeUsed: 0 });
+  });
+  const score = Math.round(State.userAnswers.filter(a => a.correct).length * 125) / 100;   // 每題 1.25 分
+  const p = State.progress;
+  p.mockExams = [{ year: ex.year, examType: ex.examType, score, ts: Date.now() }, ...(p.mockExams || [])].slice(0, 30);
+  State.lastExam = { year: ex.year, examType: ex.examType, score, blank: ex.picks.filter(x => !x).length };
+  State.mode = 'exam';
+  endSession();
+}
+
+function renderExamVerdict() {
+  const el = document.getElementById('exam-verdict');
+  if (!el) return;
+  const ex = State.mode === 'exam' && State.lastExam;
+  el.style.display = ex ? 'block' : 'none';
+  if (!ex) return;
+  setEl('result-score', `${ex.score} 分`);
+  const ok = sc => sc >= 50;
+  let html = `<div><strong>${ex.year} 年${ex.examType}</strong>：${ex.score} 分${ex.blank ? `（未作答 ${ex.blank} 題）` : ''}　`
+    + (ok(ex.score) ? '✅ 達單科 50 分門檻' : '❌ 未達單科 50 分門檻') + '</div>';
+  const pair = (State.progress.mockExams || []).slice(1)
+    .find(m => m.year === ex.year && EXAM_PAIRS[ex.examType].includes(m.examType));
+  if (pair) {
+    const avg = Math.floor((ex.score + pair.score) / 2 * 100) / 100;
+    const pass = avg >= 60 && ok(ex.score) && ok(pair.score);
+    html += `<div>搭配最近一次 ${pair.year} 年${pair.examType}（${pair.score} 分），兩科平均 ${avg} 分　`
+      + (pass ? '🎉 <strong>筆試及格</strong>' : '❌ 未達及格（需平均 60 分且各科 ≥ 50 分）') + '</div>';
+  } else {
+    html += `<div style="color:var(--color-text-muted)">再考一份 ${ex.year} 年${EXAM_PAIRS[ex.examType].join('或')}，即可判定兩科是否及格（平均 60 分且各科 ≥ 50 分）。</div>`;
+  }
+  el.innerHTML = html;
+}
+
+// ── 弱點加強：優先出錯過的題，其次沒做過的 ──
+function startFocusPractice(tags) {
+  const p = State.progress;
+  const rank = q => { const la = p.lastAnswered[q.id]; return !la ? 1 : la.correct ? 2 : 0; };
+  const pool = State.allQuestions.filter(q => q.tags.some(t => tags.includes(t)));
+  shuffle(pool);
+  pool.sort((a, b) => rank(a) - rank(b));
+  State.mode = 'focus';
+  State.selectedTags = tags;
+  State.selectedYears = [];
+  State.selectedExamTypes = [];
+  State.explainMode = localStorage.getItem('np_explain_mode') || 'immediate';
+  beginSession(pool.slice(0, 20));
+}
+
+const focusArg = tags => '[' + tags.map(t => `'${t}'`).join(',') + ']';
+
+function renderSessionWeak() {
+  const el = document.getElementById('session-weak');
+  if (!el) return;
+  const stat = {};
+  State.userAnswers.forEach(a => (a.q.tags || []).forEach(t => {
+    stat[t] = stat[t] || { correct: 0, total: 0 };
+    stat[t].total++;
+    if (a.correct) stat[t].correct++;
+  }));
+  const weak = Object.entries(stat)
+    .filter(([, v]) => v.total >= 2 && v.correct < v.total)
+    .map(([tag, v]) => ({ tag, ...v, pct: Math.round(v.correct / v.total * 100) }))
+    .sort((a, b) => a.pct - b.pct || b.total - a.total)
+    .slice(0, 3);
+  if (!weak.length) {
+    el.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px">本次沒有明顯弱點（每科至少 2 題才列入）</p>';
+    return;
+  }
+  el.innerHTML = weak.map((w, i) => `<div class="weak-item">
+      <span class="weak-rank">${'①②③'[i]}</span>
+      <span class="weak-name">${w.tag}</span>
+      <span class="weak-pct" style="color:${w.pct < 50 ? 'var(--color-error-300)' : 'var(--color-warning-500)'}">${w.pct}%</span>
+      <span style="font-size:11px;color:var(--color-text-muted)">錯 ${w.total - w.correct} / ${w.total} 題</span>
+      <button class="btn btn-sm btn-secondary" style="margin-left:auto" onclick="startFocusPractice(${focusArg([w.tag])})">練習</button>
+    </div>`).join('')
+    + `<div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="startFocusPractice(${focusArg(weak.map(w => w.tag))})">🎯 一鍵練習弱點（20 題）</button></div>`;
+}
+
+// ── 手機滑動切換題目：左滑下一題（作答後）、右滑上一題 ──
+let quizTouch = null;
+function handleQuizTouchStart(e) {
+  if (!document.getElementById('screen-quiz')?.classList.contains('active') || e.touches.length !== 1) { quizTouch = null; return; }
+  quizTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now(), target: e.target };
+}
+function handleQuizTouchEnd(e) {
+  const st = quizTouch;
+  quizTouch = null;
+  if (!st) return;
+  const dx = e.changedTouches[0].clientX - st.x, dy = e.changedTouches[0].clientY - st.y;
+  if (Math.abs(dx) < 70 || Math.abs(dy) > Math.abs(dx) * 0.6 || Date.now() - st.t > 800) return;
+  if (st.target.closest('textarea, input, table, pre, .figure-lightbox, .exam-palette')) return;
+  if (dx > 0) { if (State.currentIndex > 0) prevQuestion(); return; }
+  if (State.exam) { nextQuestion(); saveSession(); }
+  else if (document.getElementById('explanation-panel')?.style.display === 'block') { hideExplanation(); nextQuestion(); }
 }
 
 function setEl(id, html) {
@@ -4003,6 +4302,11 @@ function switchResultTab(tab) {
 }
 
 function confirmEnd(){
+  if(State.exam){
+    var blank=State.exam.picks.filter(function(p){return !p;}).length;
+    if(!confirm(blank?'還有 '+blank+' 題未作答（以 0 分計），確定要交卷嗎？':'確定要交卷嗎？'))return;
+    submitExam();return;
+  }
   var rem=State.sessionQuestions.length-State.currentIndex;
   if(rem>1&&!confirm('還有 '+rem+' 題未作答，確定要交卷嗎？'))return;
   clearInterval(State.timerInterval);endSession();
@@ -4048,7 +4352,7 @@ function renderHistory(){
   // ── 歷次列表 ──
   var listHtml=sessions.map(function(s,i){
     var col=s.pct>=75?'var(--color-success-300)':s.pct>=60?'var(--color-warning-500)':'var(--color-error-500)';
-    var modeLabel={'mixed':'混合','year':'年份','subject':'科別','srs':'智慧複習','weak':'錯題'}[s.mode]||s.mode||'';
+    var modeLabel={'mixed':'混合','year':'年份','subject':'科別','srs':'智慧複習','weak':'錯題','exam':'模擬考','focus':'弱點加強'}[s.mode]||s.mode||'';
     var durMin=s.duration?Math.floor(s.duration/60)+'m'+('0'+s.duration%60).slice(-2)+'s':'';
     return '<div style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:14px 20px;margin-bottom:10px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">'
       +'<span style="font-family:\'Press Start 2P\',monospace;font-size:11px;color:var(--color-secondary-300)">#'+(sessions.length-i)+'</span>'
