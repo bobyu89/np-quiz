@@ -10,8 +10,8 @@
 | 詳解 | 每題一份預先生成的 Markdown 詳解（內嵌） |
 | 附圖 | 65 題 ECG、X 光、CT、MRI 等附圖（內嵌，可點擊放大） |
 | 考點分析 | 18 科 × 379 個考點主題，含星等、題目對應、主題講義 |
-| 技術 | Vanilla JS（無框架）、Chart.js 4.4.0、marked 15.0.7；Python 建置腳本只用標準函式庫 |
-| 儲存 | 全部存在瀏覽器 `localStorage`，無伺服器、無帳號 |
+| 技術 | Vanilla JS（無框架）、Chart.js 4.4.0、marked 15.0.7、DOMPurify 3.2.6；Python 建置腳本只用標準函式庫；Playwright 端對端測試 |
+| 儲存 | 全部存在瀏覽器 `localStorage`，無伺服器、無帳號；可用「進度備份」匯出／匯入到其他裝置 |
 
 ## 快速開始
 
@@ -34,6 +34,7 @@ python3 -m http.server 8000   # 開 http://localhost:8000
 - **操作**：桌機鍵盤作答（A–D／1–4、Enter）、手機左右滑動切換題目、附圖點擊放大
 - **個人化講義**：錯題整理，可列印／存 PDF
 - **筆記本**：每題 Markdown 筆記，支援搜尋、排序、JSON 匯出／匯入
+- **進度備份**：作答紀錄、智慧複習排程、成就、筆記、設定匯出為 JSON，在新裝置匯入即可接續
 - **成就系統**、**7 種主題配色**、**未完成練習（含模擬考）自動續做**
 
 ## 目錄
@@ -49,6 +50,7 @@ python3 -m http.server 8000   # 開 http://localhost:8000
 | `tools/build.py` | 組出 `index.html`（`--check` 只檢查是否為最新） |
 | `tools/validate.py` | 題庫一致性檢查 |
 | `tools/refresh_topics.py` | 依 `qids` 重算考點的題數、星等、年份 |
+| `tests/e2e.mjs` | 端對端測試（`npm test`，Playwright + Chromium） |
 
 ## 修改流程
 
@@ -56,9 +58,10 @@ python3 -m http.server 8000   # 開 http://localhost:8000
 2. 改到題目或考點時執行 `python3 tools/refresh_topics.py`
 3. `python3 tools/validate.py`
 4. `python3 tools/build.py`
-5. 一併 commit `data/`、`src/` 與 `index.html`
+5. 改到程式時執行 `npm test`（首次需 `npm ci && npx playwright install chromium`）
+6. 一併 commit `data/`、`src/` 與 `index.html`
 
-每次 push 與 PR 都會由 GitHub Actions（`.github/workflows/validate.yml`）執行驗證，並檢查 `index.html` 是否已重新建置。
+每次 push 與 PR 都會由 GitHub Actions（`.github/workflows/validate.yml`）執行驗證、檢查 `index.html` 是否已重新建置，並跑端對端測試。
 
 ## 詳解格式
 

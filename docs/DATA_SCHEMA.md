@@ -67,7 +67,7 @@
 ```
 
 - key 為 `String(question.id)`，依 id 排序；JS 物件以數字存取亦可（`__EXP[101]`）。
-- 前端以 `marked.parse()` 轉 HTML，並設定 `breaks: true`（單一換行即換行）。
+- 前端以 `md()`（`marked.parse()` 後經 DOMPurify 消毒）轉 HTML，marked 設定 `breaks: true`（單一換行即換行）。
 - 標準章節（`###` 標題）：
 
 | 章節 | 出現次數 | 用途 |
@@ -112,8 +112,8 @@
 | `summary` | `string` | 純文字（innerHTML） |
 | `definition` | `string` | 純文字，「📖 定義與機轉」 |
 | `keyPoints` | `string[]` | 條列，「🎯 重點整理」 |
-| `comparison` | `string \| null` | **Markdown 表格**，`marked.parse()`，「⚖️ 比較對照」 |
-| `criteria` | `string \| null` | Markdown，「📋 診斷標準／數值」 |
+| `comparison` | `string \| null` | **Markdown 表格**，`md()`（marked + DOMPurify），「⚖️ 比較對照」 |
+| `criteria` | `string \| null` | Markdown，`md()`，「📋 診斷標準／數值」 |
 | `mustKnow` | `string[]` | 條列，「🔴 必背重點」 |
 | `traps` | `string[]` | 條列，「⚠️ 常考陷阱」 |
 | `mnemonics` | `string[]` | 條列，「💡 記憶口訣」 |
@@ -130,8 +130,10 @@
 | `np_notes` | `{ [qid]: Note }` | 儲存／刪除／匯入筆記 | `loadNotes()` |
 | `np_explain_mode` | `'immediate' \| 'deferred'` | 切換詳解時機 | `initModeScreen()` |
 | `np_theme` | `'' \| 'theme-forest' \| 'theme-white' \| 'theme-nightnurse' \| 'theme-neon' \| 'theme-wagashi' \| 'theme-abyss'` | 切換主題 | 主題 IIFE |
-| `np_api_key` | Claude API Key（**明文**） | 使用者設定 | `getApiKey()` |
-| `np_exp_{id}` | API 詳解的 HTML 快取 | API 回應後 | `fetchExplanation()` |
+
+所有寫入都經 `safeSet(key, value)`（try/catch，空間不足時只提示一次）。舊版的 `np_api_key`（明文 API Key）與 `np_exp_{id}`（API 詳解快取）已停用，`migrateQuestionIds()` 載入時會刪除。
+
+`np_progress`、`np_achievements`、`np_notes`、`np_explain_mode`、`np_theme` 可透過「進度備份」匯出／匯入（§2.5）；`np_session` 不在備份範圍內。
 
 ### 2.1 `Progress`
 
@@ -156,7 +158,7 @@
   "date": "2026/10/21",   // toLocaleDateString('zh-TW')
   "ts": 1761000000000,
   "total": 30, "correct": 24, "pct": 80,
-  "mode": "mixed",        // 另有 "exam"（模擬考）、"focus"（弱點加強）
+  "mode": "mixed",        // 另有 "year"、"subject"、"weak"、"srs"、"exam"（模擬考）、"focus"（弱點加強）、"topic"（考點練習）
   "duration": 1520,       // 秒
   "tagPct": { "心臟血管": 75, ... }  // 本次各科正確率
 }
@@ -212,7 +214,8 @@
 ```
 
 - 匯出檔名：`np_notes_YYYY-MM-DD.json`。
-- 匯入：以 qid 合併，同 key 直接覆蓋；`text` 為空的項目略過。
+- 匯入：以 qid 合併，同 key 直接覆蓋；`text` 不是非空字串的項目略過。
+- 顯示時經 `md()`（marked + DOMPurify）消毒，匯入他人檔案中的 HTML／script 不會執行。
 
 ### 2.4 容量估算
 
@@ -222,4 +225,27 @@
 - `np_session`：只存 id 與作答結果，「全部」模式下約數十 KB
 - `np_notes`：視使用者而定
 
-目前所有 `setItem` 都沒有處理 `QuotaExceededError`，見 [KNOWN_ISSUES.md](KNOWN_ISSUES.md#bug-7)。
+寫入失敗（`QuotaExceededError`）時 `safeSet()` 以 Toast 提示一次並繼續作答，建議先匯出備份。
+
+### 2.5 進度備份檔
+
+由練習紀錄頁（或首頁「💾 進度備份」）的「匯出進度」產生，檔名 `np_backup_YYYY-MM-DD.json`：
+
+```jsonc
+{
+  "app": "np-quest",                 // 匯入時必須相符
+  "version": 1,
+  "exportedAt": "2026-10-21T03:30:00.000Z",
+  "data": {                          // 值為 localStorage 中的原始字串
+    "np_progress": "{\"totalAnswered\":120, ...}",
+    "np_achievements": "{...}",
+    "np_notes": "{...}",
+    "np_explain_mode": "immediate",
+    "np_theme": "theme-neon"
+  }
+}
+```
+
+- `data` 只會包含 `BACKUP_KEYS` 中目前有值的鍵。
+- 匯入驗證：`app === 'np-quest'`；每個鍵都在 `BACKUP_KEYS` 內且值為字串；`np_progress`、`np_achievements`、`np_notes` 可解析為 JSON；`np_progress.totalAnswered` 為數字。不符即拒絕，不改動現有資料。
+- 通過後顯示備份時間與累計題數，確認後覆蓋檔案中有的鍵（沒有的鍵維持原狀）、清除 `np_session` 並重新載入；舊備份中已移除的題目 id 由 `migrateQuestionIds()` 轉換。
