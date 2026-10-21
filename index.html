@@ -772,7 +772,49 @@ body::after {
   margin-top: 12px;
   border-radius: 6px;
   background: #fff;
+  cursor: zoom-in;
 }
+
+.figure-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: auto;
+  cursor: zoom-out;
+}
+.figure-lightbox img { max-width: 100%; max-height: 100%; background: #fff; border-radius: 6px; }
+.figure-lightbox button {
+  position: absolute; top: 12px; right: 12px; width: 40px; height: 40px;
+  border: none; border-radius: 50%; background: rgba(255,255,255,0.15); color: #fff; font-size: 18px; cursor: pointer;
+}
+
+#q-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.q-tag, .q-year { white-space: nowrap; }
+.streak-display:empty { display: none; }
+
+.explanation-actions {
+  position: sticky;
+  bottom: 0;
+  margin: 20px -24px -20px;
+  padding: 12px 24px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: var(--color-bg-elevated);
+  border-top: 1px solid var(--color-bg-border);
+}
+#screen-quiz { padding-bottom: 72px; }
+/* 作答中隱藏主題按鈕，避免壓到「下一題」 */
+body:has(#screen-quiz.active) #theme-switcher { display: none !important; }
+
+.kbd-hint { display: none; margin-top: 4px; text-align: center; font-size: 12px; color: var(--color-text-muted); }
+@media (hover: hover) and (pointer: fine) { .kbd-hint { display: block; } }
 
 /* ══════════════════════════════════════════
    選項按鈕（4種狀態）
@@ -2244,7 +2286,7 @@ body.theme-abyss {
       <h2 class="screen-title" style="margin:0">🔥 重點考點分析</h2>
     </div>
     <p style="font-size:13px;color:var(--color-text-muted);margin-bottom:8px;line-height:1.6">
-      根據 1918 題歷屆考題，以關鍵字聚類分析各科高頻考點。<br>
+      根據 <span id="topics-total">全部</span> 題歷屆考題，以關鍵字聚類分析各科高頻考點。<br>
       ★★★★★ ≥15題（必考）　★★★★ 8-14題（高頻）　★★★ 4-7題（中頻）　★★ 2-3題　★ 偶出
     </p>
     <div id="topics-overview-grid"></div>
@@ -2377,8 +2419,8 @@ body.theme-abyss {
       </div>
     </div>
     <div class="streak-display" id="streak-display"></div>
-    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-      <button id="prev-btn" class="btn btn-sm btn-secondary" onclick="prevQuestion()" style="visibility:hidden">← 上一題</button>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto">
+      <button id="prev-btn" class="btn btn-sm btn-secondary" onclick="prevQuestion()" style="display:none">← 上一題</button>
       <button class="btn btn-sm btn-secondary" onclick="skipQuestion()">跳過 →</button>
       <button class="btn btn-sm btn-secondary" onclick="exitToHome()">🏠 首頁</button>
       <button class="btn btn-sm btn-danger" onclick="confirmEnd()">交卷</button>
@@ -2408,13 +2450,14 @@ body.theme-abyss {
       </div>
     </div>
     <div class="options-grid" id="options-wrap"></div>
+    <div class="kbd-hint">鍵盤：A–D 或 1–4 作答　Enter 下一題　點圖片可放大</div>
   </div>
   <!-- 詳解面板 -->
   <div id="explanation-panel" style="display:none;width:100%;max-width:800px;padding:0 16px 32px">
     <div style="background:var(--color-bg-elevated);border:2px solid var(--color-bg-border);border-radius:8px;padding:20px 24px">
       <div id="explanation-answer-text"></div>
       <div id="explanation-ai-content"></div>
-      <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <div class="explanation-actions">
         <button class="btn btn-secondary btn-sm" onclick="toggleNotePanel()">📝 寫筆記</button>
         <button class="btn btn-primary" onclick="hideExplanation();nextQuestion()">下一題 →</button>
       </div>
@@ -2641,6 +2684,10 @@ const ACHIEVEMENTS = {
 
 // ── 初始化 ──────────────────────────────────
 async function init() {
+  // 詳解的【選項分析】一行一個選項，單一換行也要保留
+  if (typeof marked !== 'undefined') marked.use({ breaks: true });
+  document.addEventListener('keydown', handleQuizKeys);
+  document.addEventListener('click', e => { if (e.target.classList?.contains('q-figure')) openFigure(e.target.src); });
   loadProgress();
   await loadQuestions();
   updateLandingStats();
@@ -3091,11 +3138,11 @@ function renderQuestion(reviewMode = false) {
   setEl('q-tags', q.tags.map(t => `<span class="q-tag">${t}</span>`).join(''));
   setEl('q-year', q.year ? `<span class="q-year">${q.year}年 ${q.exam_type || ''}</span>` : '');
   setEl('q-num', `Q${current.toString().padStart(3, '0')}`);
-  setEl('q-text', q.question + (q.image ? `<img class="q-figure" src="${q.image}" alt="題目附圖">` : ''));
+  setEl('q-text', questionHtml(q));
 
   // 上一題按鈕顯示控制
   const prevBtn = document.getElementById('prev-btn');
-  if (prevBtn) prevBtn.style.visibility = State.currentIndex > 0 ? 'visible' : 'hidden';
+  if (prevBtn) prevBtn.style.display = State.currentIndex > 0 ? '' : 'none';
 
   // 筆記面板重置
   const notePanel = document.getElementById('note-panel');
@@ -3260,7 +3307,7 @@ function renderDeferredExplanations() {
           <span style="font-size:16px">${resultIcon}</span>
           <div>
             <div style="font-size:11px;color:var(--color-text-muted);margin-bottom:4px">Q${(i+1).toString().padStart(3,'0')} · ${(q.tags||[]).join('/')}</div>
-            <div style="font-size:13px;color:var(--color-text-primary);line-height:1.6">${q.question}</div>
+            <div style="font-size:13px;color:var(--color-text-primary);line-height:1.6">${questionHtml(q)}</div>
           </div>
         </div>
         <div style="font-size:12px;color:${resultColor};margin-bottom:8px">正確答案：${ansText}</div>
@@ -3827,7 +3874,7 @@ function renderHandoutQuestion(answer, index, type) {
           ${q.year ? `<span class="q-year" style="font-size:10px">${q.year}年</span>` : ''}
         </div>
       </div>
-      <div class="handout-q-text">${q.question}${q.image ? `<img class="q-figure" src="${q.image}" alt="題目附圖">` : ''}</div>
+      <div class="handout-q-text">${questionHtml(q)}</div>
       <div class="handout-options">
         ${letters.filter(l => q.options[l]).map(l => `
           <div class="handout-option ${correctLetters.includes(l) ? 'correct' : ''} ${answer.selected === l && !correctLetters.includes(l) ? 'my-wrong' : ''}">
@@ -3876,6 +3923,35 @@ function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+// 題幹＋附圖。組合題的 ①②③④ 各自換行，較好閱讀。
+function questionHtml(q) {
+  let text = q.question;
+  if ((text.match(/[①-⑩]/g) || []).length >= 2) text = text.replace(/\s*([①-⑩])/g, (m, c, i) => (i ? '<br>' : '') + c);
+  return text + (q.image ? `<img class="q-figure" src="${q.image}" alt="題目附圖" title="點擊放大">` : '');
+}
+
+// ── 附圖放大 ──
+function openFigure(src) {
+  const box = document.createElement('div');
+  box.className = 'figure-lightbox';
+  box.innerHTML = `<img src="${src}" alt="題目附圖"><button aria-label="關閉">✕</button>`;
+  box.addEventListener('click', () => box.remove());
+  document.body.appendChild(box);
+}
+
+// ── 鍵盤作答（桌機）：A–D 或 1–4 選答，Enter／→ 下一題，Esc 關閉放大圖 ──
+function handleQuizKeys(e) {
+  if (e.key === 'Escape') { document.querySelector('.figure-lightbox')?.remove(); return; }
+  if (e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if (!document.getElementById('screen-quiz')?.classList.contains('active')) return;
+  const letter = { a: 'A', b: 'B', c: 'C', d: 'D', 1: 'A', 2: 'B', 3: 'C', 4: 'D' }[e.key.toLowerCase()];
+  const btn = letter && document.getElementById(`opt-${letter}`);
+  if (btn && !btn.disabled) { e.preventDefault(); selectAnswer(letter); return; }
+  if ((e.key === 'Enter' || e.key === 'ArrowRight') && document.getElementById('explanation-panel')?.style.display === 'block') {
+    e.preventDefault(); hideExplanation(); nextQuestion();
   }
 }
 
@@ -4159,7 +4235,7 @@ function renderLibraryDetail(tag){
       +'<summary style="padding:14px 18px;cursor:pointer;list-style:none;display:flex;align-items:flex-start;gap:10px;outline:none">'
       +'<span style="font-size:15px;flex-shrink:0;margin-top:1px">'+icon+'</span>'
       +'<div style="flex:1;min-width:0">'
-      +'<div style="font-size:13px;line-height:1.6;color:var(--color-text-primary)">'+q.question+'</div>'
+      +'<div style="font-size:13px;line-height:1.6;color:var(--color-text-primary)">'+questionHtml(q)+'</div>'
       +(meta?'<div style="font-size:11px;color:var(--color-text-muted);margin-top:3px">'+meta+'</div>':'')
       +'</div></summary>'
       +'<div style="padding:4px 18px 16px 44px;border-top:1px solid var(--color-bg-border)">'
@@ -4187,6 +4263,7 @@ function quickStart(year){
 /* ── 考點分析 ── */
 
 function renderTopicsOverview(){
+  setEl('topics-total', State.allQuestions.length.toLocaleString());
   var grid=document.getElementById('topics-overview-grid');
   if(!grid||!window.__TOPICS) return;
   var T=window.__TOPICS;
