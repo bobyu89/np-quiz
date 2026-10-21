@@ -50,6 +50,7 @@ python3 -m http.server 8000   # 開 http://localhost:8000
 | `tools/build.py` | 組出 `index.html`（`--check` 只檢查是否為最新） |
 | `tools/validate.py` | 題庫一致性檢查 |
 | `tools/refresh_topics.py` | 依 `qids` 重算考點的題數、星等、年份 |
+| `tools/import_exam.py` | 從衛福部公告匯入新年度試卷、核對既有試卷（見 docs/DEVELOPMENT.md §2.2） |
 | `tests/e2e.mjs` | 端對端測試（`npm test`，Playwright + Chromium） |
 
 ## 修改流程
@@ -83,3 +84,4 @@ python3 -m http.server 8000   # 開 http://localhost:8000
 | [docs/DATA_SCHEMA.md](docs/DATA_SCHEMA.md) | 題庫資料集的 schema、`localStorage` 鍵值與結構 |
 | [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) | 開發流程、更新題庫／詳解、新增主題、外部依賴、部署 |
 | [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) | 已知 bug、技術債、資料品質問題與建議修法 |
+| [docs/EXPLANATION_GUIDE.md](docs/EXPLANATION_GUIDE.md) | 新增試卷時撰寫詳解、標籤、考點的規範與 JSON 格式 |
