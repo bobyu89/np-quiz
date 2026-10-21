@@ -766,6 +766,14 @@ body::after {
   color: var(--color-text-primary);
 }
 
+.q-figure {
+  display: block;
+  max-width: 100%;
+  margin-top: 12px;
+  border-radius: 6px;
+  background: #fff;
+}
+
 /* ══════════════════════════════════════════
    選項按鈕（4種狀態）
 ══════════════════════════════════════════ */
@@ -3056,7 +3064,7 @@ function renderQuestion(reviewMode = false) {
   setEl('q-tags', q.tags.map(t => `<span class="q-tag">${t}</span>`).join(''));
   setEl('q-year', q.year ? `<span class="q-year">${q.year}年 ${q.exam_type || ''}</span>` : '');
   setEl('q-num', `Q${current.toString().padStart(3, '0')}`);
-  setEl('q-text', q.question);
+  setEl('q-text', q.question + (q.image ? `<img class="q-figure" src="${q.image}" alt="題目附圖">` : ''));
 
   // 上一題按鈕顯示控制
   const prevBtn = document.getElementById('prev-btn');
@@ -3792,7 +3800,7 @@ function renderHandoutQuestion(answer, index, type) {
           ${q.year ? `<span class="q-year" style="font-size:10px">${q.year}年</span>` : ''}
         </div>
       </div>
-      <div class="handout-q-text">${q.question}</div>
+      <div class="handout-q-text">${q.question}${q.image ? `<img class="q-figure" src="${q.image}" alt="題目附圖">` : ''}</div>
       <div class="handout-options">
         ${letters.filter(l => q.options[l]).map(l => `
           <div class="handout-option ${correctLetters.includes(l) ? 'correct' : ''} ${answer.selected === l && !correctLetters.includes(l) ? 'my-wrong' : ''}">
