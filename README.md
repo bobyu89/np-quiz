@@ -22,6 +22,8 @@
 3. `python3 tools/build.py`
 4. 一併 commit `data/`、`src/` 與 `index.html`
 
+每次 push 與 PR 都會由 GitHub Actions（`.github/workflows/validate.yml`）執行驗證，並檢查 `index.html` 是否已重新建置。
+
 ## 詳解格式
 
 ```
