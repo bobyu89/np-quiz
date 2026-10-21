@@ -16,7 +16,7 @@ TAGS = {'消化系統', '藥理用藥', '呼吸系統', '心臟血管', '神經�
         '內分泌代謝', '護理通論', '骨骼肌肉', '腎臟泌尿', '重症加護', '法規倫理', '婦產科', '精神科', '兒科'}
 EXAM_TYPES = {'通論', '進階內科', '進階外科'}
 QUESTIONS_PER_EXAM = 80
-OPTION_LINE = re.compile(r'^\(([A-D])\) → (✅|❌) \S', re.M)
+OPTION_LINE = re.compile(r'^\(([A-D])\).*?→\s*(✅|❌)', re.M)
 FIGURE_REF = re.compile(r'如圖|圖\s*[(（]\s*[一二三四五六七八九十\d]+\s*[)）]')
 JUNK = re.compile(r'ˉ|  ')
 
@@ -28,7 +28,7 @@ def err(qid, msg):
 
 
 def answer_letters(ans):
-    return [] if ans == '送分' else ans.split('、')
+    return list('ABCD') if ans == '送分' else ans.split('、')
 
 
 def main():
@@ -49,7 +49,7 @@ def main():
         if sorted(q['options']) != ['A', 'B', 'C', 'D'] or not all(v.strip() for v in q['options'].values()):
             err(qid, '選項不是完整的 A–D')
         letters = answer_letters(q['answer'])
-        if q['answer'] != '送分' and (not letters or not set(letters) <= set(q['options'])):
+        if not set(letters) <= set(q['options']):
             err(qid, f"答案格式錯誤：{q['answer']}")
         if not q['tags'] or not set(q['tags']) <= TAGS:
             err(qid, f"標籤錯誤：{q['tags']}")
@@ -65,8 +65,8 @@ def main():
             continue
         marks = dict(OPTION_LINE.findall(e))
         if sorted(marks) != ['A', 'B', 'C', 'D']:
-            err(qid, '詳解【選項分析】不是四行 (X) → ✅/❌ 格式')
-        elif letters and sorted(k for k, v in marks.items() if v == '✅') != sorted(letters):
+            err(qid, '詳解【選項分析】缺少 (A)–(D) 四行 ✅/❌ 標示')
+        elif sorted(k for k, v in marks.items() if v == '✅') != sorted(letters):
             err(qid, '詳解 ✅ 與答案不一致')
 
     for source, numbers in by_exam.items():
