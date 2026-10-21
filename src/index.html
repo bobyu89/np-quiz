@@ -2749,6 +2749,33 @@ function loadProgress() {
     State.progress = initProgress();
     State.achievements = {};
   }
+  migrateQuestionIds();
+}
+
+// 題庫整理後已移除的題目 id：113、114 年曾重複匯入（1433–1918 與 1–486 相同），
+// 以及誤收的考卷說明。舊作答紀錄與筆記改掛到保留的題目上；新題目不可再使用這些 id。
+function removedQuestionId(id) {
+  if (id >= 1433 && id <= 1918) return id - 1432;
+  if ([1, 82, 163, 244, 325, 406, 727, 808, 889, 970, 1051, 1132, 1213, 1294, 1352].includes(id)) return null;
+  return id;
+}
+
+function migrateQuestionIds() {
+  const remap = (obj) => {
+    let changed = false;
+    Object.keys(obj || {}).forEach(k => {
+      const to = removedQuestionId(Number(k));
+      if (to === Number(k)) return;
+      if (to !== null && !(to in obj)) obj[to] = obj[k];
+      delete obj[k];
+      changed = true;
+    });
+    return changed;
+  };
+  const p = State.progress;
+  if ([p.srs, p.firstCorrect, p.lastAnswered].map(remap).some(Boolean)) saveProgress();
+  const notes = loadNotes();
+  if (remap(notes)) saveNotes(notes);
 }
 
 function initProgress() {
