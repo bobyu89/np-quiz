@@ -9,9 +9,7 @@ function showToast(msg) {
   container.appendChild(toast);
 
   setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(120%)';
-    toast.style.transition = 'all 0.3s';
+    toast.classList.add('toast-out');
     setTimeout(() => toast.remove(), 300);
   }, 2500);
 }
@@ -32,8 +30,8 @@ function md(text) {
 // 題幹＋附圖。組合題的 ①②③④ 各自換行，較好閱讀。
 function questionHtml(q) {
   let text = q.question;
-  if ((text.match(/[①-⑩]/g) || []).length >= 2) text = text.replace(/\s*([①-⑩])/g, (m, c, i) => (i ? '<br>' : '') + c);
-  return text + (q.image ? `<img class="q-figure" src="${q.image}" alt="題目附圖" title="點擊放大">` : '');
+  if ((text.match(/[①-⑩]/g) || []).length >= 2) text = text.replace(/\s*([①-⑩])/g, (m, c, i) => `${i ? '<br>' : ''}${c}`);
+  return `${text}${q.image ? `<img class="q-figure" src="${q.image}" alt="題目附圖" title="點擊放大">` : ''}`;
 }
 
 // ── 附圖放大 ──

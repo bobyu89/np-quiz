@@ -269,6 +269,60 @@ body::after {
 .screen { display: none; position: relative; z-index: 1; min-height: 100vh; }
 .screen.active { display: flex; flex-direction: column; align-items: center; }
 
+/* 背景星空 */
+#starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── 載入失敗畫面 ── */
+.error-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  text-align: center;
+}
+
+.error-box {
+  font-family: 'Press Start 2P', monospace;
+  color: #ff4757;
+  font-size: 13px;
+  line-height: 2;
+}
+
+.error-detail {
+  font-size: 11px;
+  color: #8892b0;
+  font-family: sans-serif;
+}
+
+/* ══════════════════════════════════════════
+   成就廳
+══════════════════════════════════════════ */
+.achievements-inner {
+  width: 100%;
+  max-width: 860px;
+  padding: 40px 20px;
+}
+
+.achievements-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.achievements-header .screen-title { margin: 0; }
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
 /* ══════════════════════════════════════════
    PIXEL BUTTONS
 ══════════════════════════════════════════ */
@@ -377,6 +431,23 @@ body::after {
   text-align: center;
 }
 
+.landing-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 760px;
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.landing-badge { margin-bottom: 6px; }
+
+.landing-badge-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
 .landing-logo {
   font-family: var(--font-pixel);
   font-size: clamp(16px, 3vw, 26px);
@@ -387,6 +458,8 @@ body::after {
   margin-bottom: 8px;
   animation: glitch 5s infinite;
 }
+
+#screen-landing .landing-logo { font-size: clamp(18px, 4vw, 32px); }
 
 .landing-subtitle {
   font-family: var(--font-pixel);
@@ -437,6 +510,54 @@ body::after {
   font-size: 13px;
   color: var(--color-text-muted);
   margin-top: 4px;
+}
+
+/* 兩大模組入口 */
+.landing-modules {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.landing-module {
+  background: var(--gradient-card);
+  border-radius: 10px;
+  padding: 28px 16px;
+  cursor: pointer;
+  transition: opacity .15s;
+  text-align: center;
+}
+.landing-module:hover { opacity: .8; }
+.landing-module-topics { box-shadow: var(--pixel-border-dark); }
+.landing-module-quiz { box-shadow: var(--pixel-border-blue); }
+
+.landing-module-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.landing-module-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  margin-bottom: 8px;
+}
+.landing-module-topics .landing-module-title { color: var(--color-error-300); }
+.landing-module-quiz .landing-module-title { color: var(--color-primary-500); }
+
+.landing-module-desc {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* 次要功能 */
+.landing-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 24px;
 }
 
 /* ══════════════════════════════════════════
@@ -1077,6 +1198,13 @@ body:has(#screen-quiz.active) #theme-switcher { display: none !important; }
   max-width: 280px;
   animation: toast-in 300ms var(--ease-bounce);
   -webkit-font-smoothing: none;
+}
+
+/* 淡出 */
+#toast-container .toast-out {
+  opacity: 0;
+  transform: translateX(120%);
+  transition: all 0.3s;
 }
 
 /* ══════════════════════════════════════════
@@ -2280,13 +2408,13 @@ body.theme-abyss {
 </head>
 <body>
 <div id="toast-container"></div>
-<canvas id="starfield" style="position:fixed;inset:0;z-index:0;pointer-events:none"></canvas>
+<canvas id="starfield"></canvas>
 
 <!-- LANDING -->
 <div id="screen-landing" class="screen active">
-  <div style="position:relative;z-index:1;width:100%;max-width:760px;padding:32px 20px;text-align:center">
-    <div style="margin-bottom:6px"><span style="font-family:'Press Start 2P',monospace;font-size:11px;color:var(--color-text-secondary)">⚕️ NP QUEST ⚕️</span></div>
-    <h1 class="landing-logo" style="font-size:clamp(18px,4vw,32px)">專科護理師<br>冒險記</h1>
+  <div class="landing-inner">
+    <div class="landing-badge"><span class="landing-badge-text">⚕️ NP QUEST ⚕️</span></div>
+    <h1 class="landing-logo">專科護理師<br>冒險記</h1>
     <div class="pixel-divider"></div>
     <div class="landing-stats">
       <div class="stat-box"><span class="stat-num" id="stat-total-q">--</span><div class="stat-label">題庫總題數</div></div>
@@ -2297,27 +2425,21 @@ body.theme-abyss {
     <div class="pixel-divider"></div>
 
     <!-- 兩大模組入口 -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-      <div onclick="showScreen('topics');renderTopicsOverview()"
-        style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);
-               border-radius:10px;padding:28px 16px;cursor:pointer;transition:opacity .15s;text-align:center"
-        onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
-        <div style="font-size:36px;margin-bottom:10px">🔥</div>
-        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-error-300);margin-bottom:8px">重點考點</div>
-        <div style="font-size:12px;color:var(--color-text-muted);line-height:1.5">高頻考點分析<br>星等排序</div>
+    <div class="landing-modules">
+      <div class="landing-module landing-module-topics" onclick="showScreen('topics');renderTopicsOverview()">
+        <div class="landing-module-icon">🔥</div>
+        <div class="landing-module-title">重點考點</div>
+        <div class="landing-module-desc">高頻考點分析<br>星等排序</div>
       </div>
-      <div onclick="showScreen('mode');initModeScreen()"
-        style="background:var(--gradient-card);box-shadow:var(--pixel-border-blue);
-               border-radius:10px;padding:28px 16px;cursor:pointer;transition:opacity .15s;text-align:center"
-        onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
-        <div style="font-size:36px;margin-bottom:10px">⚔️</div>
-        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-primary-500);margin-bottom:8px">刷題系統</div>
-        <div style="font-size:12px;color:var(--color-text-muted);line-height:1.5">年份 / 科別<br>智慧複習 / 錯題</div>
+      <div class="landing-module landing-module-quiz" onclick="showScreen('mode');initModeScreen()">
+        <div class="landing-module-icon">⚔️</div>
+        <div class="landing-module-title">刷題系統</div>
+        <div class="landing-module-desc">年份 / 科別<br>智慧複習 / 錯題</div>
       </div>
     </div>
 
     <!-- 次要功能 -->
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px">
+    <div class="landing-actions">
       <button class="btn btn-secondary btn-sm" onclick="showScreen('notebook-screen');renderNotebook()">📝 我的筆記</button>
       <button class="btn btn-secondary btn-sm" onclick="showScreen('achievements-screen')">🏆 成就廳</button>
       <button class="btn btn-secondary btn-sm" onclick="showScreen('history-screen')">📊 練習紀錄</button>
@@ -2600,12 +2722,12 @@ body.theme-abyss {
 
 <!-- 成就廳 -->
 <div id="screen-achievements-screen" class="screen">
-  <div style="width:100%;max-width:860px;padding:40px 20px">
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px">
+  <div class="achievements-inner">
+    <div class="achievements-header">
       <button class="btn btn-sm btn-secondary" onclick="showScreen('landing')">← 返回</button>
-      <h2 class="screen-title" style="margin:0">🏆 成就廳</h2>
+      <h2 class="screen-title">🏆 成就廳</h2>
     </div>
-    <div id="all-achievements-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px"></div>
+    <div id="all-achievements-grid" class="achievements-grid"></div>
   </div>
 </div>
 
@@ -2780,11 +2902,7 @@ async function init() {
   // 檢查是否有未完成的 session
   const saved = loadSavedSession();
   if (saved) {
-    const resume = confirm(
-      `發現上次未完成的練習！\n` +
-      `進度：${saved.currentIndex + 1} / ${saved.sessionQuestions.length} 題\n\n` +
-      `要繼續嗎？`
-    );
+    const resume = confirm(`發現上次未完成的練習！\n進度：${saved.currentIndex + 1} / ${saved.sessionQuestions.length} 題\n\n要繼續嗎？`);
     if (resume) {
       restoreSession(saved);
       return;
@@ -2872,16 +2990,16 @@ async function loadQuestions() {
   // 優先用嵌入資料（直接開 HTML 也能用，不需要伺服器）
   if (window.__QD && window.__QD.questions) {
     State.allQuestions = window.__QD.questions;
-    console.log('嵌入資料載入：' + State.allQuestions.length + ' 題');
+    console.log(`嵌入資料載入：${State.allQuestions.length} 題`);
     return;
   }
   // 備用：透過伺服器 fetch
   try {
     const res = await fetch('./data/questions.json');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     State.allQuestions = data.questions || [];
-    console.log('Fetch 載入：' + State.allQuestions.length + ' 題');
+    console.log(`Fetch 載入：${State.allQuestions.length} 題`);
   } catch (e) {
     console.error('無法載入題庫', e);
     showError('無法載入題庫！<br>請確認 data/questions-embed.js 存在');
@@ -3011,10 +3129,10 @@ function showScreen(name) {
 
 function showError(msg) {
   document.body.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;text-align:center">
-      <div style="font-family:'Press Start 2P',monospace;color:#ff4757;font-size:13px;line-height:2">
+    <div class="error-screen">
+      <div class="error-box">
         ⚠️ 錯誤<br><br>
-        <span style="font-size:11px;color:#8892b0;font-family:sans-serif">${msg}</span>
+        <span class="error-detail">${msg}</span>
       </div>
     </div>`;
 }
@@ -3027,7 +3145,7 @@ function updateLandingStats() {
   setEl('stat-accuracy', p?.totalAnswered
     ? `${Math.round((p.totalCorrect / p.totalAnswered) * 100)}%`
     : '--');
-  setEl('stat-achievements', Object.keys(State.achievements).length + '/' + Object.keys(ACHIEVEMENTS).length);
+  setEl('stat-achievements', `${Object.keys(State.achievements).length}/${Object.keys(ACHIEVEMENTS).length}`);
 }
 
 // ── 模式選擇頁 ──────────────────────────────
@@ -3831,7 +3949,7 @@ function checkAchievements(correct, timeUsed) {
     if (!State.achievements[key]) {
       State.achievements[key] = { date: new Date().toISOString() };
       newAch.push(key);
-      showToast(ACHIEVEMENTS[key].icon + ' 成就解鎖：' + ACHIEVEMENTS[key].name);
+      showToast(`${ACHIEVEMENTS[key].icon} 成就解鎖：${ACHIEVEMENTS[key].name}`);
     }
   };
 
@@ -3979,9 +4097,7 @@ function showToast(msg) {
   container.appendChild(toast);
 
   setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(120%)';
-    toast.style.transition = 'all 0.3s';
+    toast.classList.add('toast-out');
     setTimeout(() => toast.remove(), 300);
   }, 2500);
 }
@@ -4002,8 +4118,8 @@ function md(text) {
 // 題幹＋附圖。組合題的 ①②③④ 各自換行，較好閱讀。
 function questionHtml(q) {
   let text = q.question;
-  if ((text.match(/[①-⑩]/g) || []).length >= 2) text = text.replace(/\s*([①-⑩])/g, (m, c, i) => (i ? '<br>' : '') + c);
-  return text + (q.image ? `<img class="q-figure" src="${q.image}" alt="題目附圖" title="點擊放大">` : '');
+  if ((text.match(/[①-⑩]/g) || []).length >= 2) text = text.replace(/\s*([①-⑩])/g, (m, c, i) => `${i ? '<br>' : ''}${c}`);
+  return `${text}${q.image ? `<img class="q-figure" src="${q.image}" alt="題目附圖" title="點擊放大">` : ''}`;
 }
 
 // ── 附圖放大 ──
@@ -4828,8 +4944,8 @@ function importNotes(evt){
 </script>
 
 <!-- 主題切換器 -->
-<div id="theme-switcher" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px">
-  <div id="theme-menu" style="display:none;flex-direction:column;gap:6px;align-items:flex-end">
+<div id="theme-switcher">
+  <div id="theme-menu">
     <button onclick="setTheme('')" class="theme-btn" data-theme="">⚡ 電光藍</button>
     <button onclick="setTheme('theme-forest')" class="theme-btn" data-theme="theme-forest">🌲 森林綠</button>
     <button onclick="setTheme('theme-white')" class="theme-btn" data-theme="theme-white">☀️ 純白色</button>
@@ -4838,15 +4954,48 @@ function importNotes(evt){
     <button onclick="setTheme('theme-wagashi')" class="theme-btn" data-theme="theme-wagashi">🍵 和風雅途</button>
     <button onclick="setTheme('theme-abyss')" class="theme-btn" data-theme="theme-abyss">🌊 深海靜謐</button>
   </div>
-  <button id="theme-toggle-btn" onclick="toggleThemeMenu()" title="更換主題"
-    style="width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;font-size:20px;
-           background:var(--color-bg-elevated);box-shadow:var(--pixel-border-dark);
-           display:flex;align-items:center;justify-content:center;transition:transform .2s">
+  <button id="theme-toggle-btn" onclick="toggleThemeMenu()" title="更換主題">
     🎨
   </button>
 </div>
 
+
 <style>
+#theme-switcher {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+#theme-menu {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+#theme-menu.open { display: flex; }
+
+#theme-toggle-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  background: var(--color-bg-elevated);
+  box-shadow: var(--pixel-border-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .2s;
+}
+#theme-toggle-btn.open { transform: rotate(20deg); }
+
 .theme-btn {
   font-family: 'Noto Sans TC', sans-serif;
   font-size: 13px;
@@ -4862,38 +5011,46 @@ function importNotes(evt){
 }
 .theme-btn:hover { opacity: .8; }
 .theme-btn.active { box-shadow: var(--pixel-border-gold); }
+
 </style>
 
 <script>
-(function(){
-  var THEMES = ['', 'theme-forest', 'theme-white', 'theme-nightnurse', 'theme-neon', 'theme-wagashi', 'theme-abyss'];
-  function applyTheme(t){
-    THEMES.forEach(function(c){ if(c) document.body.classList.remove(c); });
-    if(t) document.body.classList.add(t);
-    document.querySelectorAll('.theme-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.theme === t);
-    });
-    safeSet('np_theme', t);
-  }
-  window.setTheme = function(t){ applyTheme(t); toggleThemeMenu(false); };
-  window.toggleThemeMenu = function(force){
-    var menu = document.getElementById('theme-menu');
-    var open = force !== undefined ? force : menu.style.display === 'none';
-    menu.style.display = open ? 'flex' : 'none';
-    document.getElementById('theme-toggle-btn').style.transform = open ? 'rotate(20deg)' : '';
-  };
-  // 套用儲存的主題
-  document.addEventListener('DOMContentLoaded', function(){
-    var saved = localStorage.getItem('np_theme') || '';
-    applyTheme(saved);
-    // 點其他地方關閉選單
-    document.addEventListener('click', function(e){
-      if(!document.getElementById('theme-switcher').contains(e.target)){
-        toggleThemeMenu(false);
-      }
-    });
+// ── 主題切換 ────────────────────────────────
+const THEMES = ['', 'theme-forest', 'theme-white', 'theme-nightnurse', 'theme-neon', 'theme-wagashi', 'theme-abyss'];
+
+function applyTheme(t) {
+  THEMES.forEach(c => { if (c) document.body.classList.remove(c); });
+  if (t) document.body.classList.add(t);
+  document.querySelectorAll('.theme-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.theme === t);
   });
-})();
+  safeSet('np_theme', t);
+}
+
+function setTheme(t) {
+  applyTheme(t);
+  toggleThemeMenu(false);
+}
+
+function toggleThemeMenu(force) {
+  const menu = document.getElementById('theme-menu');
+  const open = force !== undefined ? force : !menu.classList.contains('open');
+  menu.classList.toggle('open', open);
+  document.getElementById('theme-toggle-btn').classList.toggle('open', open);
+}
+
+// 套用儲存的主題
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('np_theme') || '';
+  applyTheme(saved);
+  // 點其他地方關閉選單
+  document.addEventListener('click', e => {
+    if (!document.getElementById('theme-switcher').contains(e.target)) {
+      toggleThemeMenu(false);
+    }
+  });
+});
+
 </script>
 
 </body>

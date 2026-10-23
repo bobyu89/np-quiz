@@ -26,3 +26,10 @@
   animation: toast-in 300ms var(--ease-bounce);
   -webkit-font-smoothing: none;
 }
+
+/* 淡出 */
+#toast-container .toast-out {
+  opacity: 0;
+  transform: translateX(120%);
+  transition: all 0.3s;
+}

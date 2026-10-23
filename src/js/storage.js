@@ -13,11 +13,7 @@ async function init() {
   // 檢查是否有未完成的 session
   const saved = loadSavedSession();
   if (saved) {
-    const resume = confirm(
-      `發現上次未完成的練習！\n` +
-      `進度：${saved.currentIndex + 1} / ${saved.sessionQuestions.length} 題\n\n` +
-      `要繼續嗎？`
-    );
+    const resume = confirm(`發現上次未完成的練習！\n進度：${saved.currentIndex + 1} / ${saved.sessionQuestions.length} 題\n\n要繼續嗎？`);
     if (resume) {
       restoreSession(saved);
       return;
@@ -105,16 +101,16 @@ async function loadQuestions() {
   // 優先用嵌入資料（直接開 HTML 也能用，不需要伺服器）
   if (window.__QD && window.__QD.questions) {
     State.allQuestions = window.__QD.questions;
-    console.log('嵌入資料載入：' + State.allQuestions.length + ' 題');
+    console.log(`嵌入資料載入：${State.allQuestions.length} 題`);
     return;
   }
   // 備用：透過伺服器 fetch
   try {
     const res = await fetch('./data/questions.json');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     State.allQuestions = data.questions || [];
-    console.log('Fetch 載入：' + State.allQuestions.length + ' 題');
+    console.log(`Fetch 載入：${State.allQuestions.length} 題`);
   } catch (e) {
     console.error('無法載入題庫', e);
     showError('無法載入題庫！<br>請確認 data/questions-embed.js 存在');

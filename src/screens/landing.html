@@ -1,8 +1,8 @@
 <!-- LANDING -->
 <div id="screen-landing" class="screen active">
-  <div style="position:relative;z-index:1;width:100%;max-width:760px;padding:32px 20px;text-align:center">
-    <div style="margin-bottom:6px"><span style="font-family:'Press Start 2P',monospace;font-size:11px;color:var(--color-text-secondary)">⚕️ NP QUEST ⚕️</span></div>
-    <h1 class="landing-logo" style="font-size:clamp(18px,4vw,32px)">專科護理師<br>冒險記</h1>
+  <div class="landing-inner">
+    <div class="landing-badge"><span class="landing-badge-text">⚕️ NP QUEST ⚕️</span></div>
+    <h1 class="landing-logo">專科護理師<br>冒險記</h1>
     <div class="pixel-divider"></div>
     <div class="landing-stats">
       <div class="stat-box"><span class="stat-num" id="stat-total-q">--</span><div class="stat-label">題庫總題數</div></div>
@@ -13,27 +13,21 @@
     <div class="pixel-divider"></div>
 
     <!-- 兩大模組入口 -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-      <div onclick="showScreen('topics');renderTopicsOverview()"
-        style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);
-               border-radius:10px;padding:28px 16px;cursor:pointer;transition:opacity .15s;text-align:center"
-        onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
-        <div style="font-size:36px;margin-bottom:10px">🔥</div>
-        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-error-300);margin-bottom:8px">重點考點</div>
-        <div style="font-size:12px;color:var(--color-text-muted);line-height:1.5">高頻考點分析<br>星等排序</div>
+    <div class="landing-modules">
+      <div class="landing-module landing-module-topics" onclick="showScreen('topics');renderTopicsOverview()">
+        <div class="landing-module-icon">🔥</div>
+        <div class="landing-module-title">重點考點</div>
+        <div class="landing-module-desc">高頻考點分析<br>星等排序</div>
       </div>
-      <div onclick="showScreen('mode');initModeScreen()"
-        style="background:var(--gradient-card);box-shadow:var(--pixel-border-blue);
-               border-radius:10px;padding:28px 16px;cursor:pointer;transition:opacity .15s;text-align:center"
-        onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
-        <div style="font-size:36px;margin-bottom:10px">⚔️</div>
-        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-primary-500);margin-bottom:8px">刷題系統</div>
-        <div style="font-size:12px;color:var(--color-text-muted);line-height:1.5">年份 / 科別<br>智慧複習 / 錯題</div>
+      <div class="landing-module landing-module-quiz" onclick="showScreen('mode');initModeScreen()">
+        <div class="landing-module-icon">⚔️</div>
+        <div class="landing-module-title">刷題系統</div>
+        <div class="landing-module-desc">年份 / 科別<br>智慧複習 / 錯題</div>
       </div>
     </div>
 
     <!-- 次要功能 -->
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px">
+    <div class="landing-actions">
       <button class="btn btn-secondary btn-sm" onclick="showScreen('notebook-screen');renderNotebook()">📝 我的筆記</button>
       <button class="btn btn-secondary btn-sm" onclick="showScreen('achievements-screen')">🏆 成就廳</button>
       <button class="btn btn-secondary btn-sm" onclick="showScreen('history-screen')">📊 練習紀錄</button>
