@@ -17,18 +17,18 @@ function generateHandout() {
       本次成績：${correct.length}/${total}（${pct}%）｜
       錯題數：${wrong.length}
     </div>
-    <div class="pixel-divider" style="margin:16px 0"></div>
+    <div class="pixel-divider handout-divider"></div>
 
     ${renderWeakSummaryForHandout()}
 
-    <div style="font-family:var(--font-pixel);font-size:11px;color:var(--color-error-500);margin:24px 0 16px">
+    <div class="handout-section-title handout-section-wrong">
       ── 錯題解析（${wrong.length}題） ──
     </div>
 
     ${wrong.map((a, i) => renderHandoutQuestion(a, i + 1, 'wrong')).join('')}
 
     ${wrong.length < total ? `
-      <div style="font-family:var(--font-pixel);font-size:11px;color:var(--color-success-300);margin:24px 0 16px">
+      <div class="handout-section-title handout-section-correct">
         ── 答對題目（供複習） ──
       </div>
       ${correct.slice(0, 10).map((a, i) => renderHandoutQuestion(a, i + 1, 'correct')).join('')}
@@ -47,13 +47,13 @@ function renderWeakSummaryForHandout() {
   if (tagRates.length === 0) return '';
 
   return `
-    <div style="margin-bottom:20px">
-      <div style="font-family:var(--font-pixel);font-size:11px;color:var(--color-warning-500);margin-bottom:12px">⚠️ 重點複習科別</div>
+    <div class="handout-weak">
+      <div class="handout-weak-title">⚠️ 重點複習科別</div>
       ${tagRates.map((item, i) => `
-        <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--color-bg-border)">
-          <span style="font-family:var(--font-pixel);font-size:14px;color:var(--color-error-500)">${i+1}</span>
-          <span style="flex:1">${item.tag}</span>
-          <span style="font-family:var(--font-pixel);font-size:11px;color:${item.pct<50?'var(--color-error-500)':'var(--color-warning-500)'}">${item.pct}%</span>
+        <div class="handout-weak-item">
+          <span class="handout-weak-rank">${i + 1}</span>
+          <span class="handout-weak-name">${item.tag}</span>
+          <span class="handout-weak-pct${item.pct < 50 ? ' low' : ''}">${item.pct}%</span>
         </div>
       `).join('')}
     </div>
@@ -70,8 +70,8 @@ function renderHandoutQuestion(answer, index, type) {
       <div class="handout-q-header">
         <span class="handout-q-num">${type === 'wrong' ? '✗' : '✓'} Q${index}</span>
         <div class="handout-q-tags">
-          ${q.tags.map(t => `<span class="q-tag" style="font-size:10px">${t}</span>`).join('')}
-          ${q.year ? `<span class="q-year" style="font-size:10px">${q.year}年</span>` : ''}
+          ${q.tags.map(t => `<span class="q-tag">${t}</span>`).join('')}
+          ${q.year ? `<span class="q-year">${q.year}年</span>` : ''}
         </div>
       </div>
       <div class="handout-q-text">${questionHtml(q)}</div>

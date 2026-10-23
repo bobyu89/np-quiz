@@ -67,6 +67,36 @@
   -webkit-font-smoothing: none;
 }
 
+.handout-wrap { width: 100%; max-width: 860px; padding: 40px 20px; }
+.pixel-divider.handout-divider { margin: 16px 0; }
+
+.handout-section-title { font-family: var(--font-pixel); font-size: 11px; margin: 24px 0 16px; }
+.handout-section-wrong { color: var(--color-error-500); }
+.handout-section-correct { color: var(--color-success-300); }
+
+.handout-q-tags .q-tag,
+.handout-q-tags .q-year { font-size: 10px; }
+
+/* 重點複習科別 */
+.handout-weak { margin-bottom: 20px; }
+.handout-weak-title {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  color: var(--color-warning-500);
+  margin-bottom: 12px;
+}
+.handout-weak-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-bg-border);
+}
+.handout-weak-rank { font-family: var(--font-pixel); font-size: 14px; color: var(--color-error-500); }
+.handout-weak-name { flex: 1; }
+.handout-weak-pct { font-family: var(--font-pixel); font-size: 11px; color: var(--color-warning-500); }
+.handout-weak-pct.low { color: var(--color-error-500); }
+
 /* ── Markdown 詳解渲染樣式 ── */
 #ai-explanation-text h3,
 #deferred-explanations h3,
