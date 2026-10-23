@@ -81,9 +81,16 @@ const SCENES = {
   achievements: async p => p.evaluate(() => showScreen('achievements-screen')),
   notebook: async p => p.evaluate(() => { showScreen('notebook-screen'); renderNotebook(); }),
   lightbox: async p => { await startWith(p, [84]); await p.click('#q-text img'); },
-  'theme-white': async p => { await p.evaluate(() => setTheme('theme-white')); await startWith(p, [2038]); },
-  'theme-abyss': async p => { await p.evaluate(() => setTheme('theme-abyss')); },
 };
+
+// 主題：每套主題在手機尺寸拍幾個代表畫面（抽出 inline style 後，主題規則的優先順序可能改變）
+const THEMES = ['theme-forest', 'theme-white', 'theme-nightnurse', 'theme-neon', 'theme-wagashi', 'theme-abyss'];
+const THEMED = ['landing', 'mode', 'quiz-answered', 'result', 'topics-detail', 'history', 'notebook'];
+for (const theme of THEMES) {
+  for (const name of THEMED) {
+    SCENES[`${theme}-${name}`] = { mobileOnly: true, run: async p => { await p.evaluate(t => setTheme(t), theme); await SCENES[name](p); } };
+  }
+}
 
 async function startWith(page, ids) {
   await page.evaluate(ids => {
@@ -105,7 +112,9 @@ async function finishSession(page) {
 const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {});
 const errors = [];
 for (const [vp, viewport] of Object.entries(VIEWPORTS)) {
-  for (const [name, prepare] of Object.entries(SCENES)) {
+  for (const [name, scene] of Object.entries(SCENES)) {
+    if (scene.mobileOnly && vp !== 'm') continue;
+    const prepare = scene.run || scene;
     const ctx = await browser.newContext({ viewport, deviceScaleFactor: 1, hasTouch: vp === 'm' });
     const page = await ctx.newPage();
     await page.clock.setFixedTime(FIXED_TIME);
