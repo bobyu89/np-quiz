@@ -1,25 +1,28 @@
 # 系統架構
 
-> 適用版本：分支 `claude/confident-cray-stta0j`（題庫拆分後）。原始碼為 `src/index.html`（約 5,000 行），建置產物 `index.html` 約 6.5 MB。
+> 適用版本：分支 `claude/confident-cray-stta0j`（原始碼拆檔後）。原始碼在 `src/`（約 50 個檔案、5,600 行，不含第三方函式庫），建置產物 `index.html` 約 4.7 MB（gzip 後約 1.6 MB），附圖另存 `data/images/`（約 1.6 MB）。
 > 本文不再標註行號（每次修改都會位移），請以函式名稱搜尋。
 
 ## 1. 架構總覽
 
-使用者拿到的仍是 **一個自給自足的 `index.html`**：函式庫、字型、題庫、詳解、附圖、程式碼全部內嵌，沒有後端、沒有任何外部請求。但原始碼已拆成「網頁模板 + 資料檔」，由建置腳本組合：
+使用者拿到的是 **一個 `index.html` 加上附圖資料夾 `data/images/`**：函式庫、字型、題庫、詳解、程式碼全部內嵌，附圖以相對路徑載入（只有作答到有圖的題目才下載），沒有後端、沒有對其他網域的請求。需要完全單檔時可用 `build.py --embed-images` 產生附圖也內嵌的離線檔。原始碼拆成「骨架 + 程式／畫面／樣式檔 + 資料檔」，由建置腳本組合：
 
 ```mermaid
 flowchart LR
   subgraph SRC["原始碼（repo）"]
-    TPL["src/index.html<br/>程式、樣式、DOM<br/>/*@QD*/ 等佔位行"]
+    TPL["src/index.html（骨架）<br/>#include 標記、/*@QD*/ 等佔位行"]
+    PARTS["src/js/ · src/screens/<br/>src/styles/ · vendor/"]
     DATA["data/questions.json<br/>explanations.json<br/>topics.json<br/>topic_intros.json"]
     IMG["data/images/&lt;id&gt;.jpg"]
   end
   BUILD["tools/build.py"]
   TPL --> BUILD
+  PARTS -- 依 include 順序展開 --> BUILD
   DATA --> BUILD
-  IMG -- data URI 寫入 q.image --> BUILD
+  IMG -- 相對路徑寫入 q.image --> BUILD
   BUILD --> OUT["index.html（建置產物，commit 進 repo）"]
   OUT -- GitHub Pages（main） --> WEB["使用者瀏覽器"]
+  IMG -- 作答到有圖的題目時載入 --> WEB
   subgraph RT["執行期"]
     APP["主程式（State + 函式）"]
     APP -- 讀 --> G["window.__QD / __EXP<br/>__TOPICS / __TOPIC_INTROS"]
@@ -32,35 +35,39 @@ flowchart LR
 
 | 檔案 | 用途 |
 |---|---|
-| `tools/build.py` | 把四個佔位行換成 `window.__XX=<JSON>;`，題目若有 `data/images/<id>.jpg` 就加上 `image` 欄位；`--check` 只比對 `index.html` 是否為最新 |
+| `tools/build.py` | 遞迴展開 `src/index.html` 的 include 標記（`vendor/` 從 repo 根目錄、其餘從 `src/` 解析），再把四個佔位行換成 `window.__XX=<JSON>;`；題目若有 `data/images/<id>.jpg` 就加上 `image` 欄位（預設為相對路徑，`--embed-images [輸出檔]` 時為 data URI，輸出到不進版控的 `np-quiz-offline.html`）；`--check` 只比對 `index.html` 是否為最新 |
 | `tools/validate.py` | 題庫一致性檢查（題號完整、選項 A–D、答案格式、標籤、附圖、詳解 ✅ 與答案一致、考點引用） |
 | `tools/refresh_topics.py` | 依 `qids` 重算考點 `count`／`stars`／`years`，並同步講義摘要中的「N星，N題」 |
 | `tools/import_exam.py` | `fetch`／`import`／`apply`／`verify`：從衛福部公告 PDF 匯入新年度試卷（解析、核對答案、裁圖、產生待補詳解清單），或核對既有試卷 |
 | `.github/workflows/validate.yml` | push 到 `main` 與 PR 時執行 `validate.py`、`build.py --check`（`validate` job）與端對端測試（`e2e` job） |
 | `tests/e2e.mjs` | `npm test`：以 Playwright + Chromium 開啟建置後的 `index.html`，驗證判分、回顧、模擬考、id 轉換、XSS、儲存空間不足、進度備份等主要流程 |
+| `tests/visual.mjs` | `npm run visual`：固定亂數、時間與作答紀錄，截下 78 個畫面（手機／桌機 × 主要畫面，加 6 套主題）與 `.visual/baseline/` 逐像素比較，用於確認重構或樣式調整沒有改變畫面 |
 
 設計取捨：
 
 | 決策 | 好處 | 代價 |
 |---|---|---|
-| 產物為單檔、內嵌所有資料 | `file://` 直接可用、離線可用、部署零設定 | 檔案 ~6.5 MB；`index.html` 的 diff 無法閱讀（請看 `data/`、`src/` 的 diff） |
+| 產物為單檔、內嵌所有文字資料，附圖獨立 | `file://` 直接可用、部署零設定；首次載入少了約 1.6 MB 附圖 | 檔案 ~4.7 MB；`index.html` 的 diff 無法閱讀（請看 `data/`、`src/` 的 diff）；完全離線需另產 `--embed-images` 版本 |
+| 原始碼拆檔、建置時合併 | 每個畫面的程式／HTML／樣式可分開閱讀與 review；產物仍是單檔 | 改任何檔案都要重新建置；檔案之間靠全域名稱溝通，沒有 import 關係可追 |
 | 資料拆成一行一題的 JSON | diff 可讀、可用腳本驗證 | 改資料後必須重新建置並一併 commit `index.html`（CI 會檢查） |
 | 無框架、全域函式 + inline `onclick` | 零執行期依賴、零執行期建置 | 無模組邊界、命名空間污染；以瀏覽器端對端測試（`tests/e2e.mjs`）代替單元測試 |
 | `localStorage` 存全部進度 | 免帳號、免後端 | 不能自動跨裝置同步（需手動「進度備份」匯出／匯入）；清除瀏覽器資料即遺失；~5 MB 配額上限（寫入經 `safeSet()`，失敗不中斷流程） |
 
-## 2. `src/index.html` 區段地圖
+## 2. 原始碼檔案地圖
 
-由上而下：
+`src/index.html` 只是骨架，依序 include 以下檔案（順序即建置後在頁面中的順序；CSS 的覆寫關係與 JS 的頂層執行順序都依賴這個順序，新增檔案時請放在對應位置）：
 
-| 區段 | 內容 |
-|---|---|
-| `<head>` | `<title>`、內嵌 Chart.js v4.4.0（UMD）、marked v15.0.7、DOMPurify 3.2.6 |
-| 主要 `<style>` | 內嵌字型（Press Start 2P、Share Tech Mono，base64 woff2）→ **Design Tokens**（`:root`）→ 元件樣式（按鈕、Landing、HUD、題卡、附圖 `.q-figure`、放大檢視 `.figure-lightbox`、詳解按鈕列 `.explanation-actions`、模擬考題號面板 `.exam-palette`、結果、講義、Toast、`@media print`、筆記本、考點表格）→ RWD → 6 個主題覆寫（`body.theme-*`） |
-| `<body>` 靜態 DOM | Toast 容器、星空 canvas、10 個畫面 |
-| **資料區** | 四個佔位行 `/*@QD*/`、`/*@EXP*/`、`/*@TOPICS*/`、`/*@TOPIC_INTROS*/`，建置時換成資料（見 [DATA_SCHEMA.md](DATA_SCHEMA.md)） |
-| **主程式**（`'use strict'`） | State、初始化、id 遷移、模式、答題、詳解、SRS、結果、成就、講義、模擬考、弱點加強、鍵盤／滑動、工具函式 |
-| **擴充功能**（ES5 風格） | 結果分頁、成就廳、練習紀錄趨勢圖、考點分析、筆記本、進度備份、星空動畫 |
-| 主題切換器 | DOM + 樣式 + IIFE（作答畫面會隱藏，避免壓到按鈕） |
+| 區段 | 檔案 | 內容 |
+|---|---|---|
+| `<head>` 函式庫 | `vendor/chart.umd.min.js`、`marked.umd.js`、`purify.min.js` | Chart.js v4.4.0（UMD）、marked v15.0.7、DOMPurify 3.2.6 |
+| 主要 `<style>` | `styles/fonts.css` → `base.css` → `buttons.css` → `landing.css` → `mode.css` → `quiz.css` → `result.css` → `toast.css` → `handout.css` → `animations.css` → `print.css` → `notebook.css` → `topics.css` → `responsive.css` → `themes/*.css` | 內嵌字型（base64 woff2）→ **Design Tokens**（`:root`，在 `base.css`）→ 各畫面元件樣式 → RWD → 6 個主題覆寫（`body.theme-*`） |
+| `<body>` 靜態 DOM | `screens/common.html`、`landing`、`topics`、`mode`、`quiz`、`result`、`handout`、`achievements`、`history`、`notebook.html` | Toast 容器、星空 canvas、附圖放大層，以及 10 個畫面 |
+| **資料區** | 佔位行 | `/*@QD*/`、`/*@EXP*/`、`/*@TOPICS*/`、`/*@TOPIC_INTROS*/`，建置時換成資料（見 [DATA_SCHEMA.md](DATA_SCHEMA.md)） |
+| **主程式**（`'use strict'`） | `js/state.js` → `storage.js` → `srs.js` → `screens.js` → `mode.js` → `quiz.js` → `explanation.js` → `result.js` → `achievements.js` → `handout.js` → `ui.js` → `exam.js` → `focus.js` → `swipe.js` → `boot.js` | State 與常數、初始化與 id 遷移、SRS、畫面切換、模式選擇、答題、詳解、結果、成就、講義、Toast／附圖放大／`md()`、模擬考、弱點加強、鍵盤／滑動、啟動 |
+| **擴充功能** | `js/extras.js` → `topics.js` → `notebook.js` → `backup.js` → `starfield.js` | 結果分頁、成就廳、練習紀錄趨勢圖；考點分析；筆記本；進度備份；背景星空動畫 |
+| 主題切換器 | `screens/theme-switcher.html`、`styles/theme-switcher.css`、`js/theme.js` | 作答畫面會隱藏，避免壓到按鈕 |
+
+樣式的歸屬原則：class 放在產生它的程式所屬的樣式檔。例如結果頁「本次弱點」由 `focus.js` 產生，樣式在 `mode.css` 的「弱點加強」區段；詳解卡片由 `explanation.js` 產生，樣式在 `quiz.css`。
 
 ## 3. 畫面（Screen）與導覽
 

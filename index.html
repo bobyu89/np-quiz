@@ -5541,7 +5541,7 @@ function importNotes(evt) {
 }
 
 // ── 背景星空 ──
-(function () {
+(() => {
   const c = document.getElementById('starfield');
   if (!c) return;
   const ctx = c.getContext('2d'), stars = [];

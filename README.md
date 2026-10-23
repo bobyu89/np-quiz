@@ -1,6 +1,6 @@
 # 專科護理師冒險記 ⚔️（NP Quest）
 
-台灣專科護理師（NP）甄審筆試刷題系統。像素 RPG 風格、單一 HTML 檔、零後端，直接用瀏覽器開啟即可使用。
+台灣專科護理師（NP）甄審筆試刷題系統。像素 RPG 風格、單一 HTML 檔（附圖另存於 `data/images/`）、零後端，直接用瀏覽器開啟即可使用。
 
 | 項目 | 內容 |
 |---|---|
@@ -8,22 +8,25 @@
 | 考試類型 | 通論、進階內科、進階外科 |
 | 科別 | 18 個細科，分 4 大類（內科系／外科系／專科／基礎通論） |
 | 詳解 | 每題一份預先生成的 Markdown 詳解（內嵌） |
-| 附圖 | 65 題 ECG、X 光、CT、MRI 等附圖（內嵌，可點擊放大） |
-| 考點分析 | 18 科 × 379 個考點主題，含星等、題目對應、主題講義 |
+| 附圖 | 65 題 ECG、X 光、CT、MRI 等附圖（獨立圖檔，作答到該題才下載；可點擊放大） |
+| 考點分析 | 18 科 × 379 個考點主題，含星等、題目對應、主題講義（已納入 115 年新題） |
 | 技術 | Vanilla JS（無框架）、Chart.js 4.4.0、marked 15.0.7、DOMPurify 3.2.6；Python 建置腳本只用標準函式庫；Playwright 端對端測試 |
 | 儲存 | 全部存在瀏覽器 `localStorage`，無伺服器、無帳號；可用「進度備份」匯出／匯入到其他裝置 |
 
 ## 快速開始
 
 ```bash
-# 方法 1：直接開檔（file:// 即可運作，題庫已內嵌）
+# 方法 1：直接開檔（file:// 即可運作，題庫已內嵌；附圖讀取同目錄的 data/images/）
 open index.html
+
+# 需要單一離線檔（附圖也內嵌）時
+python3 tools/build.py --embed-images   # 產生 np-quiz-offline.html
 
 # 方法 2：本機靜態伺服器
 python3 -m http.server 8000   # 開 http://localhost:8000
 ```
 
-部署：GitHub Pages 直接發布 `main` 分支的 `index.html`。`index.html` 是建置產物，但會一併 commit，所以部署本身不需要建置步驟。
+部署：GitHub Pages 直接發布 `main` 分支的 `index.html` 與 `data/images/`。`index.html` 是建置產物，但會一併 commit，所以部署本身不需要建置步驟。
 
 ## 功能一覽
 
@@ -41,17 +44,20 @@ python3 -m http.server 8000   # 開 http://localhost:8000
 
 | 路徑 | 內容 |
 |---|---|
-| `src/index.html` | 網頁模板（程式、樣式），題庫位置以 `/*@QD*/` 等佔位行標記 |
+| `src/index.html` | 網頁骨架：以 `/*#include …*/`、`<!--#include …-->` 依序引入下列檔案，題庫位置以 `/*@QD*/` 等佔位行標記 |
+| `src/js/`、`src/screens/`、`src/styles/` | 程式（依功能分檔）、各畫面 HTML、樣式（含 `themes/` 6 套主題） |
+| `vendor/` | Chart.js、marked、DOMPurify 原始壓縮檔 |
 | `data/questions.json` | 題目（一行一題）：題號、題幹、選項、答案、標籤、年度、科目、出處 |
 | `data/explanations.json` | 詳解，以題目 id 為鍵 |
 | `data/topics.json` | 各科別的子主題與對應題目 id（`qids`） |
 | `data/topic_intros.json` | 子主題介紹文字 |
-| `data/images/<id>.jpg` | 題目附圖，建置時內嵌為 data URI |
-| `tools/build.py` | 組出 `index.html`（`--check` 只檢查是否為最新） |
+| `data/images/<id>.jpg` | 題目附圖；網頁以相對路徑載入（`--embed-images` 時內嵌為 data URI） |
+| `tools/build.py` | 組出 `index.html`（`--check` 只檢查是否為最新；`--embed-images` 產生附圖內嵌的離線檔） |
 | `tools/validate.py` | 題庫一致性檢查 |
 | `tools/refresh_topics.py` | 依 `qids` 重算考點的題數、星等、年份 |
 | `tools/import_exam.py` | 從衛福部公告匯入新年度試卷、核對既有試卷（見 docs/DEVELOPMENT.md §2.2） |
 | `tests/e2e.mjs` | 端對端測試（`npm test`，Playwright + Chromium） |
+| `tests/visual.mjs` | 畫面比對（`npm run visual`）：改樣式前後各截一次 78 個畫面，逐像素比較 |
 
 ## 修改流程
 
@@ -60,7 +66,8 @@ python3 -m http.server 8000   # 開 http://localhost:8000
 3. `python3 tools/validate.py`
 4. `python3 tools/build.py`
 5. 改到程式時執行 `npm test`（首次需 `npm ci && npx playwright install chromium`）
-6. 一併 commit `data/`、`src/` 與 `index.html`
+6. 改到樣式或畫面時，改動前先 `node tests/visual.mjs --update` 建立基準，改完 `npm run visual` 確認沒有非預期的變化
+7. 一併 commit `data/`、`src/` 與 `index.html`
 
 每次 push 與 PR 都會由 GitHub Actions（`.github/workflows/validate.yml`）執行驗證、檢查 `index.html` 是否已重新建置，並跑端對端測試。
 
