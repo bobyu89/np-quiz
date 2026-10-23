@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""把 src/index.html 模板與 data/ 題庫組成可直接開啟的單一 index.html。
+"""把 src/ 的模板、樣式、程式與 data/ 題庫組成可直接開啟的單一 index.html。
 
 用法：python3 tools/build.py          # 重新產生 index.html
       python3 tools/build.py --check  # 只檢查 index.html 是否為最新（CI 用）
 """
 import base64
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -36,8 +37,20 @@ def questions_payload():
     return {'version': qd['version'], 'total': len(qd['questions']), 'questions': qd['questions']}
 
 
+INCLUDE = re.compile(r'/\*#include ([\w./-]+)\*/|<!--#include ([\w./-]+)-->')
+
+
+def expand(text):
+    """展開 /*#include 檔案*/ 與 <!--#include 檔案-->；vendor/ 相對於專案根目錄，其餘相對於 src/。"""
+    def sub(m):
+        name = m.group(1) or m.group(2)
+        path = (ROOT if name.startswith('vendor/') else TEMPLATE.parent) / name
+        return expand(path.read_text(encoding='utf-8'))
+    return INCLUDE.sub(sub, text)
+
+
 def render():
-    lines = TEMPLATE.read_text(encoding='utf-8').split('\n')
+    lines = expand(TEMPLATE.read_text(encoding='utf-8')).split('\n')
     for i, line in enumerate(lines):
         if line in SLOTS:
             var, name = SLOTS[line]

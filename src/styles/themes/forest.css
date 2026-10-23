@@ -1,0 +1,245 @@
+/* ══════════════════════════════════════════
+   THEME: 森林像素風（theme-forest）
+   深墨綠夜晚森林 × 翠綠強調 × 琥珀金棕
+══════════════════════════════════════════ */
+body.theme-forest {
+  /* PRIMARY — 翠綠冒險色 */
+  --color-primary-400: #16a34a;
+  --color-primary-500: #22c55e;
+  --color-primary-600: #15803d;
+  --color-primary-700: #166534;
+  --color-primary-800: #14532d;
+  --color-primary-900: #052e16;
+
+  /* SECONDARY — 琥珀/金棕色 */
+  --color-secondary-200: #fde68a;
+  --color-secondary-300: #fbbf24;
+  --color-secondary-400: #f59e0b;
+  --color-secondary-500: #d97706;
+  --color-secondary-700: #92400e;
+
+  /* BACKGROUNDS — 深墨綠夜森林 */
+  --color-bg-void:     #040c06;
+  --color-bg-base:     #0d1a0f;
+  --color-bg-surface:  #111f10;
+  --color-bg-elevated: #172914;
+  --color-bg-overlay:  #1f3a1a;
+  --color-bg-border:   #2a4a24;
+
+  /* TEXT — 米白系 */
+  --color-text-primary:   #f0ede0;
+  --color-text-secondary: #a3b899;
+  --color-text-muted:     #5a7a50;
+
+  /* SEMANTIC — 森林生機色 */
+  --color-success-300:  #4ade80;
+  --color-success-500:  #22c55e;
+  --color-success-700:  #15803d;
+  --color-success-glow: rgba(34,197,94,0.35);
+
+  --color-error-300:  #fb7185;
+  --color-error-500:  #f43f5e;
+  --color-error-700:  #be123c;
+  --color-error-glow: rgba(244,63,94,0.35);
+
+  --color-warning-500:  #f59e0b;
+  --color-warning-glow: rgba(245,158,11,0.35);
+
+  /* HP BAR */
+  --color-hp-full:  #4ade80;
+  --color-hp-mid:   #fbbf24;
+  --color-hp-low:   #f43f5e;
+  --color-hp-track: #0a140a;
+
+  /* FIRE STREAK — 琥珀火焰 */
+  --color-fire-core:  #fde68a;
+  --color-fire-mid:   #f59e0b;
+  --color-fire-outer: #92400e;
+
+  /* GRADIENTS — 深綠系 */
+  --gradient-hero:    linear-gradient(180deg, #030a04 0%, #081208 40%, #0d1a0f 100%);
+  --gradient-card:    linear-gradient(135deg, #111f10 0%, #172914 100%);
+  --gradient-success: linear-gradient(135deg, #052e16 0%, #14532d 100%);
+  --gradient-error:   linear-gradient(135deg, #4c0519 0%, #881337 100%);
+  --gradient-gold:    linear-gradient(135deg, #451a03 0%, #78350f 50%, #451a03 100%);
+  --gradient-primary: linear-gradient(135deg, #052e16 0%, #14532d 50%, #052e16 100%);
+
+  /* PIXEL BORDER — 綠色/棕色系 */
+  --pixel-border-blue:
+    -2px -2px 0 0 #22c55e,  0px -2px 0 0 #22c55e,  2px -2px 0 0 #22c55e,
+     2px  0px 0 0 #15803d,  2px  2px 0 0 #15803d,
+     0px  2px 0 0 #166534, -2px  2px 0 0 #166534, -2px  0px 0 0 #22c55e;
+
+  --pixel-border-gold:
+    -2px -2px 0 0 #fbbf24,  0px -2px 0 0 #fbbf24,  2px -2px 0 0 #f59e0b,
+     2px  0px 0 0 #d97706,  2px  2px 0 0 #b45309,
+     0px  2px 0 0 #92400e, -2px  2px 0 0 #92400e, -2px  0px 0 0 #fbbf24;
+
+  --pixel-border-success:
+    -2px -2px 0 0 #4ade80,  0px -2px 0 0 #4ade80,  2px -2px 0 0 #22c55e,
+     2px  0px 0 0 #15803d,  2px  2px 0 0 #166534,
+     0px  2px 0 0 #166534, -2px  2px 0 0 #166534, -2px  0px 0 0 #4ade80;
+
+  --pixel-border-error:
+    -2px -2px 0 0 #fb7185,  0px -2px 0 0 #fb7185,  2px -2px 0 0 #f43f5e,
+     2px  0px 0 0 #be123c,  2px  2px 0 0 #881337,
+     0px  2px 0 0 #881337, -2px  2px 0 0 #881337, -2px  0px 0 0 #fb7185;
+
+  --pixel-border-dark:
+    -2px -2px 0 0 #2a4a24,  0px -2px 0 0 #2a4a24,  2px -2px 0 0 #1f3a1a,
+     2px  0px 0 0 #172914,  2px  2px 0 0 #111f10,
+     0px  2px 0 0 #111f10, -2px  2px 0 0 #111f10, -2px  0px 0 0 #2a4a24;
+
+  /* SHADOWS */
+  --shadow-glow-primary: 0 0 12px rgba(34,197,94,0.5), 0 0 24px rgba(34,197,94,0.25);
+  --shadow-glow-success: 0 0 12px var(--color-success-glow), 0 0 24px var(--color-success-glow);
+  --shadow-glow-error:   0 0 12px var(--color-error-glow), 0 0 24px var(--color-error-glow);
+  --shadow-glow-gold:    0 0 12px rgba(251,191,36,0.5), 0 0 28px rgba(251,191,36,0.25);
+  --shadow-glow-fire:    0 0 8px rgba(245,158,11,0.7), 0 0 20px rgba(146,64,14,0.4);
+  --shadow-panel:        0 4px 24px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.8);
+}
+
+/* 森林主題：像素網格背景 — 苔蘚綠格線 */
+body.theme-forest::before {
+  background-image:
+    linear-gradient(rgba(34,197,94,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34,197,94,0.05) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* 森林主題：CRT 掃描線稍深 */
+body.theme-forest::after {
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 2px,
+    rgba(0,0,0,0.10) 2px, rgba(0,0,0,0.10) 4px
+  );
+  opacity: 1;
+}
+
+/* 森林主題：focus 指示器 */
+body.theme-forest :focus-visible {
+  outline-color: var(--color-primary-500);
+}
+
+/* 森林主題：landing logo */
+body.theme-forest .landing-logo {
+  color: var(--color-primary-500);
+  text-shadow: 0 0 20px rgba(34,197,94,0.8), 0 0 40px rgba(34,197,94,0.4);
+}
+
+/* 森林主題：pixel 分隔線 */
+body.theme-forest .pixel-divider {
+  background: linear-gradient(90deg,
+    transparent, var(--color-primary-500) 20%,
+    var(--color-secondary-400) 50%,
+    var(--color-primary-500) 80%, transparent
+  );
+}
+
+/* 森林主題：tag 標籤 */
+body.theme-forest .q-tag {
+  background: rgba(34,197,94,0.15);
+  color: var(--color-primary-400);
+  border-color: rgba(34,197,94,0.25);
+}
+
+body.theme-forest .q-year {
+  background: rgba(245,158,11,0.12);
+  color: var(--color-secondary-300);
+  border-color: rgba(245,158,11,0.25);
+}
+
+/* 森林主題：mode-card hover overlay */
+body.theme-forest .mode-card::before {
+  background: linear-gradient(135deg, rgba(34,197,94,0.08), transparent);
+}
+
+/* 森林主題：primary 按鈕 */
+body.theme-forest .btn-primary {
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,0.2),
+    inset -1px -1px 0 rgba(0,0,0,0.3),
+    4px 4px 0 #166534,
+    var(--pixel-border-blue),
+    var(--shadow-glow-primary);
+}
+body.theme-forest .btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-400);
+  transform: translate(-2px, -2px);
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,0.25),
+    6px 6px 0 #14532d,
+    var(--pixel-border-blue),
+    0 0 20px rgba(34,197,94,0.7), 0 0 40px rgba(34,197,94,0.35);
+}
+body.theme-forest .btn-primary:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #14532d, var(--pixel-border-blue);
+}
+
+/* 森林主題：secondary 按鈕 hover */
+body.theme-forest .btn-secondary:hover:not(:disabled) {
+  background-color: rgba(34,197,94,0.1);
+  color: var(--color-text-primary);
+  transform: translate(-1px,-1px);
+  box-shadow: var(--pixel-border-blue), var(--shadow-glow-primary);
+}
+
+/* 森林主題：question-card 四角裝飾 */
+body.theme-forest .question-card::before,
+body.theme-forest .question-card::after {
+  background-color: var(--color-primary-500);
+}
+
+/* 森林主題：question-num */
+body.theme-forest .question-num {
+  color: var(--color-primary-400);
+}
+
+/* 森林主題：option hover */
+body.theme-forest .option-btn:hover:not(:disabled):not(.correct):not(.wrong) {
+  background-color: var(--color-bg-overlay);
+  transform: translate(-2px,-2px);
+  box-shadow:
+    0 0 0 2px var(--color-primary-700),
+    2px 2px 0 var(--color-primary-900),
+    var(--shadow-glow-primary);
+}
+
+/* 森林主題：option-label */
+body.theme-forest .option-label {
+  color: var(--color-primary-400);
+}
+
+/* 森林主題：streak */
+body.theme-forest .streak-display {
+  background-color: rgba(146,64,14,0.15);
+  box-shadow: 0 0 0 2px rgba(245,158,11,0.3);
+  color: var(--color-fire-core);
+  text-shadow: 0 0 8px var(--color-fire-mid);
+}
+body.theme-forest .streak-label {
+  color: var(--color-fire-mid);
+}
+body.theme-forest .streak-display.hot {
+  box-shadow: 0 0 0 2px rgba(245,158,11,0.5), 0 0 16px rgba(245,158,11,0.6), var(--shadow-glow-fire);
+}
+
+/* 森林主題：result-score */
+body.theme-forest .result-score {
+  color: var(--color-secondary-300);
+  text-shadow: 0 0 30px rgba(251,191,36,0.6);
+}
+
+/* 森林主題：radar/achievement/weak 區塊沿用 --gradient-card，已由變數覆蓋 */
+body.theme-forest .radar-title {
+  color: var(--color-primary-400);
+}
+
+body.theme-forest .handout-title {
+  color: var(--color-primary-400);
+}
+
+body.theme-forest .handout-analysis-title {
+  color: var(--color-primary-400);
+}

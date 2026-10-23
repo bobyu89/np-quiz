@@ -1,0 +1,18 @@
+<!-- 主題切換器 -->
+<div id="theme-switcher" style="position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+  <div id="theme-menu" style="display:none;flex-direction:column;gap:6px;align-items:flex-end">
+    <button onclick="setTheme('')" class="theme-btn" data-theme="">⚡ 電光藍</button>
+    <button onclick="setTheme('theme-forest')" class="theme-btn" data-theme="theme-forest">🌲 森林綠</button>
+    <button onclick="setTheme('theme-white')" class="theme-btn" data-theme="theme-white">☀️ 純白色</button>
+    <button onclick="setTheme('theme-nightnurse')" class="theme-btn" data-theme="theme-nightnurse">🕯️ 夜燈暖護</button>
+    <button onclick="setTheme('theme-neon')" class="theme-btn" data-theme="theme-neon">🌆 霓虹電魂</button>
+    <button onclick="setTheme('theme-wagashi')" class="theme-btn" data-theme="theme-wagashi">🍵 和風雅途</button>
+    <button onclick="setTheme('theme-abyss')" class="theme-btn" data-theme="theme-abyss">🌊 深海靜謐</button>
+  </div>
+  <button id="theme-toggle-btn" onclick="toggleThemeMenu()" title="更換主題"
+    style="width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;font-size:20px;
+           background:var(--color-bg-elevated);box-shadow:var(--pixel-border-dark);
+           display:flex;align-items:center;justify-content:center;transition:transform .2s">
+    🎨
+  </button>
+</div>

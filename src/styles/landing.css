@@ -1,0 +1,70 @@
+/* ══════════════════════════════════════════
+   LANDING PAGE
+══════════════════════════════════════════ */
+#screen-landing {
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.landing-logo {
+  font-family: var(--font-pixel);
+  font-size: clamp(16px, 3vw, 26px);
+  color: var(--color-primary-500);
+  text-shadow: 0 0 20px rgba(10,90,255,0.8), 0 0 40px rgba(10,90,255,0.4);
+  letter-spacing: 2px;
+  line-height: 2;
+  margin-bottom: 8px;
+  animation: glitch 5s infinite;
+}
+
+.landing-subtitle {
+  font-family: var(--font-pixel);
+  font-size: clamp(9px, 1.2vw, 11px);
+  color: var(--color-text-secondary);
+  margin-bottom: 48px;
+  letter-spacing: 3px;
+  animation: text-blink 1.5s steps(1) infinite;
+}
+
+/* Pixel 分隔線 */
+.pixel-divider {
+  width: 100%;
+  max-width: 480px;
+  height: 4px;
+  background: linear-gradient(90deg,
+    transparent, var(--color-primary-500) 20%,
+    var(--color-secondary-400) 50%,
+    var(--color-primary-500) 80%, transparent
+  );
+  margin: 24px auto;
+}
+
+.landing-stats {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.stat-box {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark), var(--shadow-panel);
+  padding: 16px 20px;
+  text-align: center;
+  min-width: 100px;
+}
+
+.stat-num {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  color: var(--color-secondary-300);
+  display: block;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}

@@ -1,0 +1,58 @@
+<!-- 結果 -->
+<div id="screen-result" class="screen">
+  <div style="width:100%;max-width:860px;padding:32px 20px">
+
+    <!-- Tab 切換列 -->
+    <div style="display:flex;gap:0;margin-bottom:24px;border-bottom:2px solid var(--color-bg-border)">
+      <button id="tab-btn-score" onclick="switchResultTab('score')"
+        style="padding:10px 24px;background:none;border:none;border-bottom:3px solid var(--color-primary-500);
+               cursor:pointer;font-family:'Press Start 2P',monospace;font-size:9px;
+               color:var(--color-primary-500);margin-bottom:-2px;transition:all .2s">
+        📊 本次成績
+      </button>
+      <button id="tab-btn-explanations" onclick="switchResultTab('explanations')"
+        style="padding:10px 24px;background:none;border:none;border-bottom:3px solid transparent;
+               cursor:pointer;font-family:'Press Start 2P',monospace;font-size:9px;
+               color:var(--color-text-muted);margin-bottom:-2px;transition:all .2s">
+        📖 詳解查閱
+      </button>
+    </div>
+
+    <!-- Tab 1：本次成績 -->
+    <div id="tab-score">
+      <div class="result-hero">
+        <div class="result-score" id="result-score">--</div>
+        <div class="result-score-sub" id="result-detail"></div>
+        <div class="result-rank" id="result-rank">評估中...</div>
+        <div id="exam-verdict" class="exam-verdict" style="display:none"></div>
+      </div>
+      <div class="weak-section" style="margin-bottom:20px">
+        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-error-500);margin-bottom:12px">🎯 本次弱點</div>
+        <div id="session-weak"></div>
+      </div>
+      <div class="achievement-section" style="margin-bottom:20px">
+        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-secondary-300);margin-bottom:12px">🏆 本次成就</div>
+        <div class="achievement-grid" id="achievement-list"></div>
+      </div>
+      <div class="radar-section">
+        <div class="radar-title">📡 科別能力雷達圖</div>
+        <canvas id="radarChart"></canvas>
+      </div>
+      <div class="weak-section" style="margin-bottom:20px">
+        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-error-500);margin-bottom:12px">⚠️ 弱點科別（累計）</div>
+        <div id="weak-list"></div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+        <button class="btn btn-gold" onclick="generateHandout()">📋 生成講義</button>
+        <button class="btn btn-primary" onclick="showScreen('mode');initModeScreen()">🔄 再練一次</button>
+        <button class="btn btn-secondary" onclick="showScreen('landing');updateLandingStats()">🏠 首頁</button>
+      </div>
+    </div>
+
+    <!-- Tab 2：詳解查閱 -->
+    <div id="tab-explanations" style="display:none">
+      <div id="deferred-explanations"></div>
+    </div>
+
+  </div>
+</div>

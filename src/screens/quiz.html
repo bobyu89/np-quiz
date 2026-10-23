@@ -1,0 +1,62 @@
+<!-- 答題 -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-hud" style="width:100%">
+    <div class="hud-progress">
+      <div class="hud-label">進度 <span id="progress-text">0/0</span></div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div class="timer-wrap">
+      <div class="hud-label">⏱ 剩餘時間</div>
+      <div class="timer-bar-wrap">
+        <div class="timer-bar-fill" id="timer-fill" style="width:100%"></div>
+        <span class="timer-num" id="timer-num">60</span>
+      </div>
+    </div>
+    <div class="streak-display" id="streak-display"></div>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto">
+      <button id="prev-btn" class="btn btn-sm btn-secondary" onclick="prevQuestion()" style="display:none">← 上一題</button>
+      <button id="exam-nav-btn" class="btn btn-sm btn-secondary" onclick="openExamPalette()" style="display:none">🔢 題號</button>
+      <button id="skip-btn" class="btn btn-sm btn-secondary" onclick="skipQuestion()">跳過 →</button>
+      <button class="btn btn-sm btn-secondary" onclick="exitToHome()">🏠 首頁</button>
+      <button class="btn btn-sm btn-danger" onclick="confirmEnd()">交卷</button>
+    </div>
+  </div>
+  <div class="quiz-body" style="width:100%;max-width:800px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><div id="q-tags"></div><div id="q-year"></div></div>
+    <div class="question-card">
+      <div class="question-num" id="q-num">Q001</div>
+      <div class="question-text" id="q-text">載入中...</div>
+      <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+        <button id="note-toggle-btn" class="btn btn-sm btn-secondary" onclick="toggleNotePanel()" style="font-size:12px">📝 筆記</button>
+        <span id="note-indicator" style="font-size:11px;color:var(--color-text-muted);display:none">已有筆記</span>
+      </div>
+      <div id="note-panel" style="display:none;margin-top:10px">
+        <textarea id="note-textarea" placeholder="支援 Markdown 格式：**粗體**、*斜體*、`程式碼`、- 列表、> 引用..."
+          style="width:100%;min-height:80px;padding:10px 12px;border-radius:6px;border:1px solid var(--color-bg-border);
+                 background:var(--color-bg-overlay);color:var(--color-text-primary);font-size:13px;
+                 font-family:'Noto Sans TC',sans-serif;line-height:1.6;resize:vertical"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px;justify-content:space-between;align-items:center">
+          <span style="font-size:11px;color:var(--color-text-muted)">支援 Markdown 格式</span>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-sm btn-secondary" onclick="toggleNotePanel()">取消</button>
+            <button class="btn btn-sm btn-primary" onclick="saveCurrentNote()">儲存筆記</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="options-grid" id="options-wrap"></div>
+    <div class="kbd-hint">鍵盤：A–D 或 1–4 作答　Enter 下一題　點圖片可放大</div>
+    <div class="swipe-hint">← 右滑上一題　左滑下一題 →　點圖片可放大</div>
+  </div>
+  <!-- 詳解面板 -->
+  <div id="explanation-panel" style="display:none;width:100%;max-width:800px;padding:0 16px 32px">
+    <div style="background:var(--color-bg-elevated);border:2px solid var(--color-bg-border);border-radius:8px;padding:20px 24px">
+      <div id="explanation-answer-text"></div>
+      <div id="explanation-ai-content"></div>
+      <div class="explanation-actions">
+        <button class="btn btn-secondary btn-sm" onclick="toggleNotePanel()">📝 寫筆記</button>
+        <button class="btn btn-primary" onclick="hideExplanation();nextQuestion()">下一題 →</button>
+      </div>
+    </div>
+  </div>
+</div>

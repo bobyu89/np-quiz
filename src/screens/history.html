@@ -1,0 +1,28 @@
+<!-- 紀錄 -->
+<div id="screen-history-screen" class="screen">
+  <div style="width:100%;max-width:860px;padding:40px 20px">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
+      <button class="btn btn-sm btn-secondary" onclick="showScreen('landing')">← 返回</button>
+      <h2 class="screen-title" style="margin:0">📊 練習紀錄</h2>
+    </div>
+    <!-- 進度備份 -->
+    <div id="backup-card" style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:16px 20px;border-radius:8px;margin-bottom:24px">
+      <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:var(--color-text-muted);margin-bottom:10px">💾 進度備份</div>
+      <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:12px">
+        作答紀錄、智慧複習排程、成就、筆記都只存在這個瀏覽器。換手機、換電腦或清除瀏覽器資料前，
+        先匯出備份檔；在新裝置匯入即可接續。
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-primary" onclick="exportBackup()">⬇️ 匯出進度</button>
+        <button class="btn btn-sm btn-secondary" onclick="document.getElementById('backup-file').click()">⬆️ 匯入進度</button>
+        <input type="file" id="backup-file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
+      </div>
+    </div>
+    <!-- 趨勢折線圖 -->
+    <div style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:20px;border-radius:8px;margin-bottom:24px">
+      <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:var(--color-text-muted);margin-bottom:12px">📈 正確率趨勢（最近10次）</div>
+      <canvas id="trend-chart" style="max-height:220px"></canvas>
+    </div>
+    <div id="history-list"></div>
+  </div>
+</div>

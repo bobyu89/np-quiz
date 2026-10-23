@@ -1,0 +1,30 @@
+/* ══════════════════════════════════════════
+   THEME: 夜燈暖護（theme-nightnurse）
+   深褐暖黑 × 琥珀橘金 × 護眼低藍光
+══════════════════════════════════════════ */
+body.theme-nightnurse {
+  --color-bg-primary:    #1a1208;
+  --color-bg-secondary:  #241a0e;
+  --color-bg-elevated:   #2e2010;
+  --color-bg-overlay:    #3d2a1480;
+  --color-bg-border:     #5a3e1e;
+  --color-primary-500:   #e8920a;
+  --color-primary-400:   #f0a832;
+  --color-primary-300:   #f5c46a;
+  --color-secondary-300: #f7d88a;
+  --color-text-primary:   #f5e8d0;
+  --color-text-secondary: #d4b896;
+  --color-text-muted:     #8a6e50;
+  --color-success-300:   #86d9a0;
+  --color-success-500:   #2ea854;
+  --color-error-300:     #f09070;
+  --color-error-400:     #e06040;
+  --color-error-500:     #c43820;
+  --color-warning-500:   #d4a012;
+  --gradient-card: linear-gradient(145deg, #2e2010 0%, #3a2814 60%, #2a1c0c 100%);
+  --gradient-hero: linear-gradient(180deg, #1a1208 0%, #2d1e0a 40%, #3d2a10 100%);
+  --pixel-border-dark:   4px 0 0 0 #0d0806, -4px 0 0 0 #0d0806, 0 4px 0 0 #0d0806, 0 -4px 0 0 #0d0806, inset 1px 1px 0 0 #5a3e1e;
+  --pixel-border-blue:   4px 0 0 0 #e8920a, -4px 0 0 0 #e8920a, 0 4px 0 0 #e8920a, 0 -4px 0 0 #e8920a, 2px 2px 0 0 #c46e04, -2px -2px 0 0 #f5c46a;
+  --pixel-border-gold:   4px 0 0 0 #c8860a, -4px 0 0 0 #c8860a, 0 4px 0 0 #c8860a, 0 -4px 0 0 #c8860a, 2px 2px 0 0 #8a5c04, -2px -2px 0 0 #f7d88a;
+  --scanline-opacity: 0.04;
+}

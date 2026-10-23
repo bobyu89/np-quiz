@@ -1,0 +1,26 @@
+<!-- 考點分析（總覽） -->
+<div id="screen-topics" class="screen">
+  <div style="width:100%;max-width:900px;padding:32px 20px">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:28px">
+      <button class="btn btn-sm btn-secondary" onclick="showScreen('landing')">← 返回</button>
+      <h2 class="screen-title" style="margin:0">🔥 重點考點分析</h2>
+    </div>
+    <p style="font-size:13px;color:var(--color-text-muted);margin-bottom:8px;line-height:1.6">
+      根據 <span id="topics-total">全部</span> 題歷屆考題，以關鍵字聚類分析各科高頻考點。<br>
+      ★★★★★ ≥15題（必考）　★★★★ 8-14題（高頻）　★★★ 4-7題（中頻）　★★ 2-3題　★ 偶出
+    </p>
+    <div id="topics-overview-grid"></div>
+  </div>
+</div>
+
+<!-- 考點分析（科別詳情） -->
+<div id="screen-topics-detail" class="screen">
+  <div style="width:100%;max-width:900px;padding:32px 20px">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+      <button class="btn btn-sm btn-secondary" onclick="showScreen('topics');renderTopicsOverview()">← 考點總覽</button>
+      <h2 class="screen-title" style="margin:0" id="topics-detail-title"></h2>
+    </div>
+    <div id="topics-detail-stats" style="font-size:13px;margin-bottom:20px"></div>
+    <div id="topics-detail-container"></div>
+  </div>
+</div>

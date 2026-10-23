@@ -1,0 +1,29 @@
+/* ══════════════════════════════════════════
+   TOPIC INTRO — Comparison Tables
+══════════════════════════════════════════ */
+.topic-comparison table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 8px 0;
+}
+.topic-comparison th,
+.topic-comparison td {
+  border: 1px solid var(--color-bg-border);
+  padding: 8px 12px;
+  text-align: left;
+  line-height: 1.5;
+}
+.topic-comparison th {
+  background: var(--color-bg-overlay);
+  color: var(--color-text-primary);
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.topic-comparison td {
+  color: var(--color-text-secondary);
+}
+.topic-comparison tr:nth-child(even) td {
+  background: rgba(255,255,255,0.02);
+}

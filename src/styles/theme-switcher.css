@@ -1,0 +1,15 @@
+.theme-btn {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 13px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+  box-shadow: var(--pixel-border-dark);
+  white-space: nowrap;
+  transition: opacity .15s;
+}
+.theme-btn:hover { opacity: .8; }
+.theme-btn.active { box-shadow: var(--pixel-border-gold); }
