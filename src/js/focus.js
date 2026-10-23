@@ -13,7 +13,7 @@ function startFocusPractice(tags) {
   beginSession(pool.slice(0, 20));
 }
 
-const focusArg = tags => '[' + tags.map(t => `'${t}'`).join(',') + ']';
+const focusArg = tags => `[${tags.map(t => `'${t}'`).join(',')}]`;
 
 function renderSessionWeak() {
   const el = document.getElementById('session-weak');
@@ -30,15 +30,15 @@ function renderSessionWeak() {
     .sort((a, b) => a.pct - b.pct || b.total - a.total)
     .slice(0, 3);
   if (!weak.length) {
-    el.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px">本次沒有明顯弱點（每科至少 2 題才列入）</p>';
+    el.innerHTML = '<p class="weak-empty">本次沒有明顯弱點（每科至少 2 題才列入）</p>';
     return;
   }
-  el.innerHTML = weak.map((w, i) => `<div class="weak-item">
+  const items = weak.map((w, i) => `<div class="weak-item">
       <span class="weak-rank">${'①②③'[i]}</span>
       <span class="weak-name">${w.tag}</span>
-      <span class="weak-pct" style="color:${w.pct < 50 ? 'var(--color-error-300)' : 'var(--color-warning-500)'}">${w.pct}%</span>
-      <span style="font-size:11px;color:var(--color-text-muted)">錯 ${w.total - w.correct} / ${w.total} 題</span>
-      <button class="btn btn-sm btn-secondary" style="margin-left:auto" onclick="startFocusPractice(${focusArg([w.tag])})">練習</button>
-    </div>`).join('')
-    + `<div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="startFocusPractice(${focusArg(weak.map(w => w.tag))})">🎯 一鍵練習弱點（20 題）</button></div>`;
+      <span class="weak-pct ${w.pct < 50 ? 'is-low' : 'is-mid'}">${w.pct}%</span>
+      <span class="weak-count">錯 ${w.total - w.correct} / ${w.total} 題</span>
+      <button class="btn btn-sm btn-secondary weak-practice-btn" onclick="startFocusPractice(${focusArg([w.tag])})">練習</button>
+    </div>`).join('');
+  el.innerHTML = `${items}<div class="weak-all"><button class="btn btn-primary" onclick="startFocusPractice(${focusArg(weak.map(w => w.tag))})">🎯 一鍵練習弱點（20 題）</button></div>`;
 }

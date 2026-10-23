@@ -1,15 +1,15 @@
 <!-- 模式選擇 -->
 <div id="screen-mode" class="screen">
-  <div style="width:100%;max-width:760px;padding:32px 20px">
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:28px">
+  <div class="mode-wrap">
+    <div class="mode-header">
       <button class="btn btn-sm btn-secondary" onclick="showScreen('landing')">← 返回</button>
-      <h2 class="screen-title" style="margin:0">開始練習</h2>
+      <h2 class="screen-title mode-title">開始練習</h2>
     </div>
 
     <!-- 快速開始區 -->
-    <div style="background:var(--gradient-card);box-shadow:var(--pixel-border-blue);border-radius:8px;padding:24px;margin-bottom:20px">
-      <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:var(--color-text-muted);margin-bottom:16px">⚡ 快速開始</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px" id="quick-mode-grid">
+    <div class="mode-quick">
+      <div class="mode-quick-title">⚡ 快速開始</div>
+      <div class="mode-quick-grid" id="quick-mode-grid">
         <button class="mode-card selected" data-mode="mixed" onclick="selectMode(this,'mixed')">
           <span class="mode-icon">🎲</span><div class="mode-name">混合</div><div class="mode-desc">自由篩選組合</div>
         </button>
@@ -32,57 +32,56 @@
     </div>
 
     <!-- 條件選擇（依模式顯示） -->
-    <div id="year-section" style="display:none;margin-bottom:16px">
+    <div id="year-section" class="mode-section" style="display:none">
       <div class="tag-section-title">📅 選擇年份（可複選，不選＝全部）</div>
       <div class="tag-grid" id="year-tag-grid"></div>
     </div>
-    <div id="exam-type-section" style="display:none;margin-bottom:16px">
+    <div id="exam-type-section" class="mode-section" style="display:none">
       <div class="tag-section-title">📋 選擇考試類型（可複選，不選＝全部）</div>
       <div class="tag-grid" id="exam-type-grid"></div>
     </div>
-    <div id="subject-section" style="display:none;margin-bottom:16px">
+    <div id="subject-section" class="mode-section" style="display:none">
       <div class="tag-section-title">🔬 選擇科別（不選＝全部）</div>
-      <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
+      <div class="mode-subject-cols">
         <div>
-          <div style="font-size:11px;color:var(--color-text-muted);margin-bottom:6px">① 類別</div>
-          <div style="display:flex;flex-direction:column;gap:6px" id="category-btn-grid"></div>
+          <div class="mode-subject-step">① 類別</div>
+          <div class="mode-category-list" id="category-btn-grid"></div>
         </div>
-        <div style="flex:1;min-width:200px">
-          <div style="font-size:11px;color:var(--color-text-muted);margin-bottom:6px">② 細科（可複選）</div>
+        <div class="mode-subject-sub">
+          <div class="mode-subject-step">② 細科（可複選）</div>
           <div class="tag-grid" id="subject-tag-grid"></div>
         </div>
       </div>
     </div>
-    <div id="exam-section" style="display:none;margin-bottom:16px">
+    <div id="exam-section" class="mode-section" style="display:none">
       <div class="tag-section-title">📅 年度</div>
       <div class="tag-grid" id="exam-year-grid"></div>
-      <div class="tag-section-title" style="margin-top:12px">📋 科目</div>
+      <div class="tag-section-title mode-exam-subject-title">📋 科目</div>
       <div class="tag-grid" id="exam-subject-grid"></div>
-      <div style="margin-top:12px;font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+      <div class="mode-note mode-exam-note">
         依原卷題序作答，整場 90 分鐘（同正式考試每節時間）。作答中不顯示對錯，可隨時改答案、用「題號」跳題；交卷後才計分並開放詳解。<br>
         及格標準：通論與進階兩科平均 60 分，且每科至少 50 分。
       </div>
     </div>
-    <div id="srs-section" style="display:none;margin-bottom:16px">
-      <div style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:16px 20px;border-radius:6px">
-        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+    <div id="srs-section" class="mode-section" style="display:none">
+      <div class="mode-srs-card">
+        <div class="mode-note">
           🧠 <strong>智慧複習</strong>根據你的答題歷史，自動排出今天需要複習的題目。<br>
           答對 → 下次複習時間往後推（1天→3天→7天→14天→30天）<br>
           答錯 → 優先放入下次練習
         </div>
-        <div style="margin-top:12px;display:flex;gap:16px" id="srs-status-mini"></div>
+        <div class="mode-srs-stats" id="srs-status-mini"></div>
       </div>
     </div>
 
     <!-- 進階設定（折疊） -->
-    <details id="advanced-settings" style="margin-bottom:20px">
-      <summary style="cursor:pointer;font-family:'Press Start 2P',monospace;font-size:9px;
-                      color:var(--color-text-muted);padding:10px 0;user-select:none">
+    <details id="advanced-settings" class="mode-advanced">
+      <summary class="mode-advanced-summary">
         ⚙️ 進階設定
       </summary>
-      <div style="padding-top:12px;display:flex;flex-direction:column;gap:16px">
+      <div class="mode-advanced-body">
         <div>
-          <div class="tag-section-title" style="margin-bottom:8px">📝 題數</div>
+          <div class="tag-section-title mode-advanced-label">📝 題數</div>
           <div class="count-grid">
             <button class="count-btn selected" data-count="30" onclick="selectCount(this,'30')">30題<span class="count-sub">~30分</span></button>
             <button class="count-btn" data-count="40" onclick="selectCount(this,'40')">40題<span class="count-sub">~40分</span></button>
@@ -91,8 +90,8 @@
           </div>
         </div>
         <div>
-          <div class="tag-section-title" style="margin-bottom:8px">💡 詳解時機</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div class="tag-section-title mode-advanced-label">💡 詳解時機</div>
+          <div class="mode-explain-grid">
             <button class="count-btn explain-mode-btn selected" data-mode="immediate" onclick="setExplainMode('immediate')">
               即時詳解<span class="count-sub">每題答完顯示</span>
             </button>
@@ -104,7 +103,7 @@
       </div>
     </details>
 
-    <div style="text-align:center">
+    <div class="mode-start">
       <button class="btn btn-primary btn-lg" onclick="startSession()">⚔️ 開始冒險！</button>
     </div>
   </div>

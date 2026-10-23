@@ -55,7 +55,7 @@ function renderCategoryBtns() {
   ).join('');
   // 清空子科
   const subWrap = document.getElementById('subject-tag-grid');
-  if (subWrap) subWrap.innerHTML = '<span style="color:var(--color-text-muted);font-size:12px">← 先選左側類別</span>';
+  if (subWrap) subWrap.innerHTML = '<span class="mode-subject-hint">← 先選左側類別</span>';
 }
 
 function selectCategory(el, cat) {
@@ -108,11 +108,11 @@ function updateModeUI() {
     const mini = document.getElementById('srs-status-mini');
     if (mini) {
       const s = getSRSStats();
-      const col = s.due > 0 ? 'var(--color-error-300)' : 'var(--color-success-300)';
+      const dueCls = s.due > 0 ? 'is-due' : 'is-done';
       mini.innerHTML = `
-        <span style="font-size:13px;color:${col}">📋 今日待複習：<strong>${s.due}</strong> 題</span>
-        <span style="font-size:13px;color:var(--color-text-muted)">⏳ 學習中：${s.learning} 題</span>
-        <span style="font-size:13px;color:var(--color-success-300)">✅ 已掌握：${s.mastered} 題</span>`;
+        <span class="mode-srs-stat ${dueCls}">📋 今日待複習：<strong>${s.due}</strong> 題</span>
+        <span class="mode-srs-stat is-learning">⏳ 學習中：${s.learning} 題</span>
+        <span class="mode-srs-stat is-done">✅ 已掌握：${s.mastered} 題</span>`;
     }
   }
 }

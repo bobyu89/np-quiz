@@ -61,7 +61,7 @@ function openExamPalette() {
       <div class="exam-palette-head">已答 ${picks.filter(Boolean).length} / ${picks.length}<button onclick="closeExamPalette()" aria-label="關閉">✕</button></div>
       <div class="exam-palette-grid">${picks.map((p, i) =>
         `<button class="${p ? 'done' : ''}${i === State.currentIndex ? ' current' : ''}" onclick="jumpExamQuestion(${i})">${i + 1}</button>`).join('')}</div>
-      <div style="text-align:center;margin-top:14px"><button class="btn btn-danger" onclick="closeExamPalette();confirmEnd()">交卷</button></div>
+      <div class="exam-palette-foot"><button class="btn btn-danger" onclick="closeExamPalette();confirmEnd()">交卷</button></div>
     </div>`;
   box.addEventListener('click', e => { if (e.target === box) closeExamPalette(); });
   document.body.appendChild(box);
@@ -106,17 +106,18 @@ function renderExamVerdict() {
   if (!ex) return;
   setEl('result-score', `${ex.score} 分`);
   const ok = sc => sc >= 50;
-  let html = `<div><strong>${ex.year} 年${ex.examType}</strong>：${ex.score} 分${ex.blank ? `（未作答 ${ex.blank} 題）` : ''}　`
-    + (ok(ex.score) ? '✅ 達單科 50 分門檻' : '❌ 未達單科 50 分門檻') + '</div>';
+  const blank = ex.blank ? `（未作答 ${ex.blank} 題）` : '';
+  const single = ok(ex.score) ? '✅ 達單科 50 分門檻' : '❌ 未達單科 50 分門檻';
+  let html = `<div><strong>${ex.year} 年${ex.examType}</strong>：${ex.score} 分${blank}　${single}</div>`;
   const pair = (State.progress.mockExams || []).slice(1)
     .find(m => m.year === ex.year && EXAM_PAIRS[ex.examType].includes(m.examType));
   if (pair) {
     const avg = Math.floor((ex.score + pair.score) / 2 * 100) / 100;
     const pass = avg >= 60 && ok(ex.score) && ok(pair.score);
-    html += `<div>搭配最近一次 ${pair.year} 年${pair.examType}（${pair.score} 分），兩科平均 ${avg} 分　`
-      + (pass ? '🎉 <strong>筆試及格</strong>' : '❌ 未達及格（需平均 60 分且各科 ≥ 50 分）') + '</div>';
+    const verdict = pass ? '🎉 <strong>筆試及格</strong>' : '❌ 未達及格（需平均 60 分且各科 ≥ 50 分）';
+    html += `<div>搭配最近一次 ${pair.year} 年${pair.examType}（${pair.score} 分），兩科平均 ${avg} 分　${verdict}</div>`;
   } else {
-    html += `<div style="color:var(--color-text-muted)">再考一份 ${ex.year} 年${EXAM_PAIRS[ex.examType].join('或')}，即可判定兩科是否及格（平均 60 分且各科 ≥ 50 分）。</div>`;
+    html += `<div class="exam-verdict-hint">再考一份 ${ex.year} 年${EXAM_PAIRS[ex.examType].join('或')}，即可判定兩科是否及格（平均 60 分且各科 ≥ 50 分）。</div>`;
   }
   el.innerHTML = html;
 }

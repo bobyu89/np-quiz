@@ -128,3 +128,75 @@
 }
 .count-sub { font-size: 10px; color: var(--color-text-muted); display: block; margin-top: 4px; }
 .count-btn.selected .count-sub { color: rgba(255,255,255,0.6); }
+
+/* 版面 */
+.mode-wrap { width: 100%; max-width: 760px; padding: 32px 20px; }
+.mode-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+.mode-title { margin: 0; }
+
+/* 快速開始 */
+.mode-quick {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-blue);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.mode-quick-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+}
+.mode-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+/* 條件選擇 */
+.mode-section { margin-bottom: 16px; }
+.mode-subject-cols { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+.mode-subject-step { font-size: 11px; color: var(--color-text-muted); margin-bottom: 6px; }
+.mode-category-list { display: flex; flex-direction: column; gap: 6px; }
+.mode-subject-sub { flex: 1; min-width: 200px; }
+.mode-subject-hint { color: var(--color-text-muted); font-size: 12px; }
+.mode-exam-subject-title { margin-top: 12px; }
+.mode-note { font-size: 13px; color: var(--color-text-secondary); line-height: 1.8; }
+.mode-exam-note { margin-top: 12px; }
+
+/* 智慧複習 */
+.mode-srs-card {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 16px 20px;
+  border-radius: 6px;
+}
+.mode-srs-stats { margin-top: 12px; display: flex; gap: 16px; }
+.mode-srs-stat { font-size: 13px; }
+.mode-srs-stat.is-due { color: var(--color-error-300); }
+.mode-srs-stat.is-learning { color: var(--color-text-muted); }
+.mode-srs-stat.is-done { color: var(--color-success-300); }
+
+/* 進階設定 */
+.mode-advanced { margin-bottom: 20px; }
+.mode-advanced-summary {
+  cursor: pointer;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--color-text-muted);
+  padding: 10px 0;
+  user-select: none;
+}
+.mode-advanced-body { padding-top: 12px; display: flex; flex-direction: column; gap: 16px; }
+.tag-section-title.mode-advanced-label { margin-bottom: 8px; }
+.mode-explain-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+.mode-start { text-align: center; }
+
+/* 弱點加強（結果頁「本次弱點」） */
+.weak-empty { color: var(--color-text-muted); font-size: 13px; }
+.weak-pct.is-low { color: var(--color-error-300); }
+.weak-pct.is-mid { color: var(--color-warning-500); }
+.weak-count { font-size: 11px; color: var(--color-text-muted); }
+.weak-practice-btn { margin-left: auto; }
+.weak-all { text-align: center; margin-top: 12px; }

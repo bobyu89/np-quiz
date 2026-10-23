@@ -5,14 +5,14 @@ function renderDeferredExplanations() {
 
   el.style.display = 'block';
   el.innerHTML = `
-    <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-secondary-300);margin-bottom:16px">
+    <div class="exp-list-title">
       📖 所有題目詳解
     </div>`;
 
   State.userAnswers.forEach((ans, i) => {
     const q = ans && ans.q;
     if (!q) return;
-    const resultColor = ans.correct ? 'var(--color-success-300)' : 'var(--color-error-300)';
+    const resultCls = ans.correct ? 'exp-correct' : 'exp-wrong';
     const resultIcon = ans.correct ? '✅' : '❌';
     const ansText = q.answer
       ? q.answer.split('、').map(l => `(${l}) ${q.options[l] || ''}`).join('　')
@@ -21,19 +21,19 @@ function renderDeferredExplanations() {
     const divId = `def-exp-${i}`;
     const expContent = (window.__EXP && window.__EXP[String(q.id)])
       ? md(window.__EXP[String(q.id)])
-      : '<span style="color:var(--color-text-muted)">此題尚無詳解</span>';
+      : '<span class="exp-empty">此題尚無詳解</span>';
 
     el.innerHTML += `
-      <div style="background:var(--gradient-card);border:1px solid var(--color-bg-border);border-radius:8px;padding:16px;margin-bottom:12px">
-        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
-          <span style="font-size:16px">${resultIcon}</span>
+      <div class="exp-card">
+        <div class="exp-card-head">
+          <span class="exp-card-icon">${resultIcon}</span>
           <div>
-            <div style="font-size:11px;color:var(--color-text-muted);margin-bottom:4px">Q${(i+1).toString().padStart(3,'0')} · ${(q.tags||[]).join('/')}</div>
-            <div style="font-size:13px;color:var(--color-text-primary);line-height:1.6">${questionHtml(q)}</div>
+            <div class="exp-card-meta">Q${(i + 1).toString().padStart(3, '0')} · ${(q.tags || []).join('/')}</div>
+            <div class="exp-card-question">${questionHtml(q)}</div>
           </div>
         </div>
-        <div style="font-size:12px;color:${resultColor};margin-bottom:8px">正確答案：${ansText}</div>
-        <div id="${divId}" style="font-size:12px;color:var(--color-text-secondary);line-height:1.8">${expContent}</div>
+        <div class="exp-card-answer ${resultCls}">正確答案：${ansText}</div>
+        <div id="${divId}" class="exp-card-body">${expContent}</div>
       </div>`;
   });
 }
@@ -49,21 +49,21 @@ function showExplanation(q, correct) {
     : '（本題無標準答案）';
 
   const resultIcon = correct ? '✅ 答對了！' : '❌ 答錯了！';
-  const resultColor = correct ? 'var(--color-success-300)' : 'var(--color-error-300)';
+  const resultCls = correct ? 'exp-correct' : 'exp-wrong';
 
   document.getElementById('explanation-answer-text').innerHTML = `
-    <div style="font-family:'Press Start 2P',monospace;font-size:11px;color:${resultColor};margin-bottom:12px">${resultIcon}</div>
-    <div style="font-size:13px;color:var(--color-secondary-300);font-weight:600;margin-bottom:4px">正確答案</div>
-    <div style="font-size:14px;color:var(--color-text-primary);line-height:1.6">${answerText}</div>
+    <div class="exp-result ${resultCls}">${resultIcon}</div>
+    <div class="exp-answer-label">正確答案</div>
+    <div class="exp-answer-text">${answerText}</div>
   `;
 
   // 詳解（全部題目皆有內嵌詳解）
   const exp = window.__EXP && window.__EXP[q.id];
   document.getElementById('explanation-ai-content').innerHTML = `
-    <div style="border-top:1px solid var(--color-bg-border);margin-top:14px;padding-top:14px">
-      <div style="font-size:12px;color:var(--color-secondary-300);font-weight:600;margin-bottom:8px">🤖 AI 詳解</div>
-      <div id="ai-explanation-text" style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
-        ${exp ? md(exp) : '<span style="color:var(--color-text-muted)">此題尚無詳解</span>'}
+    <div class="exp-ai">
+      <div class="exp-ai-label">🤖 AI 詳解</div>
+      <div id="ai-explanation-text" class="exp-ai-text">
+        ${exp ? md(exp) : '<span class="exp-empty">此題尚無詳解</span>'}
       </div>
     </div>`;
 
