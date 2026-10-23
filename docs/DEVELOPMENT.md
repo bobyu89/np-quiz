@@ -56,17 +56,46 @@ GitHub Actions（`.github/workflows/validate.yml`）在 push 到 `main` 與每�
 | 詳解 | 每題都有；【選項分析】有 (A)–(D) 四行 ✅/❌，且 ✅ 剛好是 `answer` 的字母 |
 | 考點 | `qids` 都存在、考點科別在題目 `tags` 中、`count` 等於 `qids` 數量 |
 
-### 2.2 新增一份試卷的檢查清單
+### 2.2 新增一份試卷
 
-1. 從衛福部「專科護理師甄審」公告取得【公告試題】與【標準答案】PDF（`pdftotext -layout` 可直接抽出文字；注意排除頁首頁尾、`\f` 換頁符號與封面注意事項的 1.–7. 編號）。
-2. `data/questions.json`：新題 `id` 從目前最大值 +1 接續（**不可重用、重排既有 id，也不可使用已移除的 id 1433–1918**，否則使用者的進度、SRS、筆記會對到錯題）。
-3. `year` 用民國年整數；`exam_type` 只能是 `通論`／`進階內科`／`進階外科`（新增類型前端會自動出現在篩選中；模擬考的科目按鈕與 `EXAM_PAIRS` 需另外修改）。
-4. `tags` 只能用 18 個既有科別；若要新增科別，必須同步修改 `SUBJECT_CATEGORIES` 與 `tools/validate.py` 的 `TAGS`。
-5. `answer`：單選 `"A"`；多選 `"A、C"`（**全形頓號**）；送分 `"送分"`。請以【標準答案】與【疑義試題答案說明】為準。
-6. 有附圖的題目：裁切後存成 `data/images/<id>.jpg`（建議寬度 ≤ 760 px、JPEG 品質約 72）。選項本身是圖時，選項文字填 `"見圖（A）"` 等。
-7. `data/explanations.json`：每個新 id 都要有一筆，沿用 `### 【核心考點】` 等六段格式與 ✅ 慣例（見 [DATA_SCHEMA.md](DATA_SCHEMA.md#12-window__exp--詳解)）。
-8. `data/topics.json`：把新 id 加進對應考點的 `qids`；新增考點時 `topic_intros.json` 必須有相同的 key。
-9. 依序執行 `refresh_topics.py` → `validate.py` → `build.py`，再跑 `npm test` 與 [§6.2 手動測試](#62-手動測試清單)。
+使用 `tools/import_exam.py`（需要 curl、poppler-utils、ImageMagick）。PDF 與工作檔放在 `exam_work/<年度>/`，不進版控。
+
+```bash
+# 1. 下載：網址是衛福部「○○○年度專科護理師筆試甄審試題、標準答案及試題疑義說明」公告頁
+#    （列表：https://dep.mohw.gov.tw/DONAHC/lp-1044-104.html）
+python3 tools/import_exam.py fetch https://dep.mohw.gov.tw/DONAHC/cp-1044-87727-104.html
+
+# 2. 匯入：解析三份試卷（各 80 題）、核對標準答案、裁切附圖，寫入 data/，並產生待補清單
+python3 tools/import_exam.py import 115
+
+# 3. 檢查 data/images/ 的新附圖；依 docs/EXPLANATION_GUIDE.md 為 exam_work/115/todo.json
+#    補上標籤、考點、詳解，存成 exam_work/115/done*.json（可分多個檔案）
+
+# 4. 合併：寫入詳解、標籤與考點（內外科共同題自動共用），重算考點統計並驗證
+python3 tools/import_exam.py apply 115
+
+# 5. 建置與測試
+python3 tools/build.py && npm test
+```
+
+工具會處理的細節：
+
+- 排除頁首頁尾、`\f` 換頁符號、浮水印，以及封面注意事項的 1.–7. 編號；109 年「題號一列、答案一列」的答案表格式也支援。
+- 答案格式：單選 `"A"`；多選 `"A、C"`（全形頓號，官方更正為「任一皆給分」）；送分 `"送分"`。
+- 新題 `id` 從目前最大值 +1 接續，不會重用既有或已移除的 id（1433–1918）。
+- 題幹提到「如圖」或選項是空白（選項本身是圖）時自動裁圖；選項文字填 `"見圖（A）"`。
+- 公告中的【疑義試題答案說明】會列出並下載（僅限本系統收錄的科目）。標準答案若在匯入後才更正，重新 `fetch` 再執行 `verify`。
+
+### 2.3 核對既有試卷
+
+```bash
+python3 tools/import_exam.py fetch <該年度公告頁網址>
+python3 tools/import_exam.py verify <年度>
+```
+
+逐題比對題庫與官方 PDF 的答案及文字（相似度 < 0.9 會列出），有差異時以非零狀態結束。
+
+其他注意事項：`exam_type` 只能是 `通論`／`進階內科`／`進階外科`（新增類型時，模擬考的科目按鈕與 `EXAM_PAIRS` 需另外修改）；`tags` 只能用 18 個既有科別，新增科別必須同步修改 `SUBJECT_CATEGORIES` 與 `tools/validate.py` 的 `TAGS`；新增考點時 `topic_intros.json` 必須有相同的 key。
 
 ## 3. 常見修改
 

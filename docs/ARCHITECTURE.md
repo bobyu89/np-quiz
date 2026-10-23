@@ -35,6 +35,7 @@ flowchart LR
 | `tools/build.py` | 把四個佔位行換成 `window.__XX=<JSON>;`，題目若有 `data/images/<id>.jpg` 就加上 `image` 欄位；`--check` 只比對 `index.html` 是否為最新 |
 | `tools/validate.py` | 題庫一致性檢查（題號完整、選項 A–D、答案格式、標籤、附圖、詳解 ✅ 與答案一致、考點引用） |
 | `tools/refresh_topics.py` | 依 `qids` 重算考點 `count`／`stars`／`years`，並同步講義摘要中的「N星，N題」 |
+| `tools/import_exam.py` | `fetch`／`import`／`apply`／`verify`：從衛福部公告 PDF 匯入新年度試卷（解析、核對答案、裁圖、產生待補詳解清單），或核對既有試卷 |
 | `.github/workflows/validate.yml` | push 到 `main` 與 PR 時執行 `validate.py`、`build.py --check`（`validate` job）與端對端測試（`e2e` job） |
 | `tests/e2e.mjs` | `npm test`：以 Playwright + Chromium 開啟建置後的 `index.html`，驗證判分、回顧、模擬考、id 轉換、XSS、儲存空間不足、進度備份等主要流程 |
 
