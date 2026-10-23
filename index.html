@@ -1313,6 +1313,171 @@ body:has(#screen-quiz.active) #theme-switcher { display: none !important; }
   outline: none;
   border-color: var(--color-primary-500);
 }
+/* 需排在 #notebook-search:focus 之後：原 inline 邊框會蓋過 focus 的 border-color */
+#screen-notebook-screen .nb-field {
+  border-radius: 6px;
+  border: 1px solid var(--color-bg-border);
+  background: var(--color-bg-overlay);
+  color: var(--color-text-primary);
+  font-size: 13px;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+.nb-search {
+  flex: 1;
+  min-width: 180px;
+  padding: 8px 14px;
+}
+.nb-sort { padding: 8px 12px; }
+.nb-wrap {
+  width: 100%;
+  max-width: 860px;
+  padding: 32px 20px;
+}
+.nb-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.screen-title.nb-title { margin: 0; }
+.nb-toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  align-items: center;
+}
+.nb-count {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+.nb-empty {
+  text-align: center;
+  padding: 60px 20px;
+}
+.nb-empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+.nb-empty-title {
+  font-size: 15px;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+}
+.nb-empty-desc {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+.nb-actions {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-bg-border);
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.nb-file-input { display: none; }
+
+/* ── 筆記卡片 ── */
+.nb-card {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+.nb-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.nb-card-qid {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--color-primary-500);
+}
+.nb-card-sub {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+.nb-card-meta {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.nb-card-del {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  padding: 2px;
+}
+.nb-card-question {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+.nb-card-tags { margin-bottom: 8px; }
+.nb-tag {
+  display: inline-block;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--color-bg-overlay);
+  color: var(--color-text-muted);
+  margin-right: 4px;
+}
+
+/* ── Markdown 格式小提示 ── */
+.nb-md-help { margin-top: 20px; }
+.nb-md-help-summary {
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  user-select: none;
+  text-align: center;
+}
+.nb-md-help-body {
+  margin-top: 12px;
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 2;
+}
+.nb-md-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 24px;
+}
+.nb-md-full { grid-column: 1/-1; }
+.nb-md-code {
+  background: var(--color-bg-overlay);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--color-secondary-300);
+}
+.nb-md-key { font-family: 'Share Tech Mono', monospace; }
+.nb-md-tip {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+/* ── 筆記內容（Markdown） ── */
+.notebook-note-content {
+  font-size: 13px;
+  color: var(--color-text-primary);
+  line-height: 1.7;
+}
 .notebook-note-content p { margin: 0 0 8px; }
 .notebook-note-content p:last-child { margin-bottom: 0; }
 .notebook-note-content ul,
@@ -1366,8 +1531,221 @@ body:has(#screen-quiz.active) #theme-switcher { display: none !important; }
 }
 
 /* ══════════════════════════════════════════
+   考點分析
+══════════════════════════════════════════ */
+.topics-wrap {
+  width: 100%;
+  max-width: 900px;
+  padding: 32px 20px;
+}
+.topics-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.topics-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.screen-title.topics-title { margin: 0; }
+.topics-intro {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+.topics-detail-stats {
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.topic-muted { color: var(--color-text-muted); }
+
+/* ── 總覽：科別卡片 ── */
+.topic-cat { margin-bottom: 36px; }
+.topic-cat-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--color-secondary-300);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-bg-border);
+}
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.topic-card {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  border-radius: 8px;
+  padding: 18px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.topic-card:hover { opacity: .8; }
+.topic-card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 10px;
+}
+.topic-card-meta {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+.topic-card-line {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.topic-card-stars { font-size: 11px; }
+
+/* ── 詳情：考點清單 ── */
+.topic-star-on { color: var(--color-warning-500); }
+.topic-star-off { color: var(--color-bg-border); }
+.topic-year {
+  display: inline-block;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--color-bg-overlay);
+  color: var(--color-text-muted);
+  margin-right: 4px;
+}
+.topic-item {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.topic-item-summary {
+  padding: 16px 20px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  outline: none;
+}
+.topic-item-stars {
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.topic-item-main {
+  flex: 1;
+  min-width: 150px;
+}
+.topic-item-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+.topic-item-meta {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+.topic-item-count {
+  font-size: 20px;
+  font-weight: 700;
+}
+.topic-item-body {
+  padding: 4px 20px 16px;
+  border-top: 1px solid var(--color-bg-border);
+}
+
+/* ── 詳情：考點簡介 ── */
+.topic-intro-summary {
+  font-size: 14px;
+  color: var(--color-text-primary);
+  line-height: 1.7;
+  margin: 12px 0;
+  padding: 12px 16px;
+  background: var(--color-bg-overlay);
+  border-radius: 8px;
+  border-left: 3px solid var(--color-primary-500);
+}
+.topic-section { margin: 12px 0; }
+.topic-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-secondary-300);
+  margin-bottom: 6px;
+}
+.topic-section-text {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+.topic-point {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  padding: 4px 0;
+  line-height: 1.6;
+}
+.topic-callout {
+  margin: 12px 0;
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+.topic-callout-must {
+  background: rgba(239,68,68,0.08);
+  border-left: 3px solid var(--color-error-300);
+}
+.topic-callout-trap {
+  background: rgba(245,158,11,0.08);
+  border-left: 3px solid var(--color-warning-500);
+}
+.topic-callout-mnemonic {
+  background: rgba(99,102,241,0.08);
+  border-left: 3px solid var(--color-primary-500);
+}
+.topic-callout-title {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.topic-callout-must .topic-callout-title { color: var(--color-error-300); }
+.topic-callout-trap .topic-callout-title { color: var(--color-warning-500); }
+.topic-callout-mnemonic .topic-callout-title { color: var(--color-primary-500); }
+.topic-callout-point {
+  font-size: 13px;
+  color: var(--color-text-primary);
+  padding: 3px 0;
+  line-height: 1.6;
+}
+.topic-divider {
+  border: none;
+  border-top: 1px solid var(--color-bg-border);
+  margin: 16px 0;
+}
+.topic-samples-label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 10px 0 6px;
+}
+.topic-sample {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  padding: 3px 0;
+  line-height: 1.5;
+}
+.topic-practice { margin-top: 12px; }
+
+/* ══════════════════════════════════════════
    TOPIC INTRO — Comparison Tables
 ══════════════════════════════════════════ */
+.topic-comparison {
+  font-size: 13px;
+  overflow-x: auto;
+}
 .topic-comparison table {
   width: 100%;
   border-collapse: collapse;
@@ -2328,12 +2706,12 @@ body.theme-abyss {
 
 <!-- 考點分析（總覽） -->
 <div id="screen-topics" class="screen">
-  <div style="width:100%;max-width:900px;padding:32px 20px">
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:28px">
+  <div class="topics-wrap">
+    <div class="topics-header">
       <button class="btn btn-sm btn-secondary" onclick="showScreen('landing')">← 返回</button>
-      <h2 class="screen-title" style="margin:0">🔥 重點考點分析</h2>
+      <h2 class="screen-title topics-title">🔥 重點考點分析</h2>
     </div>
-    <p style="font-size:13px;color:var(--color-text-muted);margin-bottom:8px;line-height:1.6">
+    <p class="topics-intro">
       根據 <span id="topics-total">全部</span> 題歷屆考題，以關鍵字聚類分析各科高頻考點。<br>
       ★★★★★ ≥15題（必考）　★★★★ 8-14題（高頻）　★★★ 4-7題（中頻）　★★ 2-3題　★ 偶出
     </p>
@@ -2343,12 +2721,12 @@ body.theme-abyss {
 
 <!-- 考點分析（科別詳情） -->
 <div id="screen-topics-detail" class="screen">
-  <div style="width:100%;max-width:900px;padding:32px 20px">
-    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+  <div class="topics-wrap">
+    <div class="topics-detail-header">
       <button class="btn btn-sm btn-secondary" onclick="showScreen('topics');renderTopicsOverview()">← 考點總覽</button>
-      <h2 class="screen-title" style="margin:0" id="topics-detail-title"></h2>
+      <h2 class="screen-title topics-title" id="topics-detail-title"></h2>
     </div>
-    <div id="topics-detail-stats" style="font-size:13px;margin-bottom:20px"></div>
+    <div id="topics-detail-stats" class="topics-detail-stats"></div>
     <div id="topics-detail-container"></div>
   </div>
 </div>
@@ -2640,61 +3018,55 @@ body.theme-abyss {
 
 <!-- 筆記本 -->
 <div id="screen-notebook-screen" class="screen">
-  <div style="width:100%;max-width:860px;padding:32px 20px">
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+  <div class="nb-wrap">
+    <div class="nb-header">
       <button class="btn btn-sm btn-secondary" onclick="showScreen('landing')">← 返回</button>
-      <h2 class="screen-title" style="margin:0">📝 我的筆記</h2>
+      <h2 class="screen-title nb-title">📝 我的筆記</h2>
     </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center">
-      <input id="notebook-search" type="text" placeholder="搜尋筆記內容或題號..."
-        oninput="renderNotebook()"
-        style="flex:1;min-width:180px;padding:8px 14px;border-radius:6px;border:1px solid var(--color-bg-border);
-               background:var(--color-bg-overlay);color:var(--color-text-primary);font-size:13px;
-               font-family:'Noto Sans TC',sans-serif">
-      <select id="notebook-sort" onchange="renderNotebook()"
-        style="padding:8px 12px;border-radius:6px;border:1px solid var(--color-bg-border);
-               background:var(--color-bg-overlay);color:var(--color-text-primary);font-size:13px;
-               font-family:'Noto Sans TC',sans-serif">
+    <div class="nb-toolbar">
+      <input id="notebook-search" class="nb-field nb-search" type="text" placeholder="搜尋筆記內容或題號..."
+        oninput="renderNotebook()">
+      <select id="notebook-sort" class="nb-field nb-sort" onchange="renderNotebook()">
         <option value="newest">最新優先</option>
         <option value="oldest">最舊優先</option>
         <option value="qid">依題號</option>
       </select>
-      <span id="notebook-count" style="font-size:12px;color:var(--color-text-muted)"></span>
+      <span id="notebook-count" class="nb-count"></span>
     </div>
     <div id="notebook-list"></div>
-    <div id="notebook-empty" style="display:none;text-align:center;padding:60px 20px">
-      <div style="font-size:48px;margin-bottom:16px">📝</div>
-      <div style="font-size:15px;color:var(--color-text-secondary);margin-bottom:8px">還沒有筆記</div>
-      <div style="font-size:13px;color:var(--color-text-muted);line-height:1.6">
+    <div id="notebook-empty" class="nb-empty" style="display:none">
+      <div class="nb-empty-icon">📝</div>
+      <div class="nb-empty-title">還沒有筆記</div>
+      <div class="nb-empty-desc">
         在刷題時點擊「📝 筆記」按鈕<br>就可以為每道題目記下你的心得與重點<br>
         支援 Markdown 格式，筆記自動儲存在本機
       </div>
     </div>
-    <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--color-bg-border);display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+    <div class="nb-actions">
       <button class="btn btn-sm btn-secondary" onclick="exportNotes()">💾 匯出筆記</button>
       <button class="btn btn-sm btn-secondary" onclick="document.getElementById('import-notes-input').click()">📂 匯入筆記</button>
-      <input type="file" id="import-notes-input" accept=".json" style="display:none" onchange="importNotes(event)">
+      <input type="file" id="import-notes-input" class="nb-file-input" accept=".json" onchange="importNotes(event)">
     </div>
 
     <!-- Markdown 格式小提示 -->
-    <details style="margin-top:20px">
-      <summary style="cursor:pointer;font-size:12px;color:var(--color-text-muted);user-select:none;text-align:center">
+    <details class="nb-md-help">
+      <summary class="nb-md-help-summary">
         ℹ️ Markdown 格式小提示
       </summary>
-      <div style="margin-top:12px;background:var(--gradient-card);box-shadow:var(--pixel-border-dark);border-radius:8px;padding:16px 20px;font-size:12px;color:var(--color-text-secondary);line-height:2">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 24px">
-          <div><code style="background:var(--color-bg-overlay);padding:1px 5px;border-radius:3px;color:var(--color-secondary-300);font-family:'Share Tech Mono',monospace">**粗體**</code> → <strong>粗體</strong></div>
-          <div><code style="background:var(--color-bg-overlay);padding:1px 5px;border-radius:3px;color:var(--color-secondary-300);font-family:'Share Tech Mono',monospace">*斜體*</code> → <em>斜體</em></div>
-          <div><code style="background:var(--color-bg-overlay);padding:1px 5px;border-radius:3px;color:var(--color-secondary-300);font-family:'Share Tech Mono',monospace">~~刪除線~~</code> → <del>刪除線</del></div>
-          <div><code style="background:var(--color-bg-overlay);padding:1px 5px;border-radius:3px;color:var(--color-secondary-300);font-family:'Share Tech Mono',monospace">`行內程式碼`</code> → <code style="background:var(--color-bg-overlay);padding:1px 5px;border-radius:3px;color:var(--color-secondary-300)">行內程式碼</code></div>
-          <div><code style="background:var(--color-bg-overlay);padding:1px 5px;border-radius:3px;color:var(--color-secondary-300);font-family:'Share Tech Mono',monospace">- 項目</code> → 無序列表</div>
-          <div><code style="background:var(--color-bg-overlay);padding:1px 5px;border-radius:3px;color:var(--color-secondary-300);font-family:'Share Tech Mono',monospace">1. 項目</code> → 有序列表</div>
-          <div><code style="background:var(--color-bg-overlay);padding:1px 5px;border-radius:3px;color:var(--color-secondary-300);font-family:'Share Tech Mono',monospace">> 引用</code> → 引用區塊</div>
-          <div><code style="background:var(--color-bg-overlay);padding:1px 5px;border-radius:3px;color:var(--color-secondary-300);font-family:'Share Tech Mono',monospace">### 標題</code> → 三級標題</div>
-          <div style="grid-column:1/-1"><code style="background:var(--color-bg-overlay);padding:1px 5px;border-radius:3px;color:var(--color-secondary-300);font-family:'Share Tech Mono',monospace">| 欄A | 欄B |</code> + 第二行 <code style="background:var(--color-bg-overlay);padding:1px 5px;border-radius:3px;color:var(--color-secondary-300);font-family:'Share Tech Mono',monospace">|---|---|</code> → 表格</div>
-          <div style="grid-column:1/-1"><code style="background:var(--color-bg-overlay);padding:1px 5px;border-radius:3px;color:var(--color-secondary-300);font-family:'Share Tech Mono',monospace">---</code> → 分隔線</div>
+      <div class="nb-md-help-body">
+        <div class="nb-md-grid">
+          <div><code class="nb-md-code nb-md-key">**粗體**</code> → <strong>粗體</strong></div>
+          <div><code class="nb-md-code nb-md-key">*斜體*</code> → <em>斜體</em></div>
+          <div><code class="nb-md-code nb-md-key">~~刪除線~~</code> → <del>刪除線</del></div>
+          <div><code class="nb-md-code nb-md-key">`行內程式碼`</code> → <code class="nb-md-code">行內程式碼</code></div>
+          <div><code class="nb-md-code nb-md-key">- 項目</code> → 無序列表</div>
+          <div><code class="nb-md-code nb-md-key">1. 項目</code> → 有序列表</div>
+          <div><code class="nb-md-code nb-md-key">> 引用</code> → 引用區塊</div>
+          <div><code class="nb-md-code nb-md-key">### 標題</code> → 三級標題</div>
+          <div class="nb-md-full"><code class="nb-md-code nb-md-key">| 欄A | 欄B |</code> + 第二行 <code class="nb-md-code nb-md-key">|---|---|</code> → 表格</div>
+          <div class="nb-md-full"><code class="nb-md-code nb-md-key">---</code> → 分隔線</div>
         </div>
-        <div style="margin-top:10px;font-size:11px;color:var(--color-text-muted)">
+        <div class="nb-md-tip">
           小技巧：可以用表格整理易混淆的比較重點，用粗體標記關鍵數值，用引用區塊標記口訣
         </div>
       </div>
@@ -4401,314 +4773,272 @@ function renderTrendChart(sessions){
   });
 }
 
-/* ── 考點分析 ── */
+// ── 考點分析 ──
 
-function renderTopicsOverview(){
+function renderTopicsOverview() {
   setEl('topics-total', State.allQuestions.length.toLocaleString());
-  var grid=document.getElementById('topics-overview-grid');
-  if(!grid||!window.__TOPICS) return;
-  var T=window.__TOPICS;
-  var cats=SUBJECT_CATEGORIES;
-  var html='';
+  const grid = document.getElementById('topics-overview-grid');
+  if (!grid || !window.__TOPICS) return;
+  const T = window.__TOPICS;
 
-  Object.entries(cats).forEach(function(pair){
-    var catName=pair[0], tags=pair[1];
-    html+='<div style="margin-bottom:36px">';
-    html+='<div style="font-family:\'Press Start 2P\',monospace;font-size:10px;color:var(--color-secondary-300);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--color-bg-border)">'+catName+'</div>';
-    html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">';
+  grid.innerHTML = Object.entries(SUBJECT_CATEGORIES).map(([catName, tags]) => {
+    const cards = tags.map(tag => {
+      const topics = T[tag];
+      if (!topics) return '';
+      const sorted = Object.entries(topics).sort((a, b) => b[1].count - a[1].count);
+      const totalQ = sorted.reduce((s, e) => s + e[1].count, 0);
+      const top3 = sorted.filter(([name]) => name !== '其他').slice(0, 3);
 
-    tags.forEach(function(tag){
-      var topics=T[tag];
-      if(!topics) return;
-      var sorted=Object.entries(topics).sort(function(a,b){return b[1].count-a[1].count;});
-      var totalQ=sorted.reduce(function(s,e){return s+e[1].count;},0);
-      var topicCount=sorted.length;
-      var top3=sorted.filter(function(e){return e[0]!=='其他';}).slice(0,3);
+      const lines = top3.map(([name, info]) => {
+        const stars = Array.from({ length: 5 }, (_, i) => (i < info.stars ? '★' : '☆')).join('');
+        const col = info.stars >= 4 ? 'var(--color-error-300)' : info.stars >= 3 ? 'var(--color-warning-500)' : 'var(--color-text-muted)';
+        return `<div class="topic-card-line"><span class="topic-card-stars" style="color:${col}">${stars}</span> ${name} <span class="topic-muted">(${info.count})</span></div>`;
+      }).join('');
 
-      html+='<div onclick="showTopicDetail(\''+tag+'\')" style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);border-radius:8px;padding:18px;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity=\'.8\'" onmouseout="this.style.opacity=\'1\'">';
-      html+='<div style="font-size:15px;font-weight:700;color:var(--color-text-primary);margin-bottom:10px">'+tag+'</div>';
-      html+='<div style="font-size:12px;color:var(--color-text-muted);margin-bottom:10px">'+totalQ+' 題 · '+topicCount+' 個考點</div>';
-      top3.forEach(function(e){
-        var name=e[0],info=e[1];
-        var stars='';for(var i=0;i<5;i++)stars+=i<info.stars?'★':'☆';
-        var col=info.stars>=4?'var(--color-error-300)':info.stars>=3?'var(--color-warning-500)':'var(--color-text-muted)';
-        html+='<div style="font-size:12px;margin-bottom:4px"><span style="color:'+col+';font-size:11px">'+stars+'</span> '+name+' <span style="color:var(--color-text-muted)">('+info.count+')</span></div>';
-      });
-      html+='</div>';
-    });
-    html+='</div></div>';
-  });
-  grid.innerHTML=html;
+      return `<div class="topic-card" onclick="showTopicDetail('${tag}')">
+        <div class="topic-card-name">${tag}</div>
+        <div class="topic-card-meta">${totalQ} 題 · ${sorted.length} 個考點</div>
+        ${lines}
+      </div>`;
+    }).join('');
+
+    return `<div class="topic-cat">
+      <div class="topic-cat-title">${catName}</div>
+      <div class="topic-grid">${cards}</div>
+    </div>`;
+  }).join('');
 }
 
-function showTopicDetail(tag){
+function showTopicDetail(tag) {
   showScreen('topics-detail');
   renderTopicDetail(tag);
 }
 
-function renderTopicDetail(tag){
-  var titleEl=document.getElementById('topics-detail-title');
-  var statsEl=document.getElementById('topics-detail-stats');
-  var container=document.getElementById('topics-detail-container');
-  if(!container||!window.__TOPICS) return;
-  if(titleEl) titleEl.textContent='🔥 '+tag;
+function renderTopicDetail(tag) {
+  const titleEl = document.getElementById('topics-detail-title');
+  const statsEl = document.getElementById('topics-detail-stats');
+  const container = document.getElementById('topics-detail-container');
+  if (!container || !window.__TOPICS) return;
+  if (titleEl) titleEl.textContent = `🔥 ${tag}`;
 
-  var topics=window.__TOPICS[tag];
-  if(!topics){container.innerHTML='<p>無資料</p>';return;}
+  const topics = window.__TOPICS[tag];
+  if (!topics) { container.innerHTML = '<p>無資料</p>'; return; }
 
-  var sorted=Object.entries(topics).sort(function(a,b){return b[1].count-a[1].count;});
-  var totalQ=sorted.reduce(function(s,e){return s+e[1].count;},0);
+  const sorted = Object.entries(topics).sort((a, b) => b[1].count - a[1].count);
+  const totalQ = sorted.reduce((s, e) => s + e[1].count, 0);
 
-  if(statsEl){
-    statsEl.innerHTML='<span style="color:var(--color-text-muted)">共 '+totalQ+' 題（含重複標記）· '+sorted.length+' 個考點主題</span>';
+  if (statsEl) {
+    statsEl.innerHTML = `<span class="topic-muted">共 ${totalQ} 題（含重複標記）· ${sorted.length} 個考點主題</span>`;
   }
 
-  var html='';
-  sorted.forEach(function(pair){
-    var name=pair[0], info=pair[1];
-    var stars='';for(var i=0;i<5;i++)stars+=i<info.stars?'<span style="color:var(--color-warning-500)">★</span>':'<span style="color:var(--color-bg-border)">☆</span>';
-    var starBg=info.stars>=5?'var(--color-error-300)':info.stars>=4?'var(--color-warning-500)':info.stars>=3?'var(--color-primary-500)':'var(--color-text-muted)';
-    var yearTags=(info.years||[]).map(function(y){return '<span style="display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;background:var(--color-bg-overlay);color:var(--color-text-muted);margin-right:4px">'+y+'</span>';}).join('');
+  const section = (title, body) => `<div class="topic-section"><div class="topic-section-title">${title}</div>${body}</div>`;
+  const callout = (type, title, items) => `<div class="topic-callout topic-callout-${type}"><div class="topic-callout-title">${title}</div>${
+    items.map(p => `<div class="topic-callout-point">• ${p}</div>`).join('')
+  }</div>`;
 
-    html+='<details style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);border-radius:8px;margin-bottom:12px;overflow:hidden">';
-    html+='<summary style="padding:16px 20px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:14px;flex-wrap:wrap;outline:none">';
-    html+='<div style="font-size:14px;letter-spacing:1px">'+stars+'</div>';
-    html+='<div style="flex:1;min-width:150px">';
-    html+='<div style="font-size:15px;font-weight:700;color:var(--color-text-primary)">'+name+'</div>';
-    html+='<div style="font-size:12px;color:var(--color-text-muted);margin-top:4px">'+info.count+' 題　'+yearTags+'</div>';
-    html+='</div>';
-    html+='<div style="font-size:20px;font-weight:700;color:'+starBg+'">'+info.count+'</div>';
-    html+='</summary>';
+  container.innerHTML = sorted.map(([name, info]) => {
+    const stars = Array.from({ length: 5 }, (_, i) => (i < info.stars
+      ? '<span class="topic-star-on">★</span>'
+      : '<span class="topic-star-off">☆</span>')).join('');
+    const starBg = info.stars >= 5 ? 'var(--color-error-300)' : info.stars >= 4 ? 'var(--color-warning-500)' : info.stars >= 3 ? 'var(--color-primary-500)' : 'var(--color-text-muted)';
+    const yearTags = (info.years || []).map(y => `<span class="topic-year">${y}</span>`).join('');
 
-    // Expanded content: intro + samples + practice button
-    html+='<div style="padding:4px 20px 16px;border-top:1px solid var(--color-bg-border)">';
+    // 展開內容：考點簡介、常見考法、練習按鈕
+    let body = '';
 
-    // Topic intro from __TOPIC_INTROS
-    var intros=window.__TOPIC_INTROS&&window.__TOPIC_INTROS[tag];
-    var intro=intros&&intros[name];
-    if(intro){
-      // Summary
-      if(intro.summary){
-        html+='<div style="font-size:14px;color:var(--color-text-primary);line-height:1.7;margin:12px 0;padding:12px 16px;background:var(--color-bg-overlay);border-radius:8px;border-left:3px solid var(--color-primary-500)">'+intro.summary+'</div>';
+    // 考點簡介（__TOPIC_INTROS）
+    const intros = window.__TOPIC_INTROS && window.__TOPIC_INTROS[tag];
+    const intro = intros && intros[name];
+    if (intro) {
+      if (intro.summary) {
+        body += `<div class="topic-intro-summary">${intro.summary}</div>`;
       }
-      // Definition
-      if(intro.definition){
-        html+='<div style="margin:12px 0"><div style="font-size:12px;font-weight:700;color:var(--color-secondary-300);margin-bottom:6px">📖 定義與機轉</div>';
-        html+='<div style="font-size:13px;color:var(--color-text-secondary);line-height:1.7">'+intro.definition+'</div></div>';
+      if (intro.definition) {
+        body += section('📖 定義與機轉', `<div class="topic-section-text">${intro.definition}</div>`);
       }
-      // Key Points
-      if(intro.keyPoints&&intro.keyPoints.length){
-        html+='<div style="margin:12px 0"><div style="font-size:12px;font-weight:700;color:var(--color-secondary-300);margin-bottom:6px">🎯 重點整理</div>';
-        intro.keyPoints.forEach(function(p){
-          html+='<div style="font-size:13px;color:var(--color-text-secondary);padding:4px 0;line-height:1.6">• '+p+'</div>';
-        });
-        html+='</div>';
+      if (intro.keyPoints && intro.keyPoints.length) {
+        body += section('🎯 重點整理', intro.keyPoints.map(p => `<div class="topic-point">• ${p}</div>`).join(''));
       }
-      // Comparison table
-      if(intro.comparison){
-        html+='<div style="margin:12px 0"><div style="font-size:12px;font-weight:700;color:var(--color-secondary-300);margin-bottom:6px">⚖️ 比較對照</div>';
-        html+='<div class="topic-comparison" style="font-size:13px;overflow-x:auto">'+md(intro.comparison)+'</div></div>';
+      if (intro.comparison) {
+        body += section('⚖️ 比較對照', `<div class="topic-comparison">${md(intro.comparison)}</div>`);
       }
-      // Criteria
-      if(intro.criteria){
-        html+='<div style="margin:12px 0"><div style="font-size:12px;font-weight:700;color:var(--color-secondary-300);margin-bottom:6px">📋 診斷標準／數值</div>';
-        html+='<div class="topic-comparison" style="font-size:13px;overflow-x:auto">'+md(intro.criteria)+'</div></div>';
+      if (intro.criteria) {
+        body += section('📋 診斷標準／數值', `<div class="topic-comparison">${md(intro.criteria)}</div>`);
       }
-      // Must Know
-      if(intro.mustKnow&&intro.mustKnow.length){
-        html+='<div style="margin:12px 0;padding:12px 16px;background:rgba(239,68,68,0.08);border-radius:8px;border-left:3px solid var(--color-error-300)"><div style="font-size:12px;font-weight:700;color:var(--color-error-300);margin-bottom:6px">🔴 必背重點</div>';
-        intro.mustKnow.forEach(function(p){
-          html+='<div style="font-size:13px;color:var(--color-text-primary);padding:3px 0;line-height:1.6">• '+p+'</div>';
-        });
-        html+='</div>';
+      if (intro.mustKnow && intro.mustKnow.length) {
+        body += callout('must', '🔴 必背重點', intro.mustKnow);
       }
-      // Traps
-      if(intro.traps&&intro.traps.length){
-        html+='<div style="margin:12px 0;padding:12px 16px;background:rgba(245,158,11,0.08);border-radius:8px;border-left:3px solid var(--color-warning-500)"><div style="font-size:12px;font-weight:700;color:var(--color-warning-500);margin-bottom:6px">⚠️ 常考陷阱</div>';
-        intro.traps.forEach(function(p){
-          html+='<div style="font-size:13px;color:var(--color-text-primary);padding:3px 0;line-height:1.6">• '+p+'</div>';
-        });
-        html+='</div>';
+      if (intro.traps && intro.traps.length) {
+        body += callout('trap', '⚠️ 常考陷阱', intro.traps);
       }
-      // Mnemonics
-      if(intro.mnemonics&&intro.mnemonics.length){
-        html+='<div style="margin:12px 0;padding:12px 16px;background:rgba(99,102,241,0.08);border-radius:8px;border-left:3px solid var(--color-primary-500)"><div style="font-size:12px;font-weight:700;color:var(--color-primary-500);margin-bottom:6px">💡 記憶口訣</div>';
-        intro.mnemonics.forEach(function(p){
-          html+='<div style="font-size:13px;color:var(--color-text-primary);padding:3px 0;line-height:1.6">• '+p+'</div>';
-        });
-        html+='</div>';
+      if (intro.mnemonics && intro.mnemonics.length) {
+        body += callout('mnemonic', '💡 記憶口訣', intro.mnemonics);
       }
-
-      html+='<hr style="border:none;border-top:1px solid var(--color-bg-border);margin:16px 0">';
+      body += '<hr class="topic-divider">';
     }
 
-    // Sample exam patterns
-    if(info.samples&&info.samples.length){
-      html+='<div style="font-size:12px;color:var(--color-text-muted);margin:10px 0 6px">常見考法：</div>';
-      info.samples.forEach(function(s){
-        html+='<div style="font-size:13px;color:var(--color-text-secondary);padding:3px 0;line-height:1.5">• '+s+'</div>';
-      });
+    // 常見考法
+    if (info.samples && info.samples.length) {
+      body += '<div class="topic-samples-label">常見考法：</div>';
+      body += info.samples.map(s => `<div class="topic-sample">• ${s}</div>`).join('');
     }
-    // Quick practice button
-    if(info.qids&&info.qids.length&&name!=='其他'){
-      html+='<div style="margin-top:12px"><button class="btn btn-sm btn-primary" onclick="startTopicPractice(\''+tag+'\',\''+name.replace(/'/g,"\\'")+'\')">⚔️ 練習這個考點 ('+info.qids.length+'題)</button></div>';
+    // 快速練習
+    if (info.qids && info.qids.length && name !== '其他') {
+      body += `<div class="topic-practice"><button class="btn btn-sm btn-primary" onclick="startTopicPractice('${tag}','${name.replace(/'/g, "\\'")}')">⚔️ 練習這個考點 (${info.qids.length}題)</button></div>`;
     }
-    html+='</div></details>';
-  });
 
-  container.innerHTML=html;
+    return `<details class="topic-item">
+      <summary class="topic-item-summary">
+        <div class="topic-item-stars">${stars}</div>
+        <div class="topic-item-main">
+          <div class="topic-item-name">${name}</div>
+          <div class="topic-item-meta">${info.count} 題　${yearTags}</div>
+        </div>
+        <div class="topic-item-count" style="color:${starBg}">${info.count}</div>
+      </summary>
+      <div class="topic-item-body">${body}</div>
+    </details>`;
+  }).join('');
 }
 
-function startTopicPractice(tag, topicName){
-  var topics=window.__TOPICS&&window.__TOPICS[tag];
-  if(!topics||!topics[topicName]) return;
-  var qids=topics[topicName].qids;
-  var idMap=new Map(State.allQuestions.map(function(q){return [q.id,q];}));
-  var pool=qids.map(function(id){return idMap.get(id);}).filter(Boolean);
-  if(!pool.length){alert('找不到對應題目');return;}
+function startTopicPractice(tag, topicName) {
+  const topics = window.__TOPICS && window.__TOPICS[tag];
+  if (!topics || !topics[topicName]) return;
+  const qids = topics[topicName].qids;
+  const idMap = new Map(State.allQuestions.map(q => [q.id, q]));
+  const pool = qids.map(id => idMap.get(id)).filter(Boolean);
+  if (!pool.length) { alert('找不到對應題目'); return; }
   shuffle(pool);
-  State.mode='topic';
-  State.selectedCount=pool.length;
-  State.exam=null;
-  State.sessionQuestions=pool;
-  State.currentIndex=0;
-  State.userAnswers=[];
-  State.streak=0;
-  State.maxStreak=0;
-  State.sessionStart=Date.now();
+  State.mode = 'topic';
+  State.selectedCount = pool.length;
+  State.exam = null;
+  State.sessionQuestions = pool;
+  State.currentIndex = 0;
+  State.userAnswers = [];
+  State.streak = 0;
+  State.maxStreak = 0;
+  State.sessionStart = Date.now();
   clearInterval(State.timerInterval);
   showScreen('quiz');
   renderQuestion();
 }
 
-/* ── 筆記本功能 ── */
+// ── 筆記本功能 ──
 
-function loadNotes(){
-  try{ return JSON.parse(localStorage.getItem('np_notes'))||{}; }catch(e){ return {}; }
+function loadNotes() {
+  try { return JSON.parse(localStorage.getItem('np_notes')) || {}; } catch (e) { return {}; }
 }
-function saveNotes(notes){
+function saveNotes(notes) {
   safeSet('np_notes', JSON.stringify(notes));
 }
 
-function toggleNotePanel(){
-  var panel=document.getElementById('note-panel');
-  if(!panel) return;
-  var show=panel.style.display==='none';
-  panel.style.display=show?'block':'none';
-  if(show){
-    var q=State.sessionQuestions[State.currentIndex];
-    if(!q) return;
-    var notes=loadNotes();
-    var ta=document.getElementById('note-textarea');
-    if(ta) ta.value=(notes[q.id]&&notes[q.id].text)||'';
+function toggleNotePanel() {
+  const panel = document.getElementById('note-panel');
+  if (!panel) return;
+  const show = panel.style.display === 'none';
+  panel.style.display = show ? 'block' : 'none';
+  if (show) {
+    const q = State.sessionQuestions[State.currentIndex];
+    if (!q) return;
+    const notes = loadNotes();
+    const ta = document.getElementById('note-textarea');
+    if (ta) ta.value = (notes[q.id] && notes[q.id].text) || '';
     ta.focus();
   }
 }
 
-function saveCurrentNote(){
-  var q=State.sessionQuestions[State.currentIndex];
-  if(!q) return;
-  var ta=document.getElementById('note-textarea');
-  var text=(ta&&ta.value||'').trim();
-  var notes=loadNotes();
+function saveCurrentNote() {
+  const q = State.sessionQuestions[State.currentIndex];
+  if (!q) return;
+  const ta = document.getElementById('note-textarea');
+  const text = (ta && ta.value || '').trim();
+  const notes = loadNotes();
 
-  if(!text){
+  if (!text) {
     delete notes[q.id];
   } else {
-    notes[q.id]={
-      text: text,
+    notes[q.id] = {
+      text,
       updatedAt: Date.now(),
-      qNum: q.number||q.id,
-      year: q.year||'',
-      tags: q.tags||[],
-      question: (q.question||'').substring(0,80)
+      qNum: q.number || q.id,
+      year: q.year || '',
+      tags: q.tags || [],
+      question: (q.question || '').substring(0, 80)
     };
   }
   saveNotes(notes);
   toggleNotePanel();
   updateNoteIndicator(q.id);
-  showToast(text?'筆記已儲存':'筆記已刪除');
+  showToast(text ? '筆記已儲存' : '筆記已刪除');
 }
 
-function updateNoteIndicator(qid){
-  var ind=document.getElementById('note-indicator');
-  var btn=document.getElementById('note-toggle-btn');
-  if(!ind||!btn) return;
-  var notes=loadNotes();
-  var has=notes[qid]&&notes[qid].text;
-  ind.style.display=has?'inline':'none';
-  btn.textContent=has?'📝 編輯筆記':'📝 筆記';
+function updateNoteIndicator(qid) {
+  const ind = document.getElementById('note-indicator');
+  const btn = document.getElementById('note-toggle-btn');
+  if (!ind || !btn) return;
+  const notes = loadNotes();
+  const has = notes[qid] && notes[qid].text;
+  ind.style.display = has ? 'inline' : 'none';
+  btn.textContent = has ? '📝 編輯筆記' : '📝 筆記';
 }
 
-function renderNotebook(){
-  var list=document.getElementById('notebook-list');
-  var empty=document.getElementById('notebook-empty');
-  var countEl=document.getElementById('notebook-count');
-  if(!list) return;
+function renderNotebook() {
+  const list = document.getElementById('notebook-list');
+  const empty = document.getElementById('notebook-empty');
+  const countEl = document.getElementById('notebook-count');
+  if (!list) return;
 
-  var notes=loadNotes();
-  var entries=Object.entries(notes);
+  const notes = loadNotes();
+  let entries = Object.entries(notes);
 
-  // Search filter
-  var search=(document.getElementById('notebook-search')||{}).value||'';
-  if(search.trim()){
-    var kw=search.trim().toLowerCase();
-    entries=entries.filter(function(e){
-      var n=e[1];
-      return (n.text||'').toLowerCase().indexOf(kw)!==-1
-        || String(e[0]).indexOf(kw)!==-1
-        || (n.question||'').toLowerCase().indexOf(kw)!==-1
-        || (n.tags||[]).join(' ').toLowerCase().indexOf(kw)!==-1;
-    });
+  // 搜尋篩選
+  const search = (document.getElementById('notebook-search') || {}).value || '';
+  if (search.trim()) {
+    const kw = search.trim().toLowerCase();
+    entries = entries.filter(([qid, n]) => (n.text || '').toLowerCase().indexOf(kw) !== -1
+      || String(qid).indexOf(kw) !== -1
+      || (n.question || '').toLowerCase().indexOf(kw) !== -1
+      || (n.tags || []).join(' ').toLowerCase().indexOf(kw) !== -1);
   }
 
-  // Sort
-  var sort=(document.getElementById('notebook-sort')||{}).value||'newest';
-  if(sort==='newest') entries.sort(function(a,b){return (b[1].updatedAt||0)-(a[1].updatedAt||0);});
-  else if(sort==='oldest') entries.sort(function(a,b){return (a[1].updatedAt||0)-(b[1].updatedAt||0);});
-  else entries.sort(function(a,b){return Number(a[0])-Number(b[0]);});
+  // 排序
+  const sort = (document.getElementById('notebook-sort') || {}).value || 'newest';
+  if (sort === 'newest') entries.sort((a, b) => (b[1].updatedAt || 0) - (a[1].updatedAt || 0));
+  else if (sort === 'oldest') entries.sort((a, b) => (a[1].updatedAt || 0) - (b[1].updatedAt || 0));
+  else entries.sort((a, b) => Number(a[0]) - Number(b[0]));
 
-  if(countEl) countEl.textContent=entries.length+' 筆筆記';
+  if (countEl) countEl.textContent = `${entries.length} 筆筆記`;
 
-  if(!entries.length){
-    list.innerHTML='';
-    if(empty) empty.style.display='block';
+  if (!entries.length) {
+    list.innerHTML = '';
+    if (empty) empty.style.display = 'block';
     return;
   }
-  if(empty) empty.style.display='none';
+  if (empty) empty.style.display = 'none';
 
-  var html='';
-  entries.forEach(function(pair){
-    var qid=pair[0], n=pair[1];
-    var dateStr=n.updatedAt?new Date(n.updatedAt).toLocaleDateString('zh-TW',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'';
-    var tagHtml=(n.tags||[]).map(function(t){
-      return '<span style="display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;background:var(--color-bg-overlay);color:var(--color-text-muted);margin-right:4px">'+t+'</span>';
-    }).join('');
+  list.innerHTML = entries.map(([qid, n]) => {
+    const dateStr = n.updatedAt ? new Date(n.updatedAt).toLocaleDateString('zh-TW', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+    const tagHtml = (n.tags || []).map(t => `<span class="nb-tag">${t}</span>`).join('');
+    const yearHtml = n.year ? ` <span class="nb-card-sub">${n.year}年</span>` : '';
 
-    html+='<div style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);border-radius:8px;padding:16px 20px;margin-bottom:12px">';
-    html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px">';
-    html+='<div>';
-    html+='<span style="font-family:\'Share Tech Mono\',monospace;font-size:12px;color:var(--color-primary-500)">Q'+qid+'</span>';
-    if(n.year) html+=' <span style="font-size:11px;color:var(--color-text-muted)">'+n.year+'年</span>';
-    html+='</div>';
-    html+='<div style="display:flex;gap:6px;align-items:center">';
-    html+='<span style="font-size:11px;color:var(--color-text-muted)">'+dateStr+'</span>';
-    html+='<button onclick="deleteNote('+qid+')" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--color-text-muted);padding:2px" title="刪除筆記">✕</button>';
-    html+='</div></div>';
-
-    if(n.question){
-      html+='<div style="font-size:12px;color:var(--color-text-muted);margin-bottom:6px;line-height:1.5">'+n.question+(n.question.length>=80?'...':'')+'</div>';
-    }
-    if(tagHtml) html+='<div style="margin-bottom:8px">'+tagHtml+'</div>';
-    html+='<div class="notebook-note-content" style="font-size:13px;color:var(--color-text-primary);line-height:1.7">'+md(n.text)+'</div>';
-    html+='</div>';
-  });
-  list.innerHTML=html;
+    return `<div class="nb-card">
+      <div class="nb-card-head">
+        <div><span class="nb-card-qid">Q${qid}</span>${yearHtml}</div>
+        <div class="nb-card-meta">
+          <span class="nb-card-sub">${dateStr}</span>
+          <button class="nb-card-del" onclick="deleteNote(${qid})" title="刪除筆記">✕</button>
+        </div>
+      </div>
+      ${n.question ? `<div class="nb-card-question">${n.question}${n.question.length >= 80 ? '...' : ''}</div>` : ''}
+      ${tagHtml ? `<div class="nb-card-tags">${tagHtml}</div>` : ''}
+      <div class="notebook-note-content">${md(n.text)}</div>
+    </div>`;
+  }).join('');
 }
 
-function deleteNote(qid){
-  if(!confirm('確定要刪除 Q'+qid+' 的筆記嗎？')) return;
-  var notes=loadNotes();
+function deleteNote(qid) {
+  if (!confirm(`確定要刪除 Q${qid} 的筆記嗎？`)) return;
+  const notes = loadNotes();
   delete notes[qid];
   saveNotes(notes);
   renderNotebook();
@@ -4730,7 +5060,7 @@ function exportBackup() {
   const data = {};
   BACKUP_KEYS.forEach(k => { const v = localStorage.getItem(k); if (v !== null) data[k] = v; });
   downloadJson({ app: 'np-quest', version: 1, exportedAt: new Date().toISOString(), data },
-    'np_backup_' + new Date().toISOString().slice(0, 10) + '.json');
+    `np_backup_${new Date().toISOString().slice(0, 10)}.json`);
   showToast(`已匯出進度（累計 ${State.progress.totalAnswered} 題）`);
 }
 
@@ -4751,7 +5081,7 @@ function importBackup(evt) {
       progress = backup.data.np_progress ? JSON.parse(backup.data.np_progress) : null;
       if (progress && typeof progress.totalAnswered !== 'number') throw new Error('作答紀錄格式不正確');
     } catch (err) {
-      alert('匯入失敗：' + err.message);
+      alert(`匯入失敗：${err.message}`);
       return;
     }
     const when = backup.exportedAt ? new Date(backup.exportedAt).toLocaleString('zh-TW') : '未知時間';
@@ -4763,62 +5093,60 @@ function importBackup(evt) {
   reader.readAsText(file);
 }
 
-function exportNotes(){
-  var notes=loadNotes();
-  var count=Object.keys(notes).length;
-  if(!count){showToast('沒有筆記可匯出');return;}
-  var blob=new Blob([JSON.stringify(notes,null,2)],{type:'application/json'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='np_notes_'+new Date().toISOString().slice(0,10)+'.json';
+function exportNotes() {
+  const notes = loadNotes();
+  const count = Object.keys(notes).length;
+  if (!count) { showToast('沒有筆記可匯出'); return; }
+  const blob = new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `np_notes_${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
   URL.revokeObjectURL(a.href);
-  showToast('已匯出 '+count+' 筆筆記');
+  showToast(`已匯出 ${count} 筆筆記`);
 }
 
-function importNotes(evt){
-  var file=evt.target.files[0];
-  if(!file) return;
-  var reader=new FileReader();
-  reader.onload=function(e){
-    try{
-      var imported=JSON.parse(e.target.result);
-      if(typeof imported!=='object'||Array.isArray(imported)) throw new Error('格式錯誤');
-      var existing=loadNotes();
-      var added=0, updated=0;
-      Object.entries(imported).forEach(function(pair){
-        var qid=pair[0], n=pair[1];
-        if(!n||typeof n.text!=='string'||!n.text) return;
-        if(existing[qid]) updated++; else added++;
-        existing[qid]=n;
+function importNotes(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (typeof imported !== 'object' || Array.isArray(imported)) throw new Error('格式錯誤');
+      const existing = loadNotes();
+      let added = 0, updated = 0;
+      Object.entries(imported).forEach(([qid, n]) => {
+        if (!n || typeof n.text !== 'string' || !n.text) return;
+        if (existing[qid]) updated++; else added++;
+        existing[qid] = n;
       });
       saveNotes(existing);
       renderNotebook();
-      showToast('匯入完成：新增 '+added+' 筆，更新 '+updated+' 筆');
-    }catch(err){
-      alert('匯入失敗：檔案格式不正確\n'+err.message);
+      showToast(`匯入完成：新增 ${added} 筆，更新 ${updated} 筆`);
+    } catch (err) {
+      alert(`匯入失敗：檔案格式不正確\n${err.message}`);
     }
   };
   reader.readAsText(file);
-  evt.target.value='';
+  evt.target.value = '';
 }
 
-
-
-(function(){
-  var c=document.getElementById('starfield');
-  if(!c)return;
-  var ctx=c.getContext('2d'),stars=[];
-  function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
-  resize();window.addEventListener('resize',resize);
-  for(var i=0;i<80;i++)stars.push({x:Math.random()*c.width,y:Math.random()*c.height,s:Math.random()*2+0.5,sp:Math.random()*0.3+0.05,o:Math.random()});
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    stars.forEach(function(s){
-      s.o+=(Math.random()-0.5)*0.04;s.o=Math.max(0.1,Math.min(0.9,s.o));
-      s.y+=s.sp;if(s.y>c.height){s.y=0;s.x=Math.random()*c.width;}
-      ctx.fillStyle='rgba(10,90,255,'+s.o+')';
-      ctx.fillRect(Math.round(s.x),Math.round(s.y),Math.ceil(s.s),Math.ceil(s.s));
+// ── 背景星空 ──
+(function () {
+  const c = document.getElementById('starfield');
+  if (!c) return;
+  const ctx = c.getContext('2d'), stars = [];
+  function resize() { c.width = window.innerWidth; c.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  for (let i = 0; i < 80; i++) stars.push({ x: Math.random() * c.width, y: Math.random() * c.height, s: Math.random() * 2 + 0.5, sp: Math.random() * 0.3 + 0.05, o: Math.random() });
+  function draw() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    stars.forEach(s => {
+      s.o += (Math.random() - 0.5) * 0.04; s.o = Math.max(0.1, Math.min(0.9, s.o));
+      s.y += s.sp; if (s.y > c.height) { s.y = 0; s.x = Math.random() * c.width; }
+      ctx.fillStyle = `rgba(10,90,255,${s.o})`;
+      ctx.fillRect(Math.round(s.x), Math.round(s.y), Math.ceil(s.s), Math.ceil(s.s));
     });
     requestAnimationFrame(draw);
   }
