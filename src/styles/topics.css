@@ -1,6 +1,219 @@
 /* ══════════════════════════════════════════
+   考點分析
+══════════════════════════════════════════ */
+.topics-wrap {
+  width: 100%;
+  max-width: 900px;
+  padding: 32px 20px;
+}
+.topics-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.topics-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.screen-title.topics-title { margin: 0; }
+.topics-intro {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+.topics-detail-stats {
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.topic-muted { color: var(--color-text-muted); }
+
+/* ── 總覽：科別卡片 ── */
+.topic-cat { margin-bottom: 36px; }
+.topic-cat-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--color-secondary-300);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-bg-border);
+}
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.topic-card {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  border-radius: 8px;
+  padding: 18px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.topic-card:hover { opacity: .8; }
+.topic-card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 10px;
+}
+.topic-card-meta {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+.topic-card-line {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.topic-card-stars { font-size: 11px; }
+
+/* ── 詳情：考點清單 ── */
+.topic-star-on { color: var(--color-warning-500); }
+.topic-star-off { color: var(--color-bg-border); }
+.topic-year {
+  display: inline-block;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--color-bg-overlay);
+  color: var(--color-text-muted);
+  margin-right: 4px;
+}
+.topic-item {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.topic-item-summary {
+  padding: 16px 20px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  outline: none;
+}
+.topic-item-stars {
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.topic-item-main {
+  flex: 1;
+  min-width: 150px;
+}
+.topic-item-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+.topic-item-meta {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+.topic-item-count {
+  font-size: 20px;
+  font-weight: 700;
+}
+.topic-item-body {
+  padding: 4px 20px 16px;
+  border-top: 1px solid var(--color-bg-border);
+}
+
+/* ── 詳情：考點簡介 ── */
+.topic-intro-summary {
+  font-size: 14px;
+  color: var(--color-text-primary);
+  line-height: 1.7;
+  margin: 12px 0;
+  padding: 12px 16px;
+  background: var(--color-bg-overlay);
+  border-radius: 8px;
+  border-left: 3px solid var(--color-primary-500);
+}
+.topic-section { margin: 12px 0; }
+.topic-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-secondary-300);
+  margin-bottom: 6px;
+}
+.topic-section-text {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+.topic-point {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  padding: 4px 0;
+  line-height: 1.6;
+}
+.topic-callout {
+  margin: 12px 0;
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+.topic-callout-must {
+  background: rgba(239,68,68,0.08);
+  border-left: 3px solid var(--color-error-300);
+}
+.topic-callout-trap {
+  background: rgba(245,158,11,0.08);
+  border-left: 3px solid var(--color-warning-500);
+}
+.topic-callout-mnemonic {
+  background: rgba(99,102,241,0.08);
+  border-left: 3px solid var(--color-primary-500);
+}
+.topic-callout-title {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.topic-callout-must .topic-callout-title { color: var(--color-error-300); }
+.topic-callout-trap .topic-callout-title { color: var(--color-warning-500); }
+.topic-callout-mnemonic .topic-callout-title { color: var(--color-primary-500); }
+.topic-callout-point {
+  font-size: 13px;
+  color: var(--color-text-primary);
+  padding: 3px 0;
+  line-height: 1.6;
+}
+.topic-divider {
+  border: none;
+  border-top: 1px solid var(--color-bg-border);
+  margin: 16px 0;
+}
+.topic-samples-label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 10px 0 6px;
+}
+.topic-sample {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  padding: 3px 0;
+  line-height: 1.5;
+}
+.topic-practice { margin-top: 12px; }
+
+/* ══════════════════════════════════════════
    TOPIC INTRO — Comparison Tables
 ══════════════════════════════════════════ */
+.topic-comparison {
+  font-size: 13px;
+  overflow-x: auto;
+}
 .topic-comparison table {
   width: 100%;
   border-collapse: collapse;
