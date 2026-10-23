@@ -1050,6 +1050,130 @@ body:has(#screen-quiz.active) #theme-switcher { display: none !important; }
 .weak-name { flex: 1; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .weak-pct  { font-family: var(--font-mono); font-size: 15px; font-weight: bold; }
 
+.result-wrap { width: 100%; max-width: 860px; padding: 32px 20px; }
+
+/* Tab 切換列 */
+.result-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--color-bg-border);
+}
+
+.result-tab {
+  padding: 10px 24px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--color-text-muted);
+  margin-bottom: -2px;
+  transition: all .2s;
+}
+.result-tab.active { color: var(--color-primary-500); border-bottom-color: var(--color-primary-500); }
+
+.result-section-title { font-family: 'Press Start 2P', monospace; font-size: 10px; margin-bottom: 12px; }
+.result-title-weak { color: var(--color-error-500); }
+.result-title-ach { color: var(--color-secondary-300); }
+
+.result-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+.result-empty { color: var(--color-text-muted); font-size: 13px; }
+.result-badge-desc { font-size: 10px; color: var(--color-text-muted); font-family: var(--font-body); }
+.result-weak-total { font-size: 11px; color: var(--color-text-muted); }
+.result-weak-btn { margin-left: auto; }
+
+/* ══════════════════════════════════════════
+   成就總覽
+══════════════════════════════════════════ */
+.achievements-card {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 20px;
+  text-align: center;
+  opacity: 1;
+}
+.achievements-card.locked { opacity: 0.4; }
+.achievements-icon { font-size: 32px; margin-bottom: 8px; }
+.achievements-name { font-family: 'Press Start 2P', monospace; font-size: 9px; color: var(--color-secondary-300); }
+.achievements-card.locked .achievements-name { color: var(--color-text-muted); }
+.achievements-desc { font-size: 11px; color: var(--color-text-muted); margin-top: 6px; }
+.achievements-unlocked { font-size: 10px; color: var(--color-success-300); margin-top: 8px; }
+
+/* ══════════════════════════════════════════
+   練習紀錄
+══════════════════════════════════════════ */
+.history-wrap { width: 100%; max-width: 860px; padding: 40px 20px; }
+
+.history-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.history-header .screen-title { margin: 0; }
+
+.history-card {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+.history-card.history-backup { padding: 16px 20px; }
+
+.history-card-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+}
+.history-backup .history-card-title { margin-bottom: 10px; }
+
+.history-backup-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.8; margin-bottom: 12px; }
+.history-backup-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.history-file-input { display: none; }
+.history-trend-chart { max-height: 220px; }
+
+.history-empty { color: var(--color-text-muted); }
+
+/* SRS 狀態卡 */
+.history-srs { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+.history-srs-card {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 16px 20px;
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+}
+.history-srs-num { font-size: 24px; font-weight: 700; }
+.history-srs-due { color: var(--color-error-300); }
+.history-srs-learning { color: var(--color-warning-500); }
+.history-srs-mastered { color: var(--color-success-300); }
+.history-srs-label { font-size: 11px; color: var(--color-text-muted); margin-top: 4px; }
+
+/* 歷次列表 */
+.history-item {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 14px 20px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.history-item-no { font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--color-secondary-300); }
+.history-item-date { font-size: 13px; color: var(--color-text-muted); }
+.history-item-pct { font-size: 16px; font-weight: 700; }
+.history-item-count { font-size: 13px; }
+.history-item-mode {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  background: var(--color-bg-overlay);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.history-item-dur { font-size: 11px; color: var(--color-text-muted); }
+
 /* ══════════════════════════════════════════
    TOAST 通知
 ══════════════════════════════════════════ */
@@ -1147,6 +1271,36 @@ body:has(#screen-quiz.active) #theme-switcher { display: none !important; }
   margin-bottom: 6px;
   -webkit-font-smoothing: none;
 }
+
+.handout-wrap { width: 100%; max-width: 860px; padding: 40px 20px; }
+.pixel-divider.handout-divider { margin: 16px 0; }
+
+.handout-section-title { font-family: var(--font-pixel); font-size: 11px; margin: 24px 0 16px; }
+.handout-section-wrong { color: var(--color-error-500); }
+.handout-section-correct { color: var(--color-success-300); }
+
+.handout-q-tags .q-tag,
+.handout-q-tags .q-year { font-size: 10px; }
+
+/* 重點複習科別 */
+.handout-weak { margin-bottom: 20px; }
+.handout-weak-title {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  color: var(--color-warning-500);
+  margin-bottom: 12px;
+}
+.handout-weak-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-bg-border);
+}
+.handout-weak-rank { font-family: var(--font-pixel); font-size: 14px; color: var(--color-error-500); }
+.handout-weak-name { flex: 1; }
+.handout-weak-pct { font-family: var(--font-pixel); font-size: 11px; color: var(--color-warning-500); }
+.handout-weak-pct.low { color: var(--color-error-500); }
 
 /* ── Markdown 詳解渲染樣式 ── */
 #ai-explanation-text h3,
@@ -2530,20 +2684,14 @@ body.theme-abyss {
 
 <!-- 結果 -->
 <div id="screen-result" class="screen">
-  <div style="width:100%;max-width:860px;padding:32px 20px">
+  <div class="result-wrap">
 
     <!-- Tab 切換列 -->
-    <div style="display:flex;gap:0;margin-bottom:24px;border-bottom:2px solid var(--color-bg-border)">
-      <button id="tab-btn-score" onclick="switchResultTab('score')"
-        style="padding:10px 24px;background:none;border:none;border-bottom:3px solid var(--color-primary-500);
-               cursor:pointer;font-family:'Press Start 2P',monospace;font-size:9px;
-               color:var(--color-primary-500);margin-bottom:-2px;transition:all .2s">
+    <div class="result-tabs">
+      <button id="tab-btn-score" class="result-tab active" onclick="switchResultTab('score')">
         📊 本次成績
       </button>
-      <button id="tab-btn-explanations" onclick="switchResultTab('explanations')"
-        style="padding:10px 24px;background:none;border:none;border-bottom:3px solid transparent;
-               cursor:pointer;font-family:'Press Start 2P',monospace;font-size:9px;
-               color:var(--color-text-muted);margin-bottom:-2px;transition:all .2s">
+      <button id="tab-btn-explanations" class="result-tab" onclick="switchResultTab('explanations')">
         📖 詳解查閱
       </button>
     </div>
@@ -2556,23 +2704,23 @@ body.theme-abyss {
         <div class="result-rank" id="result-rank">評估中...</div>
         <div id="exam-verdict" class="exam-verdict" style="display:none"></div>
       </div>
-      <div class="weak-section" style="margin-bottom:20px">
-        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-error-500);margin-bottom:12px">🎯 本次弱點</div>
+      <div class="weak-section">
+        <div class="result-section-title result-title-weak">🎯 本次弱點</div>
         <div id="session-weak"></div>
       </div>
-      <div class="achievement-section" style="margin-bottom:20px">
-        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-secondary-300);margin-bottom:12px">🏆 本次成就</div>
+      <div class="achievement-section">
+        <div class="result-section-title result-title-ach">🏆 本次成就</div>
         <div class="achievement-grid" id="achievement-list"></div>
       </div>
       <div class="radar-section">
         <div class="radar-title">📡 科別能力雷達圖</div>
         <canvas id="radarChart"></canvas>
       </div>
-      <div class="weak-section" style="margin-bottom:20px">
-        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-error-500);margin-bottom:12px">⚠️ 弱點科別（累計）</div>
+      <div class="weak-section">
+        <div class="result-section-title result-title-weak">⚠️ 弱點科別（累計）</div>
         <div id="weak-list"></div>
       </div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <div class="result-actions">
         <button class="btn btn-gold" onclick="generateHandout()">📋 生成講義</button>
         <button class="btn btn-primary" onclick="showScreen('mode');initModeScreen()">🔄 再練一次</button>
         <button class="btn btn-secondary" onclick="showScreen('landing');updateLandingStats()">🏠 首頁</button>
@@ -2589,7 +2737,7 @@ body.theme-abyss {
 
 <!-- 講義 -->
 <div id="screen-handout" class="screen">
-  <div style="width:100%;max-width:860px;padding:40px 20px">
+  <div class="handout-wrap">
     <div class="handout-actions">
       <button class="btn btn-secondary btn-sm" onclick="showScreen('result')">← 返回</button>
       <button class="btn btn-primary btn-sm" onclick="window.print()">🖨️ 列印/存PDF</button>
@@ -2611,28 +2759,28 @@ body.theme-abyss {
 
 <!-- 紀錄 -->
 <div id="screen-history-screen" class="screen">
-  <div style="width:100%;max-width:860px;padding:40px 20px">
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px">
+  <div class="history-wrap">
+    <div class="history-header">
       <button class="btn btn-sm btn-secondary" onclick="showScreen('landing')">← 返回</button>
-      <h2 class="screen-title" style="margin:0">📊 練習紀錄</h2>
+      <h2 class="screen-title">📊 練習紀錄</h2>
     </div>
     <!-- 進度備份 -->
-    <div id="backup-card" style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:16px 20px;border-radius:8px;margin-bottom:24px">
-      <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:var(--color-text-muted);margin-bottom:10px">💾 進度備份</div>
-      <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:12px">
+    <div id="backup-card" class="history-card history-backup">
+      <div class="history-card-title">💾 進度備份</div>
+      <div class="history-backup-text">
         作答紀錄、智慧複習排程、成就、筆記都只存在這個瀏覽器。換手機、換電腦或清除瀏覽器資料前，
         先匯出備份檔；在新裝置匯入即可接續。
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <div class="history-backup-actions">
         <button class="btn btn-sm btn-primary" onclick="exportBackup()">⬇️ 匯出進度</button>
         <button class="btn btn-sm btn-secondary" onclick="document.getElementById('backup-file').click()">⬆️ 匯入進度</button>
-        <input type="file" id="backup-file" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
+        <input type="file" id="backup-file" class="history-file-input" accept="application/json,.json" onchange="importBackup(event)">
       </div>
     </div>
     <!-- 趨勢折線圖 -->
-    <div style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:20px;border-radius:8px;margin-bottom:24px">
-      <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:var(--color-text-muted);margin-bottom:12px">📈 正確率趨勢（最近10次）</div>
-      <canvas id="trend-chart" style="max-height:220px"></canvas>
+    <div class="history-card">
+      <div class="history-card-title">📈 正確率趨勢（最近10次）</div>
+      <canvas id="trend-chart" class="history-trend-chart"></canvas>
     </div>
     <div id="history-list"></div>
   </div>
@@ -3705,7 +3853,7 @@ function renderNewAchievements() {
   if (!container) return;
 
   if (newAch.length === 0) {
-    container.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px">本次無新成就解鎖</p>';
+    container.innerHTML = '<p class="result-empty">本次無新成就解鎖</p>';
     return;
   }
 
@@ -3715,7 +3863,7 @@ function renderNewAchievements() {
       <span class="badge-icon">${a.icon}</span>
       <div>
         <div class="badge-name">${a.name}</div>
-        <div style="font-size:10px;color:var(--color-text-muted);font-family:var(--font-body)">${a.desc}</div>
+        <div class="result-badge-desc">${a.desc}</div>
       </div>
     </div>`;
   }).join('');
@@ -3801,12 +3949,12 @@ function renderWeakAnalysis() {
     .sort((a, b) => a.pct - b.pct);
 
   if (tagRates.length === 0) {
-    weakEl.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px">資料不足，請多做幾題</p>';
+    weakEl.innerHTML = '<p class="result-empty">資料不足，請多做幾題</p>';
     return;
   }
   // 正確率 80% 以上不算弱點
   if (tagRates[0].pct >= 80) {
-    weakEl.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px">目前各科累計正確率都在 80% 以上 👍</p>';
+    weakEl.innerHTML = '<p class="result-empty">目前各科累計正確率都在 80% 以上 👍</p>';
     return;
   }
 
@@ -3816,8 +3964,8 @@ function renderWeakAnalysis() {
       <span class="weak-rank">${['①','②','③','④','⑤'][i]}</span>
       <span class="weak-name">${item.tag}</span>
       <span class="weak-pct" style="color:${color}">${item.pct}%</span>
-      <span style="font-size:11px;color:var(--color-text-muted)">(${item.total}題)</span>
-      <button class="btn btn-sm btn-secondary" style="margin-left:auto" onclick="startFocusPractice(${focusArg([item.tag])})">練習</button>
+      <span class="result-weak-total">(${item.total}題)</span>
+      <button class="btn btn-sm btn-secondary result-weak-btn" onclick="startFocusPractice(${focusArg([item.tag])})">練習</button>
     </div>`;
   }).join('');
 }
@@ -3891,18 +4039,18 @@ function generateHandout() {
       本次成績：${correct.length}/${total}（${pct}%）｜
       錯題數：${wrong.length}
     </div>
-    <div class="pixel-divider" style="margin:16px 0"></div>
+    <div class="pixel-divider handout-divider"></div>
 
     ${renderWeakSummaryForHandout()}
 
-    <div style="font-family:var(--font-pixel);font-size:11px;color:var(--color-error-500);margin:24px 0 16px">
+    <div class="handout-section-title handout-section-wrong">
       ── 錯題解析（${wrong.length}題） ──
     </div>
 
     ${wrong.map((a, i) => renderHandoutQuestion(a, i + 1, 'wrong')).join('')}
 
     ${wrong.length < total ? `
-      <div style="font-family:var(--font-pixel);font-size:11px;color:var(--color-success-300);margin:24px 0 16px">
+      <div class="handout-section-title handout-section-correct">
         ── 答對題目（供複習） ──
       </div>
       ${correct.slice(0, 10).map((a, i) => renderHandoutQuestion(a, i + 1, 'correct')).join('')}
@@ -3921,13 +4069,13 @@ function renderWeakSummaryForHandout() {
   if (tagRates.length === 0) return '';
 
   return `
-    <div style="margin-bottom:20px">
-      <div style="font-family:var(--font-pixel);font-size:11px;color:var(--color-warning-500);margin-bottom:12px">⚠️ 重點複習科別</div>
+    <div class="handout-weak">
+      <div class="handout-weak-title">⚠️ 重點複習科別</div>
       ${tagRates.map((item, i) => `
-        <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--color-bg-border)">
-          <span style="font-family:var(--font-pixel);font-size:14px;color:var(--color-error-500)">${i+1}</span>
-          <span style="flex:1">${item.tag}</span>
-          <span style="font-family:var(--font-pixel);font-size:11px;color:${item.pct<50?'var(--color-error-500)':'var(--color-warning-500)'}">${item.pct}%</span>
+        <div class="handout-weak-item">
+          <span class="handout-weak-rank">${i + 1}</span>
+          <span class="handout-weak-name">${item.tag}</span>
+          <span class="handout-weak-pct${item.pct < 50 ? ' low' : ''}">${item.pct}%</span>
         </div>
       `).join('')}
     </div>
@@ -3944,8 +4092,8 @@ function renderHandoutQuestion(answer, index, type) {
       <div class="handout-q-header">
         <span class="handout-q-num">${type === 'wrong' ? '✗' : '✓'} Q${index}</span>
         <div class="handout-q-tags">
-          ${q.tags.map(t => `<span class="q-tag" style="font-size:10px">${t}</span>`).join('')}
-          ${q.year ? `<span class="q-year" style="font-size:10px">${q.year}年</span>` : ''}
+          ${q.tags.map(t => `<span class="q-tag">${t}</span>`).join('')}
+          ${q.year ? `<span class="q-year">${q.year}年</span>` : ''}
         </div>
       </div>
       <div class="handout-q-text">${questionHtml(q)}</div>
@@ -4235,31 +4383,22 @@ document.addEventListener('DOMContentLoaded', init);
 
 </script>
 <script>
+// ── 額外功能 ──
 
-/* ── 額外功能 ── */
-
-/* 結果頁 Tab 切換 */
+// ── 結果頁 Tab 切換 ──
 function switchResultTab(tab) {
-  var isScore = tab === 'score';
+  const isScore = tab === 'score';
   document.getElementById('tab-score').style.display = isScore ? 'block' : 'none';
   document.getElementById('tab-explanations').style.display = isScore ? 'none' : 'block';
 
-  var primary = 'var(--color-primary-500)';
-  var muted   = 'var(--color-text-muted)';
-  var btnScore = document.getElementById('tab-btn-score');
-  var btnExp   = document.getElementById('tab-btn-explanations');
-  if (btnScore) {
-    btnScore.style.color = isScore ? primary : muted;
-    btnScore.style.borderBottomColor = isScore ? primary : 'transparent';
-  }
-  if (btnExp) {
-    btnExp.style.color = isScore ? muted : primary;
-    btnExp.style.borderBottomColor = isScore ? 'transparent' : primary;
-  }
+  const btnScore = document.getElementById('tab-btn-score');
+  const btnExp = document.getElementById('tab-btn-explanations');
+  if (btnScore) btnScore.classList.toggle('active', isScore);
+  if (btnExp) btnExp.classList.toggle('active', !isScore);
 
   // 切換到詳解頁時確保內容已渲染
   if (!isScore) {
-    var el = document.getElementById('deferred-explanations');
+    const el = document.getElementById('deferred-explanations');
     if (el && !el.dataset.rendered) {
       renderDeferredExplanations();
       el.dataset.rendered = '1';
@@ -4267,135 +4406,150 @@ function switchResultTab(tab) {
   }
 }
 
-function confirmEnd(){
-  var answered=State.exam?State.exam.picks.filter(Boolean).length:answeredList().length;
+function confirmEnd() {
+  const answered = State.exam ? State.exam.picks.filter(Boolean).length : answeredList().length;
   // 一題都沒答：直接結束，不留下 0 題的成績紀錄
-  if(answered===0){
-    if(!confirm(State.exam?'尚未作答任何題目，要放棄這次模擬考嗎？':'尚未作答任何題目，要結束這次練習嗎？'))return;
-    clearInterval(State.timerInterval);clearSavedSession();State.exam=null;
-    showScreen('landing');updateLandingStats();return;
+  if (answered === 0) {
+    if (!confirm(State.exam ? '尚未作答任何題目，要放棄這次模擬考嗎？' : '尚未作答任何題目，要結束這次練習嗎？')) return;
+    clearInterval(State.timerInterval);
+    clearSavedSession();
+    State.exam = null;
+    showScreen('landing');
+    updateLandingStats();
+    return;
   }
-  if(State.exam){
-    var blank=State.exam.picks.length-answered;
-    if(!confirm(blank?'還有 '+blank+' 題未作答（以 0 分計），確定要交卷嗎？':'確定要交卷嗎？'))return;
-    submitExam();return;
+  if (State.exam) {
+    const blank = State.exam.picks.length - answered;
+    if (!confirm(blank ? `還有 ${blank} 題未作答（以 0 分計），確定要交卷嗎？` : '確定要交卷嗎？')) return;
+    submitExam();
+    return;
   }
-  var rem=State.sessionQuestions.length-answered;
-  if(rem>0&&!confirm('還有 '+rem+' 題未作答，確定要交卷嗎？'))return;
-  clearInterval(State.timerInterval);endSession();
+  const rem = State.sessionQuestions.length - answered;
+  if (rem > 0 && !confirm(`還有 ${rem} 題未作答，確定要交卷嗎？`)) return;
+  clearInterval(State.timerInterval);
+  endSession();
 }
 
-function renderAllAchievements(){
-  var grid=document.getElementById('all-achievements-grid');
-  if(!grid)return;
-  grid.innerHTML=Object.entries(ACHIEVEMENTS).map(function(pair){
-    var key=pair[0],ach=pair[1],unlocked=State.achievements[key];
-    return '<div style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:20px;text-align:center;opacity:'+(unlocked?1:0.4)+'">'
-      +'<div style="font-size:32px;margin-bottom:8px">'+ach.icon+'</div>'
-      +'<div style="font-family:\'Press Start 2P\',monospace;font-size:9px;color:'+(unlocked?'var(--color-secondary-300)':'var(--color-text-muted)')+'">'+ach.name+'</div>'
-      +'<div style="font-size:11px;color:var(--color-text-muted);margin-top:6px">'+ach.desc+'</div>'
-      +(unlocked?'<div style="font-size:10px;color:var(--color-success-300);margin-top:8px">已解鎖</div>':'')
-      +'</div>';
+function renderAllAchievements() {
+  const grid = document.getElementById('all-achievements-grid');
+  if (!grid) return;
+  grid.innerHTML = Object.entries(ACHIEVEMENTS).map(([key, ach]) => {
+    const unlocked = State.achievements[key];
+    return `<div class="achievements-card${unlocked ? '' : ' locked'}">
+      <div class="achievements-icon">${ach.icon}</div>
+      <div class="achievements-name">${ach.name}</div>
+      <div class="achievements-desc">${ach.desc}</div>
+      ${unlocked ? '<div class="achievements-unlocked">已解鎖</div>' : ''}
+    </div>`;
   }).join('');
 }
 
-function renderHistory(){
-  var el=document.getElementById('history-list');
-  if(!el)return;
-  var sessions=(State.progress&&State.progress.sessions)||[];
-  if(!sessions.length){el.innerHTML='<p style="color:var(--color-text-muted)">尚無練習紀錄</p>';return;}
+function renderHistory() {
+  const el = document.getElementById('history-list');
+  if (!el) return;
+  const sessions = (State.progress && State.progress.sessions) || [];
+  if (!sessions.length) {
+    el.innerHTML = '<p class="history-empty">尚無練習紀錄</p>';
+    return;
+  }
 
   // ── 趨勢折線圖 ──
   renderTrendChart(sessions);
 
   // ── SRS 狀態卡 ──
-  var srs=getSRSStats();
-  var srsHtml='<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">'
-    +'<div style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:16px 20px;flex:1;min-width:120px;text-align:center">'
-    +'<div style="font-size:24px;font-weight:700;color:var(--color-error-300)">'+srs.due+'</div>'
-    +'<div style="font-size:11px;color:var(--color-text-muted);margin-top:4px">待複習</div></div>'
-    +'<div style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:16px 20px;flex:1;min-width:120px;text-align:center">'
-    +'<div style="font-size:24px;font-weight:700;color:var(--color-warning-500)">'+srs.learning+'</div>'
-    +'<div style="font-size:11px;color:var(--color-text-muted);margin-top:4px">學習中</div></div>'
-    +'<div style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:16px 20px;flex:1;min-width:120px;text-align:center">'
-    +'<div style="font-size:24px;font-weight:700;color:var(--color-success-300)">'+srs.mastered+'</div>'
-    +'<div style="font-size:11px;color:var(--color-text-muted);margin-top:4px">已掌握</div></div>'
-    +'</div>';
+  const srs = getSRSStats();
+  const srsCards = [
+    ['due', srs.due, '待複習'],
+    ['learning', srs.learning, '學習中'],
+    ['mastered', srs.mastered, '已掌握'],
+  ];
+  const srsHtml = `<div class="history-srs">
+    ${srsCards.map(([kind, num, label]) => `<div class="history-srs-card">
+      <div class="history-srs-num history-srs-${kind}">${num}</div>
+      <div class="history-srs-label">${label}</div>
+    </div>`).join('')}
+  </div>`;
 
   // ── 歷次列表 ──
-  var listHtml=sessions.map(function(s,i){
-    var col=s.pct>=75?'var(--color-success-300)':s.pct>=60?'var(--color-warning-500)':'var(--color-error-500)';
-    var modeLabel={'mixed':'混合','year':'年份','subject':'科別','srs':'智慧複習','weak':'錯題','exam':'模擬考','focus':'弱點加強','topic':'考點'}[s.mode]||s.mode||'';
-    var durMin=s.duration?Math.floor(s.duration/60)+'m'+('0'+s.duration%60).slice(-2)+'s':'';
-    return '<div style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:14px 20px;margin-bottom:10px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">'
-      +'<span style="font-family:\'Press Start 2P\',monospace;font-size:11px;color:var(--color-secondary-300)">#'+(sessions.length-i)+'</span>'
-      +'<span style="font-size:13px;color:var(--color-text-muted)">'+s.date+'</span>'
-      +'<span style="font-size:16px;font-weight:700;color:'+col+'">'+s.pct+'%</span>'
-      +'<span style="font-size:13px">'+s.correct+'/'+s.total+' 題</span>'
-      +(modeLabel?'<span style="font-size:11px;color:var(--color-text-muted);background:var(--color-bg-overlay);padding:2px 8px;border-radius:4px">'+modeLabel+'</span>':'')
-      +(durMin?'<span style="font-size:11px;color:var(--color-text-muted)">⏱ '+durMin+'</span>':'')
-      +'</div>';
+  const modeLabels = { mixed: '混合', year: '年份', subject: '科別', srs: '智慧複習', weak: '錯題', exam: '模擬考', focus: '弱點加強', topic: '考點' };
+  const listHtml = sessions.map((s, i) => {
+    const col = s.pct >= 75 ? 'var(--color-success-300)' : s.pct >= 60 ? 'var(--color-warning-500)' : 'var(--color-error-500)';
+    const modeLabel = modeLabels[s.mode] || s.mode || '';
+    const sec = `0${s.duration % 60}`.slice(-2);
+    const durMin = s.duration ? `${Math.floor(s.duration / 60)}m${sec}s` : '';
+    return `<div class="history-item">
+      <span class="history-item-no">#${sessions.length - i}</span>
+      <span class="history-item-date">${s.date}</span>
+      <span class="history-item-pct" style="color:${col}">${s.pct}%</span>
+      <span class="history-item-count">${s.correct}/${s.total} 題</span>
+      ${modeLabel ? `<span class="history-item-mode">${modeLabel}</span>` : ''}
+      ${durMin ? `<span class="history-item-dur">⏱ ${durMin}</span>` : ''}
+    </div>`;
   }).join('');
 
-  el.innerHTML=srsHtml+listHtml;
+  el.innerHTML = srsHtml + listHtml;
 }
 
-function renderTrendChart(sessions){
-  var canvas=document.getElementById('trend-chart');
-  if(!canvas||!window.Chart)return;
+function renderTrendChart(sessions) {
+  const canvas = document.getElementById('trend-chart');
+  if (!canvas || !window.Chart) return;
 
   // 最近10次，由舊到新
-  var data=[...sessions].reverse().slice(-10);
-  var labels=data.map(function(s){return s.date;});
-  var overall=data.map(function(s){return s.pct;});
+  const data = [...sessions].reverse().slice(-10);
+  const labels = data.map(s => s.date);
+  const overall = data.map(s => s.pct);
 
   // 找最多出現的3個科別
-  var tagCount={};
-  data.forEach(function(s){
-    if(s.tagPct) Object.keys(s.tagPct).forEach(function(t){ tagCount[t]=(tagCount[t]||0)+1; });
+  const tagCount = {};
+  data.forEach(s => {
+    if (s.tagPct) Object.keys(s.tagPct).forEach(t => { tagCount[t] = (tagCount[t] || 0) + 1; });
   });
-  var topTags=Object.entries(tagCount).sort(function(a,b){return b[1]-a[1];}).slice(0,3).map(function(e){return e[0];});
+  const topTags = Object.entries(tagCount).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0]);
 
-  var tagColors=['#f59f00','#22c55e','#a78bfa'];
-  var datasets=[{
-    label:'整體',
-    data:overall,
-    borderColor:'#0a5aff',
-    backgroundColor:'rgba(10,90,255,0.1)',
-    tension:0.3,
-    fill:true,
-    pointRadius:4,
-    borderWidth:2,
+  const tagColors = ['#f59f00', '#22c55e', '#a78bfa'];
+  const datasets = [{
+    label: '整體',
+    data: overall,
+    borderColor: '#0a5aff',
+    backgroundColor: 'rgba(10,90,255,0.1)',
+    tension: 0.3,
+    fill: true,
+    pointRadius: 4,
+    borderWidth: 2,
   }];
-  topTags.forEach(function(tag,i){
+  topTags.forEach((tag, i) => {
     datasets.push({
-      label:tag,
-      data:data.map(function(s){return s.tagPct&&s.tagPct[tag]!=null?s.tagPct[tag]:null;}),
-      borderColor:tagColors[i],
-      backgroundColor:'transparent',
-      tension:0.3,
-      fill:false,
-      pointRadius:3,
-      borderWidth:1.5,
-      borderDash:[4,3],
+      label: tag,
+      data: data.map(s => (s.tagPct && s.tagPct[tag] != null ? s.tagPct[tag] : null)),
+      borderColor: tagColors[i],
+      backgroundColor: 'transparent',
+      tension: 0.3,
+      fill: false,
+      pointRadius: 3,
+      borderWidth: 1.5,
+      borderDash: [4, 3],
     });
   });
 
   // 銷毀舊圖表
-  if(window._trendChart) window._trendChart.destroy();
-  window._trendChart=new Chart(canvas,{
-    type:'line',
-    data:{labels:labels,datasets:datasets},
-    options:{
-      responsive:true,
-      plugins:{
-        legend:{labels:{color:'var(--color-text-secondary)',font:{size:11}}},
-        tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+ctx.parsed.y+'%';}}},
+  if (window._trendChart) window._trendChart.destroy();
+  window._trendChart = new Chart(canvas, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: 'var(--color-text-secondary)', font: { size: 11 } } },
+        tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}%` } },
       },
-      scales:{
-        x:{ticks:{color:'var(--color-text-muted)',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'}},
-        y:{min:0,max:100,ticks:{color:'var(--color-text-muted)',font:{size:10},callback:function(v){return v+'%';}},
-           grid:{color:'rgba(255,255,255,0.05)'}},
+      scales: {
+        x: { ticks: { color: 'var(--color-text-muted)', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+        y: {
+          min: 0,
+          max: 100,
+          ticks: { color: 'var(--color-text-muted)', font: { size: 10 }, callback: v => `${v}%` },
+          grid: { color: 'rgba(255,255,255,0.05)' },
+        },
       },
     },
   });

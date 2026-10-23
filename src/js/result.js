@@ -88,7 +88,7 @@ function renderNewAchievements() {
   if (!container) return;
 
   if (newAch.length === 0) {
-    container.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px">本次無新成就解鎖</p>';
+    container.innerHTML = '<p class="result-empty">本次無新成就解鎖</p>';
     return;
   }
 
@@ -98,7 +98,7 @@ function renderNewAchievements() {
       <span class="badge-icon">${a.icon}</span>
       <div>
         <div class="badge-name">${a.name}</div>
-        <div style="font-size:10px;color:var(--color-text-muted);font-family:var(--font-body)">${a.desc}</div>
+        <div class="result-badge-desc">${a.desc}</div>
       </div>
     </div>`;
   }).join('');
@@ -184,12 +184,12 @@ function renderWeakAnalysis() {
     .sort((a, b) => a.pct - b.pct);
 
   if (tagRates.length === 0) {
-    weakEl.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px">資料不足，請多做幾題</p>';
+    weakEl.innerHTML = '<p class="result-empty">資料不足，請多做幾題</p>';
     return;
   }
   // 正確率 80% 以上不算弱點
   if (tagRates[0].pct >= 80) {
-    weakEl.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px">目前各科累計正確率都在 80% 以上 👍</p>';
+    weakEl.innerHTML = '<p class="result-empty">目前各科累計正確率都在 80% 以上 👍</p>';
     return;
   }
 
@@ -199,8 +199,8 @@ function renderWeakAnalysis() {
       <span class="weak-rank">${['①','②','③','④','⑤'][i]}</span>
       <span class="weak-name">${item.tag}</span>
       <span class="weak-pct" style="color:${color}">${item.pct}%</span>
-      <span style="font-size:11px;color:var(--color-text-muted)">(${item.total}題)</span>
-      <button class="btn btn-sm btn-secondary" style="margin-left:auto" onclick="startFocusPractice(${focusArg([item.tag])})">練習</button>
+      <span class="result-weak-total">(${item.total}題)</span>
+      <button class="btn btn-sm btn-secondary result-weak-btn" onclick="startFocusPractice(${focusArg([item.tag])})">練習</button>
     </div>`;
   }).join('');
 }
