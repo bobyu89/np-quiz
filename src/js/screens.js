@@ -12,10 +12,10 @@ function showScreen(name) {
 
 function showError(msg) {
   document.body.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;text-align:center">
-      <div style="font-family:'Press Start 2P',monospace;color:#ff4757;font-size:13px;line-height:2">
+    <div class="error-screen">
+      <div class="error-box">
         ⚠️ 錯誤<br><br>
-        <span style="font-size:11px;color:#8892b0;font-family:sans-serif">${msg}</span>
+        <span class="error-detail">${msg}</span>
       </div>
     </div>`;
 }
@@ -28,5 +28,5 @@ function updateLandingStats() {
   setEl('stat-accuracy', p?.totalAnswered
     ? `${Math.round((p.totalCorrect / p.totalAnswered) * 100)}%`
     : '--');
-  setEl('stat-achievements', Object.keys(State.achievements).length + '/' + Object.keys(ACHIEVEMENTS).length);
+  setEl('stat-achievements', `${Object.keys(State.achievements).length}/${Object.keys(ACHIEVEMENTS).length}`);
 }

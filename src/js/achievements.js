@@ -7,7 +7,7 @@ function checkAchievements(correct, timeUsed) {
     if (!State.achievements[key]) {
       State.achievements[key] = { date: new Date().toISOString() };
       newAch.push(key);
-      showToast(ACHIEVEMENTS[key].icon + ' 成就解鎖：' + ACHIEVEMENTS[key].name);
+      showToast(`${ACHIEVEMENTS[key].icon} 成就解鎖：${ACHIEVEMENTS[key].name}`);
     }
   };
 
