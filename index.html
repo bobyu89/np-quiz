@@ -691,6 +691,78 @@ body::after {
 .count-sub { font-size: 10px; color: var(--color-text-muted); display: block; margin-top: 4px; }
 .count-btn.selected .count-sub { color: rgba(255,255,255,0.6); }
 
+/* 版面 */
+.mode-wrap { width: 100%; max-width: 760px; padding: 32px 20px; }
+.mode-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+.mode-title { margin: 0; }
+
+/* 快速開始 */
+.mode-quick {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-blue);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.mode-quick-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+}
+.mode-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+/* 條件選擇 */
+.mode-section { margin-bottom: 16px; }
+.mode-subject-cols { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+.mode-subject-step { font-size: 11px; color: var(--color-text-muted); margin-bottom: 6px; }
+.mode-category-list { display: flex; flex-direction: column; gap: 6px; }
+.mode-subject-sub { flex: 1; min-width: 200px; }
+.mode-subject-hint { color: var(--color-text-muted); font-size: 12px; }
+.mode-exam-subject-title { margin-top: 12px; }
+.mode-note { font-size: 13px; color: var(--color-text-secondary); line-height: 1.8; }
+.mode-exam-note { margin-top: 12px; }
+
+/* 智慧複習 */
+.mode-srs-card {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 16px 20px;
+  border-radius: 6px;
+}
+.mode-srs-stats { margin-top: 12px; display: flex; gap: 16px; }
+.mode-srs-stat { font-size: 13px; }
+.mode-srs-stat.is-due { color: var(--color-error-300); }
+.mode-srs-stat.is-learning { color: var(--color-text-muted); }
+.mode-srs-stat.is-done { color: var(--color-success-300); }
+
+/* 進階設定 */
+.mode-advanced { margin-bottom: 20px; }
+.mode-advanced-summary {
+  cursor: pointer;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--color-text-muted);
+  padding: 10px 0;
+  user-select: none;
+}
+.mode-advanced-body { padding-top: 12px; display: flex; flex-direction: column; gap: 16px; }
+.tag-section-title.mode-advanced-label { margin-bottom: 8px; }
+.mode-explain-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+.mode-start { text-align: center; }
+
+/* 弱點加強（結果頁「本次弱點」） */
+.weak-empty { color: var(--color-text-muted); font-size: 13px; }
+.weak-pct.is-low { color: var(--color-error-300); }
+.weak-pct.is-mid { color: var(--color-warning-500); }
+.weak-count { font-size: 11px; color: var(--color-text-muted); }
+.weak-practice-btn { margin-left: auto; }
+.weak-all { text-align: center; margin-top: 12px; }
+
 /* ══════════════════════════════════════════
    答題頁 HUD
 ══════════════════════════════════════════ */
@@ -702,6 +774,7 @@ body::after {
 }
 
 .quiz-hud {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -715,6 +788,8 @@ body::after {
 }
 
 .hud-progress { flex: 1; min-width: 180px; }
+
+.quiz-hud-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-left: auto; }
 
 .hud-label {
   font-family: var(--font-pixel);
@@ -837,7 +912,9 @@ body::after {
 /* ══════════════════════════════════════════
    題目卡片
 ══════════════════════════════════════════ */
-.quiz-body { padding: 20px 16px; width: 100%; }
+.quiz-body { padding: 20px 16px; width: 100%; max-width: 800px; }
+
+.quiz-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
 
 .q-tag {
   font-size: 13px;
@@ -889,6 +966,28 @@ body::after {
   line-height: 1.85;
   color: var(--color-text-primary);
 }
+
+/* ── 題目筆記 ── */
+.quiz-note-bar { margin-top: 12px; display: flex; gap: 8px; align-items: center; }
+.quiz-note-btn { font-size: 12px; }
+.quiz-note-hint { font-size: 11px; color: var(--color-text-muted); }
+.quiz-note-panel { margin-top: 10px; }
+/* 需蓋過 #note-textarea:focus 的邊框色，與原 inline 樣式一致 */
+#screen-quiz textarea.quiz-note-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--color-bg-border);
+  background: var(--color-bg-overlay);
+  color: var(--color-text-primary);
+  font-size: 13px;
+  font-family: 'Noto Sans TC', sans-serif;
+  line-height: 1.6;
+  resize: vertical;
+}
+.quiz-note-footer { display: flex; gap: 8px; margin-top: 8px; justify-content: space-between; align-items: center; }
+.quiz-note-actions { display: flex; gap: 8px; }
 
 .q-figure {
   display: block;
@@ -946,10 +1045,13 @@ body::after {
 .exam-palette-grid button.done { background: rgba(10,90,255,0.25); color: var(--color-text-primary); border-color: var(--color-primary-500); }
 .exam-palette-grid button.current { outline: 2px solid var(--color-secondary-300); outline-offset: 1px; }
 
+.exam-palette-foot { text-align: center; margin-top: 14px; }
+
 .exam-verdict {
   margin-top: 14px; padding: 12px 16px; border-radius: 6px; line-height: 1.9; font-size: 14px;
   background: var(--color-bg-elevated); border: 1px solid var(--color-bg-border); color: var(--color-text-secondary);
 }
+.exam-verdict-hint { color: var(--color-text-muted); }
 
 .swipe-hint { display: none; margin-top: 4px; text-align: center; font-size: 12px; color: var(--color-text-muted); }
 @media (pointer: coarse) { .swipe-hint { display: block; } }
@@ -959,6 +1061,45 @@ body::after {
 }
 .q-tag, .q-year { white-space: nowrap; }
 .streak-display:empty { display: none; }
+
+/* ── 詳解面板 ── */
+.explanation-panel { width: 100%; max-width: 800px; padding: 0 16px 32px; }
+.explanation-card {
+  background: var(--color-bg-elevated);
+  border: 2px solid var(--color-bg-border);
+  border-radius: 8px;
+  padding: 20px 24px;
+}
+.exp-correct { color: var(--color-success-300); }
+.exp-wrong { color: var(--color-error-300); }
+.exp-empty { color: var(--color-text-muted); }
+.exp-result { font-family: 'Press Start 2P', monospace; font-size: 11px; margin-bottom: 12px; }
+.exp-answer-label { font-size: 13px; color: var(--color-secondary-300); font-weight: 600; margin-bottom: 4px; }
+.exp-answer-text { font-size: 14px; color: var(--color-text-primary); line-height: 1.6; }
+.exp-ai { border-top: 1px solid var(--color-bg-border); margin-top: 14px; padding-top: 14px; }
+.exp-ai-label { font-size: 12px; color: var(--color-secondary-300); font-weight: 600; margin-bottom: 8px; }
+.exp-ai-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.8; }
+
+/* ── 結果頁：所有題目詳解 ── */
+.exp-list-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--color-secondary-300);
+  margin-bottom: 16px;
+}
+.exp-card {
+  background: var(--gradient-card);
+  border: 1px solid var(--color-bg-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.exp-card-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.exp-card-icon { font-size: 16px; }
+.exp-card-meta { font-size: 11px; color: var(--color-text-muted); margin-bottom: 4px; }
+.exp-card-question { font-size: 13px; color: var(--color-text-primary); line-height: 1.6; }
+.exp-card-answer { font-size: 12px; margin-bottom: 8px; }
+.exp-card-body { font-size: 12px; color: var(--color-text-secondary); line-height: 1.8; }
 
 .explanation-actions {
   position: sticky;
@@ -3009,16 +3150,16 @@ body.theme-abyss {
 
 <!-- 模式選擇 -->
 <div id="screen-mode" class="screen">
-  <div style="width:100%;max-width:760px;padding:32px 20px">
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:28px">
+  <div class="mode-wrap">
+    <div class="mode-header">
       <button class="btn btn-sm btn-secondary" onclick="showScreen('landing')">← 返回</button>
-      <h2 class="screen-title" style="margin:0">開始練習</h2>
+      <h2 class="screen-title mode-title">開始練習</h2>
     </div>
 
     <!-- 快速開始區 -->
-    <div style="background:var(--gradient-card);box-shadow:var(--pixel-border-blue);border-radius:8px;padding:24px;margin-bottom:20px">
-      <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:var(--color-text-muted);margin-bottom:16px">⚡ 快速開始</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px" id="quick-mode-grid">
+    <div class="mode-quick">
+      <div class="mode-quick-title">⚡ 快速開始</div>
+      <div class="mode-quick-grid" id="quick-mode-grid">
         <button class="mode-card selected" data-mode="mixed" onclick="selectMode(this,'mixed')">
           <span class="mode-icon">🎲</span><div class="mode-name">混合</div><div class="mode-desc">自由篩選組合</div>
         </button>
@@ -3041,57 +3182,56 @@ body.theme-abyss {
     </div>
 
     <!-- 條件選擇（依模式顯示） -->
-    <div id="year-section" style="display:none;margin-bottom:16px">
+    <div id="year-section" class="mode-section" style="display:none">
       <div class="tag-section-title">📅 選擇年份（可複選，不選＝全部）</div>
       <div class="tag-grid" id="year-tag-grid"></div>
     </div>
-    <div id="exam-type-section" style="display:none;margin-bottom:16px">
+    <div id="exam-type-section" class="mode-section" style="display:none">
       <div class="tag-section-title">📋 選擇考試類型（可複選，不選＝全部）</div>
       <div class="tag-grid" id="exam-type-grid"></div>
     </div>
-    <div id="subject-section" style="display:none;margin-bottom:16px">
+    <div id="subject-section" class="mode-section" style="display:none">
       <div class="tag-section-title">🔬 選擇科別（不選＝全部）</div>
-      <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
+      <div class="mode-subject-cols">
         <div>
-          <div style="font-size:11px;color:var(--color-text-muted);margin-bottom:6px">① 類別</div>
-          <div style="display:flex;flex-direction:column;gap:6px" id="category-btn-grid"></div>
+          <div class="mode-subject-step">① 類別</div>
+          <div class="mode-category-list" id="category-btn-grid"></div>
         </div>
-        <div style="flex:1;min-width:200px">
-          <div style="font-size:11px;color:var(--color-text-muted);margin-bottom:6px">② 細科（可複選）</div>
+        <div class="mode-subject-sub">
+          <div class="mode-subject-step">② 細科（可複選）</div>
           <div class="tag-grid" id="subject-tag-grid"></div>
         </div>
       </div>
     </div>
-    <div id="exam-section" style="display:none;margin-bottom:16px">
+    <div id="exam-section" class="mode-section" style="display:none">
       <div class="tag-section-title">📅 年度</div>
       <div class="tag-grid" id="exam-year-grid"></div>
-      <div class="tag-section-title" style="margin-top:12px">📋 科目</div>
+      <div class="tag-section-title mode-exam-subject-title">📋 科目</div>
       <div class="tag-grid" id="exam-subject-grid"></div>
-      <div style="margin-top:12px;font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+      <div class="mode-note mode-exam-note">
         依原卷題序作答，整場 90 分鐘（同正式考試每節時間）。作答中不顯示對錯，可隨時改答案、用「題號」跳題；交卷後才計分並開放詳解。<br>
         及格標準：通論與進階兩科平均 60 分，且每科至少 50 分。
       </div>
     </div>
-    <div id="srs-section" style="display:none;margin-bottom:16px">
-      <div style="background:var(--gradient-card);box-shadow:var(--pixel-border-dark);padding:16px 20px;border-radius:6px">
-        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+    <div id="srs-section" class="mode-section" style="display:none">
+      <div class="mode-srs-card">
+        <div class="mode-note">
           🧠 <strong>智慧複習</strong>根據你的答題歷史，自動排出今天需要複習的題目。<br>
           答對 → 下次複習時間往後推（1天→3天→7天→14天→30天）<br>
           答錯 → 優先放入下次練習
         </div>
-        <div style="margin-top:12px;display:flex;gap:16px" id="srs-status-mini"></div>
+        <div class="mode-srs-stats" id="srs-status-mini"></div>
       </div>
     </div>
 
     <!-- 進階設定（折疊） -->
-    <details id="advanced-settings" style="margin-bottom:20px">
-      <summary style="cursor:pointer;font-family:'Press Start 2P',monospace;font-size:9px;
-                      color:var(--color-text-muted);padding:10px 0;user-select:none">
+    <details id="advanced-settings" class="mode-advanced">
+      <summary class="mode-advanced-summary">
         ⚙️ 進階設定
       </summary>
-      <div style="padding-top:12px;display:flex;flex-direction:column;gap:16px">
+      <div class="mode-advanced-body">
         <div>
-          <div class="tag-section-title" style="margin-bottom:8px">📝 題數</div>
+          <div class="tag-section-title mode-advanced-label">📝 題數</div>
           <div class="count-grid">
             <button class="count-btn selected" data-count="30" onclick="selectCount(this,'30')">30題<span class="count-sub">~30分</span></button>
             <button class="count-btn" data-count="40" onclick="selectCount(this,'40')">40題<span class="count-sub">~40分</span></button>
@@ -3100,8 +3240,8 @@ body.theme-abyss {
           </div>
         </div>
         <div>
-          <div class="tag-section-title" style="margin-bottom:8px">💡 詳解時機</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div class="tag-section-title mode-advanced-label">💡 詳解時機</div>
+          <div class="mode-explain-grid">
             <button class="count-btn explain-mode-btn selected" data-mode="immediate" onclick="setExplainMode('immediate')">
               即時詳解<span class="count-sub">每題答完顯示</span>
             </button>
@@ -3113,7 +3253,7 @@ body.theme-abyss {
       </div>
     </details>
 
-    <div style="text-align:center">
+    <div class="mode-start">
       <button class="btn btn-primary btn-lg" onclick="startSession()">⚔️ 開始冒險！</button>
     </div>
   </div>
@@ -3121,7 +3261,7 @@ body.theme-abyss {
 
 <!-- 答題 -->
 <div id="screen-quiz" class="screen">
-  <div class="quiz-hud" style="width:100%">
+  <div class="quiz-hud">
     <div class="hud-progress">
       <div class="hud-label">進度 <span id="progress-text">0/0</span></div>
       <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
@@ -3134,7 +3274,7 @@ body.theme-abyss {
       </div>
     </div>
     <div class="streak-display" id="streak-display"></div>
-    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto">
+    <div class="quiz-hud-actions">
       <button id="prev-btn" class="btn btn-sm btn-secondary" onclick="prevQuestion()" style="display:none">← 上一題</button>
       <button id="exam-nav-btn" class="btn btn-sm btn-secondary" onclick="openExamPalette()" style="display:none">🔢 題號</button>
       <button id="skip-btn" class="btn btn-sm btn-secondary" onclick="skipQuestion()">跳過 →</button>
@@ -3142,23 +3282,20 @@ body.theme-abyss {
       <button class="btn btn-sm btn-danger" onclick="confirmEnd()">交卷</button>
     </div>
   </div>
-  <div class="quiz-body" style="width:100%;max-width:800px">
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><div id="q-tags"></div><div id="q-year"></div></div>
+  <div class="quiz-body">
+    <div class="quiz-meta"><div id="q-tags"></div><div id="q-year"></div></div>
     <div class="question-card">
       <div class="question-num" id="q-num">Q001</div>
       <div class="question-text" id="q-text">載入中...</div>
-      <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
-        <button id="note-toggle-btn" class="btn btn-sm btn-secondary" onclick="toggleNotePanel()" style="font-size:12px">📝 筆記</button>
-        <span id="note-indicator" style="font-size:11px;color:var(--color-text-muted);display:none">已有筆記</span>
+      <div class="quiz-note-bar">
+        <button id="note-toggle-btn" class="btn btn-sm btn-secondary quiz-note-btn" onclick="toggleNotePanel()">📝 筆記</button>
+        <span id="note-indicator" class="quiz-note-hint" style="display:none">已有筆記</span>
       </div>
-      <div id="note-panel" style="display:none;margin-top:10px">
-        <textarea id="note-textarea" placeholder="支援 Markdown 格式：**粗體**、*斜體*、`程式碼`、- 列表、> 引用..."
-          style="width:100%;min-height:80px;padding:10px 12px;border-radius:6px;border:1px solid var(--color-bg-border);
-                 background:var(--color-bg-overlay);color:var(--color-text-primary);font-size:13px;
-                 font-family:'Noto Sans TC',sans-serif;line-height:1.6;resize:vertical"></textarea>
-        <div style="display:flex;gap:8px;margin-top:8px;justify-content:space-between;align-items:center">
-          <span style="font-size:11px;color:var(--color-text-muted)">支援 Markdown 格式</span>
-          <div style="display:flex;gap:8px">
+      <div id="note-panel" class="quiz-note-panel" style="display:none">
+        <textarea id="note-textarea" class="quiz-note-textarea" placeholder="支援 Markdown 格式：**粗體**、*斜體*、`程式碼`、- 列表、> 引用..."></textarea>
+        <div class="quiz-note-footer">
+          <span class="quiz-note-hint">支援 Markdown 格式</span>
+          <div class="quiz-note-actions">
             <button class="btn btn-sm btn-secondary" onclick="toggleNotePanel()">取消</button>
             <button class="btn btn-sm btn-primary" onclick="saveCurrentNote()">儲存筆記</button>
           </div>
@@ -3170,8 +3307,8 @@ body.theme-abyss {
     <div class="swipe-hint">← 右滑上一題　左滑下一題 →　點圖片可放大</div>
   </div>
   <!-- 詳解面板 -->
-  <div id="explanation-panel" style="display:none;width:100%;max-width:800px;padding:0 16px 32px">
-    <div style="background:var(--color-bg-elevated);border:2px solid var(--color-bg-border);border-radius:8px;padding:20px 24px">
+  <div id="explanation-panel" class="explanation-panel" style="display:none">
+    <div class="explanation-card">
       <div id="explanation-answer-text"></div>
       <div id="explanation-ai-content"></div>
       <div class="explanation-actions">
@@ -3725,7 +3862,7 @@ function renderCategoryBtns() {
   ).join('');
   // 清空子科
   const subWrap = document.getElementById('subject-tag-grid');
-  if (subWrap) subWrap.innerHTML = '<span style="color:var(--color-text-muted);font-size:12px">← 先選左側類別</span>';
+  if (subWrap) subWrap.innerHTML = '<span class="mode-subject-hint">← 先選左側類別</span>';
 }
 
 function selectCategory(el, cat) {
@@ -3778,11 +3915,11 @@ function updateModeUI() {
     const mini = document.getElementById('srs-status-mini');
     if (mini) {
       const s = getSRSStats();
-      const col = s.due > 0 ? 'var(--color-error-300)' : 'var(--color-success-300)';
+      const dueCls = s.due > 0 ? 'is-due' : 'is-done';
       mini.innerHTML = `
-        <span style="font-size:13px;color:${col}">📋 今日待複習：<strong>${s.due}</strong> 題</span>
-        <span style="font-size:13px;color:var(--color-text-muted)">⏳ 學習中：${s.learning} 題</span>
-        <span style="font-size:13px;color:var(--color-success-300)">✅ 已掌握：${s.mastered} 題</span>`;
+        <span class="mode-srs-stat ${dueCls}">📋 今日待複習：<strong>${s.due}</strong> 題</span>
+        <span class="mode-srs-stat is-learning">⏳ 學習中：${s.learning} 題</span>
+        <span class="mode-srs-stat is-done">✅ 已掌握：${s.mastered} 題</span>`;
     }
   }
 }
@@ -4058,14 +4195,14 @@ function renderDeferredExplanations() {
 
   el.style.display = 'block';
   el.innerHTML = `
-    <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--color-secondary-300);margin-bottom:16px">
+    <div class="exp-list-title">
       📖 所有題目詳解
     </div>`;
 
   State.userAnswers.forEach((ans, i) => {
     const q = ans && ans.q;
     if (!q) return;
-    const resultColor = ans.correct ? 'var(--color-success-300)' : 'var(--color-error-300)';
+    const resultCls = ans.correct ? 'exp-correct' : 'exp-wrong';
     const resultIcon = ans.correct ? '✅' : '❌';
     const ansText = q.answer
       ? q.answer.split('、').map(l => `(${l}) ${q.options[l] || ''}`).join('　')
@@ -4074,19 +4211,19 @@ function renderDeferredExplanations() {
     const divId = `def-exp-${i}`;
     const expContent = (window.__EXP && window.__EXP[String(q.id)])
       ? md(window.__EXP[String(q.id)])
-      : '<span style="color:var(--color-text-muted)">此題尚無詳解</span>';
+      : '<span class="exp-empty">此題尚無詳解</span>';
 
     el.innerHTML += `
-      <div style="background:var(--gradient-card);border:1px solid var(--color-bg-border);border-radius:8px;padding:16px;margin-bottom:12px">
-        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
-          <span style="font-size:16px">${resultIcon}</span>
+      <div class="exp-card">
+        <div class="exp-card-head">
+          <span class="exp-card-icon">${resultIcon}</span>
           <div>
-            <div style="font-size:11px;color:var(--color-text-muted);margin-bottom:4px">Q${(i+1).toString().padStart(3,'0')} · ${(q.tags||[]).join('/')}</div>
-            <div style="font-size:13px;color:var(--color-text-primary);line-height:1.6">${questionHtml(q)}</div>
+            <div class="exp-card-meta">Q${(i + 1).toString().padStart(3, '0')} · ${(q.tags || []).join('/')}</div>
+            <div class="exp-card-question">${questionHtml(q)}</div>
           </div>
         </div>
-        <div style="font-size:12px;color:${resultColor};margin-bottom:8px">正確答案：${ansText}</div>
-        <div id="${divId}" style="font-size:12px;color:var(--color-text-secondary);line-height:1.8">${expContent}</div>
+        <div class="exp-card-answer ${resultCls}">正確答案：${ansText}</div>
+        <div id="${divId}" class="exp-card-body">${expContent}</div>
       </div>`;
   });
 }
@@ -4102,21 +4239,21 @@ function showExplanation(q, correct) {
     : '（本題無標準答案）';
 
   const resultIcon = correct ? '✅ 答對了！' : '❌ 答錯了！';
-  const resultColor = correct ? 'var(--color-success-300)' : 'var(--color-error-300)';
+  const resultCls = correct ? 'exp-correct' : 'exp-wrong';
 
   document.getElementById('explanation-answer-text').innerHTML = `
-    <div style="font-family:'Press Start 2P',monospace;font-size:11px;color:${resultColor};margin-bottom:12px">${resultIcon}</div>
-    <div style="font-size:13px;color:var(--color-secondary-300);font-weight:600;margin-bottom:4px">正確答案</div>
-    <div style="font-size:14px;color:var(--color-text-primary);line-height:1.6">${answerText}</div>
+    <div class="exp-result ${resultCls}">${resultIcon}</div>
+    <div class="exp-answer-label">正確答案</div>
+    <div class="exp-answer-text">${answerText}</div>
   `;
 
   // 詳解（全部題目皆有內嵌詳解）
   const exp = window.__EXP && window.__EXP[q.id];
   document.getElementById('explanation-ai-content').innerHTML = `
-    <div style="border-top:1px solid var(--color-bg-border);margin-top:14px;padding-top:14px">
-      <div style="font-size:12px;color:var(--color-secondary-300);font-weight:600;margin-bottom:8px">🤖 AI 詳解</div>
-      <div id="ai-explanation-text" style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
-        ${exp ? md(exp) : '<span style="color:var(--color-text-muted)">此題尚無詳解</span>'}
+    <div class="exp-ai">
+      <div class="exp-ai-label">🤖 AI 詳解</div>
+      <div id="ai-explanation-text" class="exp-ai-text">
+        ${exp ? md(exp) : '<span class="exp-empty">此題尚無詳解</span>'}
       </div>
     </div>`;
 
@@ -4733,7 +4870,7 @@ function openExamPalette() {
       <div class="exam-palette-head">已答 ${picks.filter(Boolean).length} / ${picks.length}<button onclick="closeExamPalette()" aria-label="關閉">✕</button></div>
       <div class="exam-palette-grid">${picks.map((p, i) =>
         `<button class="${p ? 'done' : ''}${i === State.currentIndex ? ' current' : ''}" onclick="jumpExamQuestion(${i})">${i + 1}</button>`).join('')}</div>
-      <div style="text-align:center;margin-top:14px"><button class="btn btn-danger" onclick="closeExamPalette();confirmEnd()">交卷</button></div>
+      <div class="exam-palette-foot"><button class="btn btn-danger" onclick="closeExamPalette();confirmEnd()">交卷</button></div>
     </div>`;
   box.addEventListener('click', e => { if (e.target === box) closeExamPalette(); });
   document.body.appendChild(box);
@@ -4778,17 +4915,18 @@ function renderExamVerdict() {
   if (!ex) return;
   setEl('result-score', `${ex.score} 分`);
   const ok = sc => sc >= 50;
-  let html = `<div><strong>${ex.year} 年${ex.examType}</strong>：${ex.score} 分${ex.blank ? `（未作答 ${ex.blank} 題）` : ''}　`
-    + (ok(ex.score) ? '✅ 達單科 50 分門檻' : '❌ 未達單科 50 分門檻') + '</div>';
+  const blank = ex.blank ? `（未作答 ${ex.blank} 題）` : '';
+  const single = ok(ex.score) ? '✅ 達單科 50 分門檻' : '❌ 未達單科 50 分門檻';
+  let html = `<div><strong>${ex.year} 年${ex.examType}</strong>：${ex.score} 分${blank}　${single}</div>`;
   const pair = (State.progress.mockExams || []).slice(1)
     .find(m => m.year === ex.year && EXAM_PAIRS[ex.examType].includes(m.examType));
   if (pair) {
     const avg = Math.floor((ex.score + pair.score) / 2 * 100) / 100;
     const pass = avg >= 60 && ok(ex.score) && ok(pair.score);
-    html += `<div>搭配最近一次 ${pair.year} 年${pair.examType}（${pair.score} 分），兩科平均 ${avg} 分　`
-      + (pass ? '🎉 <strong>筆試及格</strong>' : '❌ 未達及格（需平均 60 分且各科 ≥ 50 分）') + '</div>';
+    const verdict = pass ? '🎉 <strong>筆試及格</strong>' : '❌ 未達及格（需平均 60 分且各科 ≥ 50 分）';
+    html += `<div>搭配最近一次 ${pair.year} 年${pair.examType}（${pair.score} 分），兩科平均 ${avg} 分　${verdict}</div>`;
   } else {
-    html += `<div style="color:var(--color-text-muted)">再考一份 ${ex.year} 年${EXAM_PAIRS[ex.examType].join('或')}，即可判定兩科是否及格（平均 60 分且各科 ≥ 50 分）。</div>`;
+    html += `<div class="exam-verdict-hint">再考一份 ${ex.year} 年${EXAM_PAIRS[ex.examType].join('或')}，即可判定兩科是否及格（平均 60 分且各科 ≥ 50 分）。</div>`;
   }
   el.innerHTML = html;
 }
@@ -4808,7 +4946,7 @@ function startFocusPractice(tags) {
   beginSession(pool.slice(0, 20));
 }
 
-const focusArg = tags => '[' + tags.map(t => `'${t}'`).join(',') + ']';
+const focusArg = tags => `[${tags.map(t => `'${t}'`).join(',')}]`;
 
 function renderSessionWeak() {
   const el = document.getElementById('session-weak');
@@ -4825,17 +4963,17 @@ function renderSessionWeak() {
     .sort((a, b) => a.pct - b.pct || b.total - a.total)
     .slice(0, 3);
   if (!weak.length) {
-    el.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px">本次沒有明顯弱點（每科至少 2 題才列入）</p>';
+    el.innerHTML = '<p class="weak-empty">本次沒有明顯弱點（每科至少 2 題才列入）</p>';
     return;
   }
-  el.innerHTML = weak.map((w, i) => `<div class="weak-item">
+  const items = weak.map((w, i) => `<div class="weak-item">
       <span class="weak-rank">${'①②③'[i]}</span>
       <span class="weak-name">${w.tag}</span>
-      <span class="weak-pct" style="color:${w.pct < 50 ? 'var(--color-error-300)' : 'var(--color-warning-500)'}">${w.pct}%</span>
-      <span style="font-size:11px;color:var(--color-text-muted)">錯 ${w.total - w.correct} / ${w.total} 題</span>
-      <button class="btn btn-sm btn-secondary" style="margin-left:auto" onclick="startFocusPractice(${focusArg([w.tag])})">練習</button>
-    </div>`).join('')
-    + `<div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="startFocusPractice(${focusArg(weak.map(w => w.tag))})">🎯 一鍵練習弱點（20 題）</button></div>`;
+      <span class="weak-pct ${w.pct < 50 ? 'is-low' : 'is-mid'}">${w.pct}%</span>
+      <span class="weak-count">錯 ${w.total - w.correct} / ${w.total} 題</span>
+      <button class="btn btn-sm btn-secondary weak-practice-btn" onclick="startFocusPractice(${focusArg([w.tag])})">練習</button>
+    </div>`).join('');
+  el.innerHTML = `${items}<div class="weak-all"><button class="btn btn-primary" onclick="startFocusPractice(${focusArg(weak.map(w => w.tag))})">🎯 一鍵練習弱點（20 題）</button></div>`;
 }
 
 // ── 手機滑動切換題目：左滑下一題（作答後）、右滑上一題 ──

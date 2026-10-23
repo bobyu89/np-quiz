@@ -9,6 +9,7 @@
 }
 
 .quiz-hud {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -22,6 +23,8 @@
 }
 
 .hud-progress { flex: 1; min-width: 180px; }
+
+.quiz-hud-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-left: auto; }
 
 .hud-label {
   font-family: var(--font-pixel);
@@ -144,7 +147,9 @@
 /* ══════════════════════════════════════════
    題目卡片
 ══════════════════════════════════════════ */
-.quiz-body { padding: 20px 16px; width: 100%; }
+.quiz-body { padding: 20px 16px; width: 100%; max-width: 800px; }
+
+.quiz-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
 
 .q-tag {
   font-size: 13px;
@@ -196,6 +201,28 @@
   line-height: 1.85;
   color: var(--color-text-primary);
 }
+
+/* ── 題目筆記 ── */
+.quiz-note-bar { margin-top: 12px; display: flex; gap: 8px; align-items: center; }
+.quiz-note-btn { font-size: 12px; }
+.quiz-note-hint { font-size: 11px; color: var(--color-text-muted); }
+.quiz-note-panel { margin-top: 10px; }
+/* 需蓋過 #note-textarea:focus 的邊框色，與原 inline 樣式一致 */
+#screen-quiz textarea.quiz-note-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--color-bg-border);
+  background: var(--color-bg-overlay);
+  color: var(--color-text-primary);
+  font-size: 13px;
+  font-family: 'Noto Sans TC', sans-serif;
+  line-height: 1.6;
+  resize: vertical;
+}
+.quiz-note-footer { display: flex; gap: 8px; margin-top: 8px; justify-content: space-between; align-items: center; }
+.quiz-note-actions { display: flex; gap: 8px; }
 
 .q-figure {
   display: block;
@@ -253,10 +280,13 @@
 .exam-palette-grid button.done { background: rgba(10,90,255,0.25); color: var(--color-text-primary); border-color: var(--color-primary-500); }
 .exam-palette-grid button.current { outline: 2px solid var(--color-secondary-300); outline-offset: 1px; }
 
+.exam-palette-foot { text-align: center; margin-top: 14px; }
+
 .exam-verdict {
   margin-top: 14px; padding: 12px 16px; border-radius: 6px; line-height: 1.9; font-size: 14px;
   background: var(--color-bg-elevated); border: 1px solid var(--color-bg-border); color: var(--color-text-secondary);
 }
+.exam-verdict-hint { color: var(--color-text-muted); }
 
 .swipe-hint { display: none; margin-top: 4px; text-align: center; font-size: 12px; color: var(--color-text-muted); }
 @media (pointer: coarse) { .swipe-hint { display: block; } }
@@ -266,6 +296,45 @@
 }
 .q-tag, .q-year { white-space: nowrap; }
 .streak-display:empty { display: none; }
+
+/* ── 詳解面板 ── */
+.explanation-panel { width: 100%; max-width: 800px; padding: 0 16px 32px; }
+.explanation-card {
+  background: var(--color-bg-elevated);
+  border: 2px solid var(--color-bg-border);
+  border-radius: 8px;
+  padding: 20px 24px;
+}
+.exp-correct { color: var(--color-success-300); }
+.exp-wrong { color: var(--color-error-300); }
+.exp-empty { color: var(--color-text-muted); }
+.exp-result { font-family: 'Press Start 2P', monospace; font-size: 11px; margin-bottom: 12px; }
+.exp-answer-label { font-size: 13px; color: var(--color-secondary-300); font-weight: 600; margin-bottom: 4px; }
+.exp-answer-text { font-size: 14px; color: var(--color-text-primary); line-height: 1.6; }
+.exp-ai { border-top: 1px solid var(--color-bg-border); margin-top: 14px; padding-top: 14px; }
+.exp-ai-label { font-size: 12px; color: var(--color-secondary-300); font-weight: 600; margin-bottom: 8px; }
+.exp-ai-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.8; }
+
+/* ── 結果頁：所有題目詳解 ── */
+.exp-list-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: var(--color-secondary-300);
+  margin-bottom: 16px;
+}
+.exp-card {
+  background: var(--gradient-card);
+  border: 1px solid var(--color-bg-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.exp-card-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.exp-card-icon { font-size: 16px; }
+.exp-card-meta { font-size: 11px; color: var(--color-text-muted); margin-bottom: 4px; }
+.exp-card-question { font-size: 13px; color: var(--color-text-primary); line-height: 1.6; }
+.exp-card-answer { font-size: 12px; margin-bottom: 8px; }
+.exp-card-body { font-size: 12px; color: var(--color-text-secondary); line-height: 1.8; }
 
 .explanation-actions {
   position: sticky;
