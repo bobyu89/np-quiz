@@ -1,0 +1,57 @@
+<!-- 筆記本 -->
+<div id="screen-notebook-screen" class="screen">
+  <div class="nb-wrap">
+    <div class="nb-header">
+      <button class="btn btn-sm btn-secondary" onclick="showScreen('landing')">← 返回</button>
+      <h2 class="screen-title nb-title">📝 我的筆記</h2>
+    </div>
+    <div class="nb-toolbar">
+      <input id="notebook-search" class="nb-field nb-search" type="text" placeholder="搜尋筆記內容或題號..."
+        oninput="renderNotebook()">
+      <select id="notebook-sort" class="nb-field nb-sort" onchange="renderNotebook()">
+        <option value="newest">最新優先</option>
+        <option value="oldest">最舊優先</option>
+        <option value="qid">依題號</option>
+      </select>
+      <span id="notebook-count" class="nb-count"></span>
+    </div>
+    <div id="notebook-list"></div>
+    <div id="notebook-empty" class="nb-empty" style="display:none">
+      <div class="nb-empty-icon">📝</div>
+      <div class="nb-empty-title">還沒有筆記</div>
+      <div class="nb-empty-desc">
+        在刷題時點擊「📝 筆記」按鈕<br>就可以為每道題目記下你的心得與重點<br>
+        支援 Markdown 格式，筆記自動儲存在本機
+      </div>
+    </div>
+    <div class="nb-actions">
+      <button class="btn btn-sm btn-secondary" onclick="exportNotes()">💾 匯出筆記</button>
+      <button class="btn btn-sm btn-secondary" onclick="document.getElementById('import-notes-input').click()">📂 匯入筆記</button>
+      <input type="file" id="import-notes-input" class="nb-file-input" accept=".json" onchange="importNotes(event)">
+    </div>
+
+    <!-- Markdown 格式小提示 -->
+    <details class="nb-md-help">
+      <summary class="nb-md-help-summary">
+        ℹ️ Markdown 格式小提示
+      </summary>
+      <div class="nb-md-help-body">
+        <div class="nb-md-grid">
+          <div><code class="nb-md-code nb-md-key">**粗體**</code> → <strong>粗體</strong></div>
+          <div><code class="nb-md-code nb-md-key">*斜體*</code> → <em>斜體</em></div>
+          <div><code class="nb-md-code nb-md-key">~~刪除線~~</code> → <del>刪除線</del></div>
+          <div><code class="nb-md-code nb-md-key">`行內程式碼`</code> → <code class="nb-md-code">行內程式碼</code></div>
+          <div><code class="nb-md-code nb-md-key">- 項目</code> → 無序列表</div>
+          <div><code class="nb-md-code nb-md-key">1. 項目</code> → 有序列表</div>
+          <div><code class="nb-md-code nb-md-key">> 引用</code> → 引用區塊</div>
+          <div><code class="nb-md-code nb-md-key">### 標題</code> → 三級標題</div>
+          <div class="nb-md-full"><code class="nb-md-code nb-md-key">| 欄A | 欄B |</code> + 第二行 <code class="nb-md-code nb-md-key">|---|---|</code> → 表格</div>
+          <div class="nb-md-full"><code class="nb-md-code nb-md-key">---</code> → 分隔線</div>
+        </div>
+        <div class="nb-md-tip">
+          小技巧：可以用表格整理易混淆的比較重點，用粗體標記關鍵數值，用引用區塊標記口訣
+        </div>
+      </div>
+    </details>
+  </div>
+</div>

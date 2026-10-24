@@ -1,0 +1,37 @@
+/* ══════════════════════════════════════════
+   RWD
+══════════════════════════════════════════ */
+/* ── 平板 (≤768px) ── */
+@media (max-width: 768px) {
+  .landing-stats { gap: 10px; flex-wrap: wrap; }
+  .stat-box { min-width: 70px; padding: 14px 8px; }
+  .mode-grid { grid-template-columns: repeat(2, 1fr); }
+  .quiz-hud { flex-wrap: wrap; padding: 10px 12px; gap: 8px; }
+  .hud-progress { min-width: 140px; }
+  .result-hero { padding: 24px 16px; }
+  .result-score { font-size: clamp(48px, 12vw, 72px); }
+}
+
+/* ── 手機 (≤480px) ── */
+@media (max-width: 480px) {
+  .landing-stats { gap: 6px; }
+  .stat-box { min-width: 60px; padding: 10px 6px; }
+  .stat-num { font-size: 20px; }
+  .stat-label { font-size: 11px; }
+  .count-grid { grid-template-columns: repeat(2, 1fr); }
+  .mode-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .quiz-hud { padding: 8px 10px; gap: 6px; }
+  .hud-progress { min-width: 100px; }
+  .timer-wrap { width: 100px; }
+  .streak-display { min-width: 40px; font-size: 14px; }
+  .question-card { padding: 14px; }
+  .question-text { font-size: 16px; line-height: 1.7; }
+  .option-btn { font-size: 15px; padding: 12px 12px; }
+  .landing-logo { font-size: 15px; }
+  .screen-title { font-size: 14px; }
+  .tag-btn { font-size: 14px; padding: 6px 10px; }
+  .count-btn { font-size: 13px; padding: 10px 8px; }
+  .result-score { font-size: 48px; }
+  .radar-section canvas { max-width: 280px; }
+  .btn-lg { font-size: 16px; padding: 14px 28px; }
+}

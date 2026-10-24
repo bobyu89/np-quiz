@@ -1,0 +1,30 @@
+/* ══════════════════════════════════════════
+   THEME: 深海靜謐（theme-abyss）
+   深藍灰 × 青綠發光水母 × 琥珀儀表盤
+══════════════════════════════════════════ */
+body.theme-abyss {
+  --color-bg-primary:    #0d1520;
+  --color-bg-secondary:  #141e2e;
+  --color-bg-elevated:   #1a2840;
+  --color-bg-overlay:    #0a3050a0;
+  --color-bg-border:     #2a4060;
+  --color-primary-500:   #1ac8a0;
+  --color-primary-400:   #3aded8;
+  --color-primary-300:   #70ece8;
+  --color-secondary-300: #e8a830;
+  --color-text-primary:   #d8edf5;
+  --color-text-secondary: #8aaec8;
+  --color-text-muted:     #4a6880;
+  --color-success-300:   #70f0b8;
+  --color-success-500:   #14a870;
+  --color-error-300:     #f0806a;
+  --color-error-400:     #e05040;
+  --color-error-500:     #c02828;
+  --color-warning-500:   #e8a830;
+  --gradient-card: linear-gradient(145deg, #1a2840 0%, #1e3050 50%, #152038 100%);
+  --gradient-hero: linear-gradient(180deg, #0d1520 0%, #101c30 30%, #0a1828 70%, #081020 100%);
+  --pixel-border-dark:   4px 0 0 0 #080e18, -4px 0 0 0 #080e18, 0 4px 0 0 #080e18, 0 -4px 0 0 #080e18, inset 1px 1px 0 0 #2a4060;
+  --pixel-border-blue:   4px 0 0 0 #1ac8a0, -4px 0 0 0 #1ac8a0, 0 4px 0 0 #1ac8a0, 0 -4px 0 0 #1ac8a0, 2px 2px 0 0 #10906e, -2px -2px 0 0 #70ece8, 0 0 12px 2px #1ac8a040;
+  --pixel-border-gold:   4px 0 0 0 #e8a830, -4px 0 0 0 #e8a830, 0 4px 0 0 #e8a830, 0 -4px 0 0 #e8a830, 2px 2px 0 0 #b07818, -2px -2px 0 0 #f0c860, 0 0 12px 2px #e8a83040;
+  --scanline-opacity: 0.06;
+}

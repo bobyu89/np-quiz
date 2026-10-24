@@ -1,0 +1,227 @@
+/* ─────────────────────────────────────────────
+   像素冒險風 Design System — 專科護理師刷題神器
+   UI Designer × Claude Code 聯合出品
+───────────────────────────────────────────── */
+
+/* ══════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════ */
+:root {
+  /* PRIMARY — Electric Blue 冒險藍 */
+  --color-primary-400: #2878c8;
+  --color-primary-500: #0a5aff;
+  --color-primary-600: #0040cc;
+  --color-primary-700: #002ea0;
+  --color-primary-800: #001e70;
+  --color-primary-900: #000e40;
+
+  /* SECONDARY — Pixel Gold 成就金 */
+  --color-secondary-200: #ffe88a;
+  --color-secondary-300: #ffd340;
+  --color-secondary-400: #ffbb00;
+  --color-secondary-500: #f0a000;
+  --color-secondary-700: #905000;
+
+  /* BACKGROUNDS */
+  --color-bg-void:     #04060c;
+  --color-bg-base:     #080d18;
+  --color-bg-surface:  #0d1525;
+  --color-bg-elevated: #141e34;
+  --color-bg-overlay:  #1c2a48;
+  --color-bg-border:   #243358;
+
+  /* TEXT */
+  --color-text-primary:   #e8f0ff;
+  --color-text-secondary: #8aa8d8;
+  --color-text-muted:     #4a6494;
+
+  /* SEMANTIC */
+  --color-success-300:  #40e890;
+  --color-success-500:  #00c860;
+  --color-success-700:  #008040;
+  --color-success-glow: rgba(0,200,96,0.35);
+
+  --color-error-300:  #ff7088;
+  --color-error-500:  #ff2040;
+  --color-error-700:  #c00020;
+  --color-error-glow: rgba(255,32,64,0.35);
+
+  --color-warning-500:  #ff9800;
+  --color-warning-glow: rgba(255,152,0,0.35);
+
+  /* HP BAR */
+  --color-hp-full:  #00e060;
+  --color-hp-mid:   #ffcc00;
+  --color-hp-low:   #ff2020;
+  --color-hp-track: #1a0a0a;
+
+  /* FIRE STREAK */
+  --color-fire-core:  #fff040;
+  --color-fire-mid:   #ff8000;
+  --color-fire-outer: #c02000;
+
+  /* GRADIENTS */
+  --gradient-hero:    linear-gradient(180deg, #000820 0%, #04091c 40%, #080d18 100%);
+  --gradient-card:    linear-gradient(135deg, #0d1525 0%, #141e34 100%);
+  --gradient-success: linear-gradient(135deg, #004020 0%, #006030 100%);
+  --gradient-error:   linear-gradient(135deg, #400010 0%, #600020 100%);
+  --gradient-gold:    linear-gradient(135deg, #302000 0%, #604000 50%, #302000 100%);
+  --gradient-primary: linear-gradient(135deg, #001060 0%, #002080 50%, #001060 100%);
+
+  /* ── 像素邊框系統（純 CSS，8方向斜切陰影） ── */
+  --pixel-border-blue:
+    -2px -2px 0 0 #0a5aff,  0px -2px 0 0 #0a5aff,  2px -2px 0 0 #0a5aff,
+     2px  0px 0 0 #0040cc,  2px  2px 0 0 #0040cc,
+     0px  2px 0 0 #002ea0, -2px  2px 0 0 #002ea0, -2px  0px 0 0 #0a5aff;
+
+  --pixel-border-gold:
+    -2px -2px 0 0 #ffd340,  0px -2px 0 0 #ffd340,  2px -2px 0 0 #ffbb00,
+     2px  0px 0 0 #f0a000,  2px  2px 0 0 #c07800,
+     0px  2px 0 0 #905000, -2px  2px 0 0 #905000, -2px  0px 0 0 #ffd340;
+
+  --pixel-border-success:
+    -2px -2px 0 0 #40e890,  0px -2px 0 0 #40e890,  2px -2px 0 0 #00c860,
+     2px  0px 0 0 #008040,  2px  2px 0 0 #006030,
+     0px  2px 0 0 #006030, -2px  2px 0 0 #006030, -2px  0px 0 0 #40e890;
+
+  --pixel-border-error:
+    -2px -2px 0 0 #ff7088,  0px -2px 0 0 #ff7088,  2px -2px 0 0 #ff2040,
+     2px  0px 0 0 #c00020,  2px  2px 0 0 #800010,
+     0px  2px 0 0 #800010, -2px  2px 0 0 #800010, -2px  0px 0 0 #ff7088;
+
+  --pixel-border-dark:
+    -2px -2px 0 0 #243358,  0px -2px 0 0 #243358,  2px -2px 0 0 #1c2a48,
+     2px  0px 0 0 #141e34,  2px  2px 0 0 #0d1525,
+     0px  2px 0 0 #0d1525, -2px  2px 0 0 #0d1525, -2px  0px 0 0 #243358;
+
+  /* TYPOGRAPHY */
+  --font-pixel: 'Press Start 2P', 'Courier New', monospace;
+  --font-body:  'Noto Sans TC', 'PingFang TC', sans-serif;
+  --font-mono:  'Share Tech Mono', 'Courier New', monospace;
+
+  /* SHADOWS */
+  --shadow-glow-primary: 0 0 12px rgba(10,90,255,0.5), 0 0 24px rgba(10,90,255,0.25);
+  --shadow-glow-success: 0 0 12px var(--color-success-glow), 0 0 24px var(--color-success-glow);
+  --shadow-glow-error:   0 0 12px var(--color-error-glow), 0 0 24px var(--color-error-glow);
+  --shadow-glow-gold:    0 0 12px rgba(255,187,0,0.5), 0 0 28px rgba(255,187,0,0.25);
+  --shadow-glow-fire:    0 0 8px rgba(255,128,0,0.7), 0 0 20px rgba(192,32,0,0.4);
+  --shadow-panel:        0 4px 24px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.8);
+
+  /* EASING */
+  --ease-pixel:  steps(4, end);
+  --ease-smooth: cubic-bezier(0.2,0,0.2,1);
+  --ease-bounce: cubic-bezier(0.34,1.56,0.64,1);
+}
+
+/* ══════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+
+body {
+  background-color: var(--color-bg-base);
+  background-image: var(--gradient-hero);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+  image-rendering: pixelated;
+}
+
+/* 像素網格背景 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(10,90,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,90,255,0.04) 1px, transparent 1px);
+  background-size: 16px 16px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* CRT 掃描線 */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 2px,
+    rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-primary-500);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── 畫面系統 ── */
+.screen { display: none; position: relative; z-index: 1; min-height: 100vh; }
+.screen.active { display: flex; flex-direction: column; align-items: center; }
+
+/* 背景星空 */
+#starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── 載入失敗畫面 ── */
+.error-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  text-align: center;
+}
+
+.error-box {
+  font-family: 'Press Start 2P', monospace;
+  color: #ff4757;
+  font-size: 13px;
+  line-height: 2;
+}
+
+.error-detail {
+  font-size: 11px;
+  color: #8892b0;
+  font-family: sans-serif;
+}
+
+/* ══════════════════════════════════════════
+   成就廳
+══════════════════════════════════════════ */
+.achievements-inner {
+  width: 100%;
+  max-width: 860px;
+  padding: 40px 20px;
+}
+
+.achievements-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.achievements-header .screen-title { margin: 0; }
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}

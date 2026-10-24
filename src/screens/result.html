@@ -1,0 +1,52 @@
+<!-- 結果 -->
+<div id="screen-result" class="screen">
+  <div class="result-wrap">
+
+    <!-- Tab 切換列 -->
+    <div class="result-tabs">
+      <button id="tab-btn-score" class="result-tab active" onclick="switchResultTab('score')">
+        📊 本次成績
+      </button>
+      <button id="tab-btn-explanations" class="result-tab" onclick="switchResultTab('explanations')">
+        📖 詳解查閱
+      </button>
+    </div>
+
+    <!-- Tab 1：本次成績 -->
+    <div id="tab-score">
+      <div class="result-hero">
+        <div class="result-score" id="result-score">--</div>
+        <div class="result-score-sub" id="result-detail"></div>
+        <div class="result-rank" id="result-rank">評估中...</div>
+        <div id="exam-verdict" class="exam-verdict" style="display:none"></div>
+      </div>
+      <div class="weak-section">
+        <div class="result-section-title result-title-weak">🎯 本次弱點</div>
+        <div id="session-weak"></div>
+      </div>
+      <div class="achievement-section">
+        <div class="result-section-title result-title-ach">🏆 本次成就</div>
+        <div class="achievement-grid" id="achievement-list"></div>
+      </div>
+      <div class="radar-section">
+        <div class="radar-title">📡 科別能力雷達圖</div>
+        <canvas id="radarChart"></canvas>
+      </div>
+      <div class="weak-section">
+        <div class="result-section-title result-title-weak">⚠️ 弱點科別（累計）</div>
+        <div id="weak-list"></div>
+      </div>
+      <div class="result-actions">
+        <button class="btn btn-gold" onclick="generateHandout()">📋 生成講義</button>
+        <button class="btn btn-primary" onclick="showScreen('mode');initModeScreen()">🔄 再練一次</button>
+        <button class="btn btn-secondary" onclick="showScreen('landing');updateLandingStats()">🏠 首頁</button>
+      </div>
+    </div>
+
+    <!-- Tab 2：詳解查閱 -->
+    <div id="tab-explanations" style="display:none">
+      <div id="deferred-explanations"></div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,142 @@
+/* ══════════════════════════════════════════
+   講義頁
+══════════════════════════════════════════ */
+#screen-handout {
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.handout-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  justify-content: flex-end;
+}
+
+.handout-content {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 28px;
+}
+
+.handout-title {
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  color: var(--color-primary-400);
+  margin-bottom: 6px;
+  -webkit-font-smoothing: none;
+}
+
+.handout-meta {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin-bottom: 20px;
+}
+
+.handout-q {
+  background: var(--color-bg-elevated);
+  box-shadow: 0 0 0 2px var(--color-bg-border);
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+.handout-q-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.handout-q-num { font-family: var(--font-pixel); font-size: 11px; color: var(--color-error-500); }
+.handout-q-text { font-size: 17px; margin-bottom: 10px; line-height: 1.75; }
+.handout-option { padding: 4px 0; font-size: 16px; }
+.handout-exp { margin-top: 8px; font-size: 14px; line-height: 1.75; color: var(--color-text-secondary); }
+.handout-exp h3 { font-size: 14px; margin: 10px 0 4px; color: var(--color-secondary-300); }
+.handout-option.correct { color: var(--color-success-300); font-weight: 700; }
+.handout-option.my-wrong { color: var(--color-error-300); text-decoration: line-through; opacity: 0.7; }
+
+.handout-analysis {
+  border-top: 1px solid var(--color-bg-border);
+  padding-top: 10px;
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.handout-analysis-title {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--color-primary-400);
+  margin-bottom: 6px;
+  -webkit-font-smoothing: none;
+}
+
+.handout-wrap { width: 100%; max-width: 860px; padding: 40px 20px; }
+.pixel-divider.handout-divider { margin: 16px 0; }
+
+.handout-section-title { font-family: var(--font-pixel); font-size: 11px; margin: 24px 0 16px; }
+.handout-section-wrong { color: var(--color-error-500); }
+.handout-section-correct { color: var(--color-success-300); }
+
+.handout-q-tags .q-tag,
+.handout-q-tags .q-year { font-size: 10px; }
+
+/* 重點複習科別 */
+.handout-weak { margin-bottom: 20px; }
+.handout-weak-title {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  color: var(--color-warning-500);
+  margin-bottom: 12px;
+}
+.handout-weak-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-bg-border);
+}
+.handout-weak-rank { font-family: var(--font-pixel); font-size: 14px; color: var(--color-error-500); }
+.handout-weak-name { flex: 1; }
+.handout-weak-pct { font-family: var(--font-pixel); font-size: 11px; color: var(--color-warning-500); }
+.handout-weak-pct.low { color: var(--color-error-500); }
+
+/* ── Markdown 詳解渲染樣式 ── */
+#ai-explanation-text h3,
+#deferred-explanations h3,
+.library-exp-content h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-secondary-300);
+  margin: 14px 0 6px 0;
+  line-height: 1.5;
+}
+#ai-explanation-text h3:first-child,
+#deferred-explanations h3:first-child,
+.library-exp-content h3:first-child {
+  margin-top: 0;
+}
+#ai-explanation-text ul,
+#deferred-explanations ul,
+.library-exp-content ul {
+  padding-left: 20px;
+  margin: 6px 0;
+}
+#ai-explanation-text li,
+#deferred-explanations li,
+.library-exp-content li {
+  margin-bottom: 4px;
+  line-height: 1.7;
+}
+#ai-explanation-text p,
+#deferred-explanations p,
+.library-exp-content p {
+  margin: 6px 0;
+  line-height: 1.8;
+}
+#ai-explanation-text strong,
+#deferred-explanations strong,
+.library-exp-content strong {
+  color: var(--color-text-primary);
+}
+#ai-explanation-text hr,
+#deferred-explanations hr,
+.library-exp-content hr {
+  display: none;
+}

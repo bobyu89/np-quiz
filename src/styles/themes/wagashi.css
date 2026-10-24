@@ -1,0 +1,30 @@
+/* ══════════════════════════════════════════
+   THEME: 和風雅途（theme-wagashi）
+   宣紙米白 × 抹茶橄欖綠 × 漆朱紅
+══════════════════════════════════════════ */
+body.theme-wagashi {
+  --color-bg-primary:    #f7f3ec;
+  --color-bg-secondary:  #ede7da;
+  --color-bg-elevated:   #faf8f2;
+  --color-bg-overlay:    #6b4c2e30;
+  --color-bg-border:     #c4b49a;
+  --color-primary-500:   #5a7a3a;
+  --color-primary-400:   #7a9a54;
+  --color-primary-300:   #a0bc7e;
+  --color-secondary-300: #c0392b;
+  --color-text-primary:   #2c1e10;
+  --color-text-secondary: #5a4030;
+  --color-text-muted:     #9a8068;
+  --color-success-300:   #7ac88a;
+  --color-success-500:   #2e7d42;
+  --color-error-300:     #e88080;
+  --color-error-400:     #cc4040;
+  --color-error-500:     #a02020;
+  --color-warning-500:   #c4820a;
+  --gradient-card: linear-gradient(145deg, #faf8f2 0%, #f2ede2 60%, #ede7da 100%);
+  --gradient-hero: linear-gradient(180deg, #f7f3ec 0%, #ede7da 50%, #e2d9c8 100%);
+  --pixel-border-dark:   4px 0 0 0 #c4b49a, -4px 0 0 0 #c4b49a, 0 4px 0 0 #c4b49a, 0 -4px 0 0 #c4b49a, inset 1px 1px 0 0 #e8e0d0;
+  --pixel-border-blue:   4px 0 0 0 #5a7a3a, -4px 0 0 0 #5a7a3a, 0 4px 0 0 #5a7a3a, 0 -4px 0 0 #5a7a3a, 2px 2px 0 0 #3a5a20, -2px -2px 0 0 #a0bc7e;
+  --pixel-border-gold:   4px 0 0 0 #c0392b, -4px 0 0 0 #c0392b, 0 4px 0 0 #c0392b, 0 -4px 0 0 #c0392b, 2px 2px 0 0 #902010, -2px -2px 0 0 #e86050;
+  --scanline-opacity: 0;
+}

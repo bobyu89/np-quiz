@@ -1,0 +1,229 @@
+/* ══════════════════════════════════════════
+   結果頁
+══════════════════════════════════════════ */
+#screen-result {
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.result-hero { text-align: center; margin-bottom: 36px; }
+
+.result-score {
+  font-family: var(--font-mono);
+  font-size: clamp(40px, 10vw, 72px);
+  color: var(--color-secondary-300);
+  text-shadow: 0 0 30px rgba(255,211,64,0.6);
+  line-height: 1;
+  display: block;
+  animation: score-count-up 600ms var(--ease-bounce);
+}
+
+.result-score-sub {
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 10px;
+  -webkit-font-smoothing: none;
+}
+
+.result-rank {
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  padding: 10px 20px;
+  display: inline-block;
+  margin: 16px 0;
+  -webkit-font-smoothing: none;
+}
+
+/* 雷達圖 */
+.radar-section {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark), var(--shadow-panel);
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.radar-title {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  color: var(--color-primary-400);
+  margin-bottom: 14px;
+  -webkit-font-smoothing: none;
+}
+
+#radarChart { max-width: 380px; margin: 0 auto; display: block; }
+
+/* 成就 */
+.achievement-section {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.achievement-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.achievement-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--gradient-gold);
+  box-shadow: var(--pixel-border-gold), var(--shadow-glow-gold), var(--shadow-panel);
+  animation: badge-appear 500ms var(--ease-bounce) both;
+}
+
+.badge-icon { font-size: 24px; }
+.badge-name {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--color-secondary-300);
+  -webkit-font-smoothing: none;
+}
+.badge-desc { font-size: 13px; color: var(--color-secondary-200); margin-top: 2px; }
+
+/* 弱點 */
+.weak-section {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.weak-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--color-bg-border);
+}
+.weak-item:last-child { border-bottom: none; }
+.weak-rank { font-family: var(--font-pixel); font-size: 16px; color: var(--color-error-500); width: 28px; }
+.weak-name { flex: 1; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.weak-pct  { font-family: var(--font-mono); font-size: 15px; font-weight: bold; }
+
+.result-wrap { width: 100%; max-width: 860px; padding: 32px 20px; }
+
+/* Tab 切換列 */
+.result-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--color-bg-border);
+}
+
+.result-tab {
+  padding: 10px 24px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--color-text-muted);
+  margin-bottom: -2px;
+  transition: all .2s;
+}
+.result-tab.active { color: var(--color-primary-500); border-bottom-color: var(--color-primary-500); }
+
+.result-section-title { font-family: 'Press Start 2P', monospace; font-size: 10px; margin-bottom: 12px; }
+.result-title-weak { color: var(--color-error-500); }
+.result-title-ach { color: var(--color-secondary-300); }
+
+.result-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+.result-empty { color: var(--color-text-muted); font-size: 13px; }
+.result-badge-desc { font-size: 10px; color: var(--color-text-muted); font-family: var(--font-body); }
+.result-weak-total { font-size: 11px; color: var(--color-text-muted); }
+.result-weak-btn { margin-left: auto; }
+
+/* ══════════════════════════════════════════
+   成就總覽
+══════════════════════════════════════════ */
+.achievements-card {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 20px;
+  text-align: center;
+  opacity: 1;
+}
+.achievements-card.locked { opacity: 0.4; }
+.achievements-icon { font-size: 32px; margin-bottom: 8px; }
+.achievements-name { font-family: 'Press Start 2P', monospace; font-size: 9px; color: var(--color-secondary-300); }
+.achievements-card.locked .achievements-name { color: var(--color-text-muted); }
+.achievements-desc { font-size: 11px; color: var(--color-text-muted); margin-top: 6px; }
+.achievements-unlocked { font-size: 10px; color: var(--color-success-300); margin-top: 8px; }
+
+/* ══════════════════════════════════════════
+   練習紀錄
+══════════════════════════════════════════ */
+.history-wrap { width: 100%; max-width: 860px; padding: 40px 20px; }
+
+.history-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.history-header .screen-title { margin: 0; }
+
+.history-card {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+.history-card.history-backup { padding: 16px 20px; }
+
+.history-card-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+}
+.history-backup .history-card-title { margin-bottom: 10px; }
+
+.history-backup-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.8; margin-bottom: 12px; }
+.history-backup-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.history-file-input { display: none; }
+.history-trend-chart { max-height: 220px; }
+
+.history-empty { color: var(--color-text-muted); }
+
+/* SRS 狀態卡 */
+.history-srs { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+.history-srs-card {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 16px 20px;
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+}
+.history-srs-num { font-size: 24px; font-weight: 700; }
+.history-srs-due { color: var(--color-error-300); }
+.history-srs-learning { color: var(--color-warning-500); }
+.history-srs-mastered { color: var(--color-success-300); }
+.history-srs-label { font-size: 11px; color: var(--color-text-muted); margin-top: 4px; }
+
+/* 歷次列表 */
+.history-item {
+  background: var(--gradient-card);
+  box-shadow: var(--pixel-border-dark);
+  padding: 14px 20px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.history-item-no { font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--color-secondary-300); }
+.history-item-date { font-size: 13px; color: var(--color-text-muted); }
+.history-item-pct { font-size: 16px; font-weight: 700; }
+.history-item-count { font-size: 13px; }
+.history-item-mode {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  background: var(--color-bg-overlay);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.history-item-dur { font-size: 11px; color: var(--color-text-muted); }

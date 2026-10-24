@@ -1,0 +1,110 @@
+<!-- 模式選擇 -->
+<div id="screen-mode" class="screen">
+  <div class="mode-wrap">
+    <div class="mode-header">
+      <button class="btn btn-sm btn-secondary" onclick="showScreen('landing')">← 返回</button>
+      <h2 class="screen-title mode-title">開始練習</h2>
+    </div>
+
+    <!-- 快速開始區 -->
+    <div class="mode-quick">
+      <div class="mode-quick-title">⚡ 快速開始</div>
+      <div class="mode-quick-grid" id="quick-mode-grid">
+        <button class="mode-card selected" data-mode="mixed" onclick="selectMode(this,'mixed')">
+          <span class="mode-icon">🎲</span><div class="mode-name">混合</div><div class="mode-desc">自由篩選組合</div>
+        </button>
+        <button class="mode-card" data-mode="year" onclick="selectMode(this,'year')">
+          <span class="mode-icon">📅</span><div class="mode-name">年份</div><div class="mode-desc">指定年份考題</div>
+        </button>
+        <button class="mode-card" data-mode="subject" onclick="selectMode(this,'subject')">
+          <span class="mode-icon">🔬</span><div class="mode-name">科別</div><div class="mode-desc">指定科目練習</div>
+        </button>
+        <button class="mode-card" data-mode="weak" onclick="selectMode(this,'weak')">
+          <span class="mode-icon">🎯</span><div class="mode-name">錯題</div><div class="mode-desc">重做歷史錯題</div>
+        </button>
+        <button class="mode-card" data-mode="srs" onclick="selectMode(this,'srs')">
+          <span class="mode-icon">🧠</span><div class="mode-name">智慧複習</div><div class="mode-desc">間隔重複排程</div>
+        </button>
+        <button class="mode-card" data-mode="exam" onclick="selectMode(this,'exam')">
+          <span class="mode-icon">📝</span><div class="mode-name">模擬考</div><div class="mode-desc">原卷 80 題・90 分鐘</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- 條件選擇（依模式顯示） -->
+    <div id="year-section" class="mode-section" style="display:none">
+      <div class="tag-section-title">📅 選擇年份（可複選，不選＝全部）</div>
+      <div class="tag-grid" id="year-tag-grid"></div>
+    </div>
+    <div id="exam-type-section" class="mode-section" style="display:none">
+      <div class="tag-section-title">📋 選擇考試類型（可複選，不選＝全部）</div>
+      <div class="tag-grid" id="exam-type-grid"></div>
+    </div>
+    <div id="subject-section" class="mode-section" style="display:none">
+      <div class="tag-section-title">🔬 選擇科別（不選＝全部）</div>
+      <div class="mode-subject-cols">
+        <div>
+          <div class="mode-subject-step">① 類別</div>
+          <div class="mode-category-list" id="category-btn-grid"></div>
+        </div>
+        <div class="mode-subject-sub">
+          <div class="mode-subject-step">② 細科（可複選）</div>
+          <div class="tag-grid" id="subject-tag-grid"></div>
+        </div>
+      </div>
+    </div>
+    <div id="exam-section" class="mode-section" style="display:none">
+      <div class="tag-section-title">📅 年度</div>
+      <div class="tag-grid" id="exam-year-grid"></div>
+      <div class="tag-section-title mode-exam-subject-title">📋 科目</div>
+      <div class="tag-grid" id="exam-subject-grid"></div>
+      <div class="mode-note mode-exam-note">
+        依原卷題序作答，整場 90 分鐘（同正式考試每節時間）。作答中不顯示對錯，可隨時改答案、用「題號」跳題；交卷後才計分並開放詳解。<br>
+        及格標準：通論與進階兩科平均 60 分，且每科至少 50 分。
+      </div>
+    </div>
+    <div id="srs-section" class="mode-section" style="display:none">
+      <div class="mode-srs-card">
+        <div class="mode-note">
+          🧠 <strong>智慧複習</strong>根據你的答題歷史，自動排出今天需要複習的題目。<br>
+          答對 → 下次複習時間往後推（1天→3天→7天→14天→30天）<br>
+          答錯 → 優先放入下次練習
+        </div>
+        <div class="mode-srs-stats" id="srs-status-mini"></div>
+      </div>
+    </div>
+
+    <!-- 進階設定（折疊） -->
+    <details id="advanced-settings" class="mode-advanced">
+      <summary class="mode-advanced-summary">
+        ⚙️ 進階設定
+      </summary>
+      <div class="mode-advanced-body">
+        <div>
+          <div class="tag-section-title mode-advanced-label">📝 題數</div>
+          <div class="count-grid">
+            <button class="count-btn selected" data-count="30" onclick="selectCount(this,'30')">30題<span class="count-sub">~30分</span></button>
+            <button class="count-btn" data-count="40" onclick="selectCount(this,'40')">40題<span class="count-sub">~40分</span></button>
+            <button class="count-btn" data-count="50" onclick="selectCount(this,'50')">50題<span class="count-sub">~50分</span></button>
+            <button class="count-btn" data-count="all" onclick="selectCount(this,'all')">全部<span class="count-sub">不限</span></button>
+          </div>
+        </div>
+        <div>
+          <div class="tag-section-title mode-advanced-label">💡 詳解時機</div>
+          <div class="mode-explain-grid">
+            <button class="count-btn explain-mode-btn selected" data-mode="immediate" onclick="setExplainMode('immediate')">
+              即時詳解<span class="count-sub">每題答完顯示</span>
+            </button>
+            <button class="count-btn explain-mode-btn" data-mode="deferred" onclick="setExplainMode('deferred')">
+              最後查看<span class="count-sub">結束後統一看</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <div class="mode-start">
+      <button class="btn btn-primary btn-lg" onclick="startSession()">⚔️ 開始冒險！</button>
+    </div>
+  </div>
+</div>

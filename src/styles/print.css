@@ -1,0 +1,14 @@
+/* ══════════════════════════════════════════
+   列印樣式
+══════════════════════════════════════════ */
+@media print {
+  body { background: white; color: #1a1a2a; }
+  body::before, body::after { display: none; }
+  .handout-actions, .quiz-hud, #toast-container { display: none !important; }
+  .handout-content { background: white; color: #1a1a2a; border: 2px solid #0a5aff; }
+  .handout-title { color: #0a5aff; }
+  .handout-q { background: #f8f9ff; border: 1px solid #c0c8e0; page-break-inside: avoid; }
+  .handout-exp { color: #333; }
+  .handout-exp h3 { color: #0a5aff; }
+  #theme-switcher { display: none !important; }
+}

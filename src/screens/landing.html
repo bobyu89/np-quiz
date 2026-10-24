@@ -1,0 +1,37 @@
+<!-- LANDING -->
+<div id="screen-landing" class="screen active">
+  <div class="landing-inner">
+    <div class="landing-badge"><span class="landing-badge-text">⚕️ NP QUEST ⚕️</span></div>
+    <h1 class="landing-logo">專科護理師<br>冒險記</h1>
+    <div class="pixel-divider"></div>
+    <div class="landing-stats">
+      <div class="stat-box"><span class="stat-num" id="stat-total-q">--</span><div class="stat-label">題庫總題數</div></div>
+      <div class="stat-box"><span class="stat-num" id="stat-answered">--</span><div class="stat-label">累計答題數</div></div>
+      <div class="stat-box"><span class="stat-num" id="stat-accuracy">--</span><div class="stat-label">總正確率</div></div>
+      <div class="stat-box"><span class="stat-num" id="stat-achievements">--</span><div class="stat-label">成就解鎖</div></div>
+    </div>
+    <div class="pixel-divider"></div>
+
+    <!-- 兩大模組入口 -->
+    <div class="landing-modules">
+      <div class="landing-module landing-module-topics" onclick="showScreen('topics');renderTopicsOverview()">
+        <div class="landing-module-icon">🔥</div>
+        <div class="landing-module-title">重點考點</div>
+        <div class="landing-module-desc">高頻考點分析<br>星等排序</div>
+      </div>
+      <div class="landing-module landing-module-quiz" onclick="showScreen('mode');initModeScreen()">
+        <div class="landing-module-icon">⚔️</div>
+        <div class="landing-module-title">刷題系統</div>
+        <div class="landing-module-desc">年份 / 科別<br>智慧複習 / 錯題</div>
+      </div>
+    </div>
+
+    <!-- 次要功能 -->
+    <div class="landing-actions">
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('notebook-screen');renderNotebook()">📝 我的筆記</button>
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('achievements-screen')">🏆 成就廳</button>
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('history-screen')">📊 練習紀錄</button>
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('history-screen');document.getElementById('backup-card').scrollIntoView()">💾 進度備份</button>
+    </div>
+  </div>
+</div>

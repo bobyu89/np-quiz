@@ -5,7 +5,7 @@
 建置與驗證只需要 Python 3（腳本只用標準函式庫）。端對端測試另需 Node.js 22 與 npm（見 §6）。
 
 ```bash
-# 直接開檔（題庫已內嵌，file:// 可正常運作）
+# 直接開檔（題庫已內嵌，file:// 可正常運作；附圖讀取同目錄的 data/images/）
 open index.html
 
 # 或啟動靜態伺服器
@@ -16,15 +16,20 @@ python3 -m http.server 8000
 
 | 路徑 | 說明 |
 |---|---|
-| `src/index.html` | 網頁模板：程式、樣式、DOM。**改程式改這裡** |
+| `src/index.html` | 網頁骨架：只有 include 標記與資料佔位行 |
+| `src/js/`、`src/screens/`、`src/styles/` | 程式、各畫面 HTML、樣式。**改程式改這裡**（各檔對應見 ARCHITECTURE §2） |
+| `vendor/` | 第三方函式庫（見 §4） |
 | `data/*.json`、`data/images/` | 題庫、詳解、考點、附圖。**改資料改這裡** |
-| `index.html` | 建置產物（約 6.5 MB），不要手動修改；改完 `src/` 或 `data/` 後重新建置並一併 commit |
+| `index.html` | 建置產物（約 4.7 MB），不要手動修改；改完 `src/` 或 `data/` 後重新建置並一併 commit |
 
 **編輯注意事項**
 
-- `src/index.html` 仍有幾行超長的內嵌函式庫與字型（Chart.js、marked、DOMPurify、base64 字型），部分編輯器處理會變慢；搜尋程式碼時可用 `grep -n 'pattern' src/index.html | cut -c1-200`。
+- include 標記有兩種：CSS／JS 中用 `/*#include path*/`，HTML 中用 `<!--#include path-->`；路徑以 `vendor/` 開頭時從 repo 根目錄解析，其餘從 `src/` 解析。被引入的檔案也可以再 include。
+- 超長行只剩 `vendor/` 與 `src/styles/fonts.css`（base64 字型）；搜尋程式碼時用 `grep -rn 'pattern' src/js src/screens`。
 - 所有互動都用 inline `onclick="fn()"` 呼叫全域函式。**重新命名函式時要同時搜尋 HTML 字串與 JS 模板字串**。
-- 主程式使用 `'use strict'`，擴充區（結果分頁、成就廳、紀錄、考點、筆記本）是 ES5 風格（`var`、字串串接），新增程式碼請與所在區塊一致。
+- 程式風格：`const`／`let`（不用 `var`）、template literal 組 HTML、回呼用箭頭函式；2 空格縮排、分號、單引號字串；註解用繁體中文，區段標題寫成 `// ── 標題 ──`。頂層函式維持 `function 名稱() {}` 宣告（inline `onclick` 依賴全域函式，不要包進 module 或改成 `const` 箭頭函式）。
+- 樣式：不要在 HTML 或 JS 模板寫 inline `style`，改用 class（kebab-case、帶畫面前綴，如 `.topic-card`、`.nb-toolbar`）放進對應的樣式檔。例外：動態計算的值（進度條寬度、依分數變色）與 JS 以 `style.display` 切換顯示的元素的初始 `display:none`。
+- 主題（`themes/*.css`）排在最後，會覆寫前面同權重的規則；新 class 若被主題蓋掉，用 `npm run visual` 比對後再提高選擇器權重。
 - 新程式碼取得本次作答紀錄請用 `answeredList()`：`State.userAnswers` 依題目位置存放，可能有空位。
 - Markdown 一律用 `md(text)` 渲染（marked + DOMPurify），不要直接把 `marked.parse()` 的結果放進 `innerHTML`。
 - 寫入 `localStorage` 一律用 `safeSet(key, value)`，空間不足時不會中斷流程。
@@ -101,9 +106,10 @@ python3 tools/import_exam.py verify <年度>
 
 ### 3.1 新增主題配色
 
-1. 在 `src/index.html` 主 `<style>` 末端（`THEME: 深海靜謐` 之後）新增 `body.theme-xxx { ... }`，覆寫 `:root` 的 Design Tokens（`--color-primary-*`、`--color-bg-*`、`--color-text-*`、`--pixel-border-*` 等）。最簡版本只需覆寫變數，參考 `theme-nightnurse`（約 30 行）；完整版本可另外覆寫元件，參考 `theme-forest`。
-2. 在 `#theme-menu` 加一顆 `<button onclick="setTheme('theme-xxx')" class="theme-btn" data-theme="theme-xxx">`。
-3. 在主題 IIFE 的 `THEMES` 陣列加上 `'theme-xxx'`（否則切換時舊 class 不會被移除）。
+1. 新增 `src/styles/themes/xxx.css`，並在 `src/index.html` 的 `themes/abyss.css` 之後 include；內容為 `body.theme-xxx { ... }`，覆寫 `:root` 的 Design Tokens（`--color-primary-*`、`--color-bg-*`、`--color-text-*`、`--pixel-border-*` 等）。最簡版本只需覆寫變數，參考 `theme-nightnurse`（約 30 行）；完整版本可另外覆寫元件，參考 `theme-forest`。
+2. 在 `src/screens/theme-switcher.html` 的 `#theme-menu` 加一顆 `<button onclick="setTheme('theme-xxx')" class="theme-btn" data-theme="theme-xxx">`。
+3. 在 `src/js/theme.js` 的 `THEMES` 陣列加上 `'theme-xxx'`（否則切換時舊 class 不會被移除）。
+4. 在 `tests/visual.mjs` 的 `THEMES` 加上新主題，`node tests/visual.mjs --update` 後確認截圖。
 
 ### 3.2 新增成就
 
@@ -127,7 +133,7 @@ python3 tools/import_exam.py verify <年度>
 
 ### 3.4 Design Tokens
 
-定義在 `src/index.html` 的 `:root`，主要分組：
+定義在 `src/styles/base.css` 的 `:root`，主要分組：
 
 | 前綴 | 用途 |
 |---|---|
@@ -147,25 +153,25 @@ python3 tools/import_exam.py verify <年度>
 
 | 套件 | 版本 | 授權 | 嵌入位置 | 用途 |
 |---|---|---|---|---|
-| Chart.js | 4.4.0 | MIT | `src/index.html` `<head>` | 雷達圖、趨勢折線圖 |
-| marked | 15.0.7 | MIT | 同上 | 詳解、筆記、考點表格的 Markdown 渲染（`breaks: true`） |
-| DOMPurify | 3.2.6 | Apache-2.0 / MPL-2.0 | 同上（緊接 marked 之後） | 消毒 marked 輸出（`md()`），防止匯入筆記的 XSS |
-| Press Start 2P | — | OFL | 主 `<style>` 開頭（base64） | 像素字型（僅拉丁字元） |
+| Chart.js | 4.4.0 | MIT | `vendor/chart.umd.min.js`（建置時內嵌於 `<head>`） | 雷達圖、趨勢折線圖 |
+| marked | 15.0.7 | MIT | `vendor/marked.umd.js` | 詳解、筆記、考點表格的 Markdown 渲染（`breaks: true`） |
+| DOMPurify | 3.2.6 | Apache-2.0 / MPL-2.0 | `vendor/purify.min.js`（緊接 marked 之後） | 消毒 marked 輸出（`md()`），防止匯入筆記的 XSS |
+| Press Start 2P | — | OFL | `src/styles/fonts.css`（base64） | 像素字型（僅拉丁字元） |
 | Share Tech Mono | — | OFL | 同上 | 等寬字型 |
 | Noto Sans TC | — | OFL | **未內嵌**，依賴系統字型（fallback `PingFang TC`） | 中文內文 |
 
-升級函式庫：以新版的 UMD 壓縮檔取代對應 `<script>` 區塊即可（移除結尾的 `sourceMappingURL` 註解）。marked 升級需確認 `marked.parse()` 仍為同步 API、`marked.use()` 仍可用；DOMPurify 升級需確認全域 `DOMPurify.sanitize()` 仍存在。
+升級函式庫：以新版的 UMD 壓縮檔取代 `vendor/` 中對應的檔案即可（移除結尾的 `sourceMappingURL` 註解）。marked 升級需確認 `marked.parse()` 仍為同步 API、`marked.use()` 仍可用；DOMPurify 升級需確認全域 `DOMPurify.sanitize()` 仍存在。
 
 開發用依賴（不會進入 `index.html`）：`playwright` 1.56.1（`package.json` 的 devDependency，僅供端對端測試）。
 
-**網路連線**：沒有任何外部請求（舊版的 Claude API 詳解已移除），完全離線可用。
+**網路連線**：沒有對其他網域的請求（舊版的 Claude API 詳解已移除）。附圖從同一來源的 `data/images/` 載入；需要完全離線的單一檔案時執行 `python3 tools/build.py --embed-images`（產生不進版控的 `np-quiz-offline.html`）。
 
 ## 5. 部署
 
-產物是純靜態單檔：
+產物是純靜態檔案（`index.html` + `data/images/`）：
 
-- **GitHub Pages**：目前由 `main` 分支根目錄的 `index.html` 發布（`pages-build-deployment`）。合併到 `main` 前，CI 會確認 `index.html` 已重新建置。
-- **其他**：把 `index.html` 複製到 Netlify / Vercel / S3 / Nginx，無需任何 rewrite 規則。
+- **GitHub Pages**：目前由 `main` 分支根目錄發布（`pages-build-deployment`），`index.html` 以相對路徑讀取 `data/images/`。合併到 `main` 前，CI 會確認 `index.html` 已重新建置。
+- **其他**：把 `index.html` 與 `data/images/` 一起複製到 Netlify / Vercel / S3 / Nginx，無需任何 rewrite 規則。
 
 建議伺服器開啟 gzip/brotli：內容大多是 JSON 與中文文字，壓縮後傳輸量會明顯下降（附圖為 JPEG，壓縮幅度有限）。
 
@@ -191,7 +197,20 @@ npm test                            # node tests/e2e.mjs
 - 進度備份匯出後在乾淨的瀏覽器匯入、拒絕非本系統的備份檔
 - 各情境無 JS 錯誤
 
-### 6.2 手動測試清單
+### 6.2 畫面比對
+
+```bash
+node tests/visual.mjs --update   # 改動前：截下基準（.visual/baseline/，不進版控）
+# …修改 src/…
+python3 tools/build.py
+npm run visual                   # 改動後：與基準逐像素比較
+```
+
+截圖時固定亂數、時間、作答紀錄並關閉動畫，涵蓋手機與桌機的主要畫面（首頁、模式、作答、答對／答錯、結果、詳解分頁、講義、模擬考題號面板與成績、考點、紀錄、成就、筆記本、附圖放大），以及 6 套主題各 7 個畫面，共 78 張。需要 ImageMagick 的 `compare`。50 像素以下的差異視為文字反鋸齒雜訊；有差異時看 `.visual/diff/` 與 `.visual/current/`。
+
+這個比對用於「應該完全不變」的修改（重構、抽 class、調整檔案）；刻意改變外觀時，確認差異圖只出現在預期的地方，再重新 `--update`。
+
+### 6.3 手動測試清單
 
 自動化測試沒有涵蓋的部分，修改相關功能後請走過：
 

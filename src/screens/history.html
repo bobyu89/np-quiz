@@ -1,0 +1,28 @@
+<!-- 紀錄 -->
+<div id="screen-history-screen" class="screen">
+  <div class="history-wrap">
+    <div class="history-header">
+      <button class="btn btn-sm btn-secondary" onclick="showScreen('landing')">← 返回</button>
+      <h2 class="screen-title">📊 練習紀錄</h2>
+    </div>
+    <!-- 進度備份 -->
+    <div id="backup-card" class="history-card history-backup">
+      <div class="history-card-title">💾 進度備份</div>
+      <div class="history-backup-text">
+        作答紀錄、智慧複習排程、成就、筆記都只存在這個瀏覽器。換手機、換電腦或清除瀏覽器資料前，
+        先匯出備份檔；在新裝置匯入即可接續。
+      </div>
+      <div class="history-backup-actions">
+        <button class="btn btn-sm btn-primary" onclick="exportBackup()">⬇️ 匯出進度</button>
+        <button class="btn btn-sm btn-secondary" onclick="document.getElementById('backup-file').click()">⬆️ 匯入進度</button>
+        <input type="file" id="backup-file" class="history-file-input" accept="application/json,.json" onchange="importBackup(event)">
+      </div>
+    </div>
+    <!-- 趨勢折線圖 -->
+    <div class="history-card">
+      <div class="history-card-title">📈 正確率趨勢（最近10次）</div>
+      <canvas id="trend-chart" class="history-trend-chart"></canvas>
+    </div>
+    <div id="history-list"></div>
+  </div>
+</div>

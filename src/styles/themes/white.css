@@ -1,0 +1,472 @@
+/* ══════════════════════════════════════════
+   THEME: 純白米色（theme-white）
+   乾淨明亮學習平台 × 藏青藍 × 暖橙 × 輕量像素
+══════════════════════════════════════════ */
+body.theme-white {
+  /* PRIMARY — 藏青藍 */
+  --color-primary-400: #4c6ef5;
+  --color-primary-500: #3b5bdb;
+  --color-primary-600: #3451c7;
+  --color-primary-700: #2c45b0;
+  --color-primary-800: #243a9a;
+  --color-primary-900: #1c2e84;
+
+  /* SECONDARY — 暖橙 */
+  --color-secondary-200: #ffe8a3;
+  --color-secondary-300: #ffd43b;
+  --color-secondary-400: #fcc419;
+  --color-secondary-500: #f59f00;
+  --color-secondary-700: #e67700;
+
+  /* BACKGROUNDS — 白到米色 */
+  --color-bg-void:     #f1ece6;
+  --color-bg-base:     #ffffff;
+  --color-bg-surface:  #f9f6f0;
+  --color-bg-elevated: #ffffff;
+  --color-bg-overlay:  #eef2ff;
+  --color-bg-border:   #dee2e6;
+
+  /* TEXT — 深炭灰系 */
+  --color-text-primary:   #1a1a2e;
+  --color-text-secondary: #495057;
+  --color-text-muted:     #868e96;
+
+  /* SEMANTIC — 清新現代色 */
+  --color-success-300:  #63e6be;
+  --color-success-500:  #2f9e44;
+  --color-success-700:  #2b8a3e;
+  --color-success-glow: rgba(47,158,68,0.2);
+
+  --color-error-300:  #ff8787;
+  --color-error-500:  #e03131;
+  --color-error-700:  #c92a2a;
+  --color-error-glow: rgba(224,49,49,0.2);
+
+  --color-warning-500:  #f59f00;
+  --color-warning-glow: rgba(245,159,0,0.2);
+
+  /* HP BAR */
+  --color-hp-full:  #2f9e44;
+  --color-hp-mid:   #f59f00;
+  --color-hp-low:   #e03131;
+  --color-hp-track: #dee2e6;
+
+  /* FIRE STREAK — 暖橙 */
+  --color-fire-core:  #ffd43b;
+  --color-fire-mid:   #f59f00;
+  --color-fire-outer: #e67700;
+
+  /* GRADIENTS — 白米色系 */
+  --gradient-hero:    linear-gradient(180deg, #ffffff 0%, #f9f6f0 50%, #f1ece6 100%);
+  --gradient-card:    linear-gradient(135deg, #ffffff 0%, #f9f6f0 100%);
+  --gradient-success: linear-gradient(135deg, #d3f9d8 0%, #b2f2bb 100%);
+  --gradient-error:   linear-gradient(135deg, #ffe3e3 0%, #ffc9c9 100%);
+  --gradient-gold:    linear-gradient(135deg, #fff3bf 0%, #ffec99 50%, #fff3bf 100%);
+  --gradient-primary: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 50%, #eef2ff 100%);
+
+  /* PIXEL BORDER — 淡雅 1px，不過重 */
+  --pixel-border-blue:
+    -1px -1px 0 0 #4c6ef5,  0px -1px 0 0 #4c6ef5,  1px -1px 0 0 #4c6ef5,
+     1px  0px 0 0 #3b5bdb,  1px  1px 0 0 #3b5bdb,
+     0px  1px 0 0 #3451c7, -1px  1px 0 0 #3451c7, -1px  0px 0 0 #4c6ef5;
+
+  --pixel-border-gold:
+    -1px -1px 0 0 #ffd43b,  0px -1px 0 0 #ffd43b,  1px -1px 0 0 #fcc419,
+     1px  0px 0 0 #f59f00,  1px  1px 0 0 #e67700,
+     0px  1px 0 0 #d96900, -1px  1px 0 0 #d96900, -1px  0px 0 0 #ffd43b;
+
+  --pixel-border-success:
+    -1px -1px 0 0 #63e6be,  0px -1px 0 0 #63e6be,  1px -1px 0 0 #2f9e44,
+     1px  0px 0 0 #2b8a3e,  1px  1px 0 0 #237032,
+     0px  1px 0 0 #237032, -1px  1px 0 0 #237032, -1px  0px 0 0 #63e6be;
+
+  --pixel-border-error:
+    -1px -1px 0 0 #ff8787,  0px -1px 0 0 #ff8787,  1px -1px 0 0 #e03131,
+     1px  0px 0 0 #c92a2a,  1px  1px 0 0 #b02020,
+     0px  1px 0 0 #b02020, -1px  1px 0 0 #b02020, -1px  0px 0 0 #ff8787;
+
+  --pixel-border-dark:
+    -1px -1px 0 0 #dee2e6,  0px -1px 0 0 #dee2e6,  1px -1px 0 0 #ced4da,
+     1px  0px 0 0 #ced4da,  1px  1px 0 0 #adb5bd,
+     0px  1px 0 0 #adb5bd, -1px  1px 0 0 #adb5bd, -1px  0px 0 0 #dee2e6;
+
+  /* SHADOWS — 現代感淡陰影 */
+  --shadow-glow-primary: 0 2px 12px rgba(59,91,219,0.25), 0 4px 20px rgba(59,91,219,0.12);
+  --shadow-glow-success: 0 2px 12px rgba(47,158,68,0.25), 0 4px 20px rgba(47,158,68,0.12);
+  --shadow-glow-error:   0 2px 12px rgba(224,49,49,0.25), 0 4px 20px rgba(224,49,49,0.12);
+  --shadow-glow-gold:    0 2px 12px rgba(245,159,0,0.3),  0 4px 20px rgba(245,159,0,0.15);
+  --shadow-glow-fire:    0 2px 8px rgba(245,159,0,0.4), 0 4px 16px rgba(230,119,0,0.2);
+  --shadow-panel:        0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* 白色主題：像素網格大幅減淡 */
+body.theme-white::before {
+  background-image:
+    linear-gradient(rgba(59,91,219,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,91,219,0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.5;
+}
+
+/* 白色主題：取消 CRT 掃描線 */
+body.theme-white::after {
+  opacity: 0;
+}
+
+/* 白色主題：focus 指示器 */
+body.theme-white :focus-visible {
+  outline-color: var(--color-primary-500);
+}
+
+/* 白色主題：landing logo */
+body.theme-white .landing-logo {
+  color: var(--color-primary-500);
+  text-shadow: 0 2px 16px rgba(59,91,219,0.35), 0 0 32px rgba(59,91,219,0.18);
+}
+
+/* 白色主題：subtitle 閃爍動畫取消，常顯 */
+body.theme-white .landing-subtitle {
+  color: var(--color-text-muted);
+  animation: none;
+  opacity: 1;
+}
+
+/* 白色主題：pixel 分隔線 */
+body.theme-white .pixel-divider {
+  background: linear-gradient(90deg,
+    transparent, var(--color-primary-500) 20%,
+    var(--color-secondary-400) 50%,
+    var(--color-primary-500) 80%, transparent
+  );
+  opacity: 0.55;
+}
+
+/* 白色主題：stat-box */
+body.theme-white .stat-box {
+  background: #ffffff;
+  border: 1px solid var(--color-bg-border);
+  box-shadow: var(--shadow-panel);
+}
+body.theme-white .stat-num {
+  color: var(--color-primary-500);
+}
+body.theme-white .stat-label {
+  color: var(--color-text-muted);
+}
+
+/* 白色主題：題目卡片 */
+body.theme-white .question-card {
+  background: #ffffff;
+  border: 1px solid var(--color-bg-border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+}
+body.theme-white .question-card::before,
+body.theme-white .question-card::after {
+  background-color: var(--color-primary-400);
+  opacity: 0.35;
+}
+body.theme-white .question-num {
+  color: var(--color-primary-500);
+}
+body.theme-white .question-text {
+  color: var(--color-text-primary);
+}
+
+/* 白色主題：q-tag 標籤 */
+body.theme-white .q-tag {
+  background: rgba(59,91,219,0.08);
+  color: var(--color-primary-600);
+  border-color: rgba(59,91,219,0.2);
+}
+body.theme-white .q-year {
+  background: rgba(245,159,0,0.08);
+  color: var(--color-secondary-500);
+  border-color: rgba(245,159,0,0.2);
+}
+
+/* 白色主題：選項按鈕 */
+body.theme-white .option-btn {
+  background-color: #ffffff;
+  color: var(--color-text-primary);
+  border: 1.5px solid var(--color-bg-border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  transition:
+    transform 80ms ease,
+    box-shadow 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+body.theme-white .option-label {
+  color: var(--color-primary-500);
+}
+body.theme-white .option-btn:hover:not(:disabled):not(.correct):not(.wrong) {
+  background-color: #eef2ff;
+  border-color: var(--color-primary-400);
+  transform: translate(-1px, -1px);
+  box-shadow:
+    0 4px 12px rgba(59,91,219,0.15),
+    1px 1px 0 var(--color-primary-600);
+}
+/* 白色主題：答對 */
+body.theme-white .option-btn.correct {
+  background: var(--gradient-success);
+  border: 1.5px solid #2f9e44;
+  box-shadow: var(--pixel-border-success), var(--shadow-glow-success);
+  color: #143a1e;
+}
+body.theme-white .option-btn.correct .option-label {
+  color: var(--color-success-700);
+}
+/* 白色主題：答錯 */
+body.theme-white .option-btn.wrong {
+  background: var(--gradient-error);
+  border: 1.5px solid #e03131;
+  box-shadow: var(--pixel-border-error), var(--shadow-glow-error);
+  color: #3a1010;
+}
+body.theme-white .option-btn.wrong .option-label {
+  color: var(--color-error-700);
+}
+
+/* 白色主題：模式卡片 */
+body.theme-white .mode-card {
+  background: #ffffff;
+  border: 1.5px solid var(--color-bg-border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+body.theme-white .mode-card::before {
+  background: linear-gradient(135deg, rgba(59,91,219,0.06), transparent);
+}
+body.theme-white .mode-card:hover {
+  border-color: var(--color-primary-400);
+  box-shadow: 0 4px 16px rgba(59,91,219,0.18), var(--pixel-border-blue);
+}
+body.theme-white .mode-card.selected {
+  background: var(--gradient-primary);
+  border-color: var(--color-primary-500);
+  box-shadow: var(--pixel-border-blue), var(--shadow-glow-primary);
+}
+body.theme-white .mode-name {
+  color: var(--color-text-primary);
+}
+body.theme-white .mode-desc {
+  color: var(--color-text-secondary);
+}
+
+/* 白色主題：tag 區塊 */
+body.theme-white .tag-section {
+  background: #ffffff;
+  border: 1px solid var(--color-bg-border);
+  box-shadow: var(--shadow-panel);
+}
+body.theme-white .tag-section-title {
+  color: var(--color-secondary-500);
+}
+body.theme-white .tag-btn {
+  background: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+  border-color: var(--color-bg-border);
+}
+body.theme-white .tag-btn:hover {
+  border-color: var(--color-primary-500);
+  color: var(--color-text-primary);
+}
+body.theme-white .tag-btn.selected {
+  background: var(--color-primary-500);
+  color: #ffffff;
+  border-color: var(--color-primary-700);
+  box-shadow: var(--shadow-glow-primary);
+}
+
+/* 白色主題：題數按鈕 */
+body.theme-white .count-btn {
+  background: #ffffff;
+  border-color: var(--color-bg-border);
+  color: var(--color-text-primary);
+}
+body.theme-white .count-btn:hover {
+  border-color: var(--color-primary-500);
+}
+body.theme-white .count-btn.selected {
+  background: var(--color-primary-500);
+  border-color: var(--color-primary-700);
+  color: #ffffff;
+  box-shadow: var(--shadow-glow-primary);
+}
+body.theme-white .count-sub {
+  color: var(--color-text-muted);
+}
+body.theme-white .count-btn.selected .count-sub {
+  color: rgba(255,255,255,0.75);
+}
+
+/* 白色主題：HUD 導覽列 */
+body.theme-white .quiz-hud {
+  background: #ffffff;
+  border-bottom: 1px solid var(--color-bg-border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+body.theme-white .hud-label {
+  color: var(--color-text-muted);
+}
+
+/* 白色主題：HP bar */
+body.theme-white .timer-bar-wrap {
+  background: var(--color-hp-track);
+  box-shadow:
+    0 0 0 1px #ced4da,
+    0 0 0 2px #dee2e6,
+    inset 0 1px 3px rgba(0,0,0,0.08);
+}
+body.theme-white .timer-num {
+  color: rgba(0,0,0,0.55);
+}
+
+/* 白色主題：進度條外框 */
+body.theme-white .progress-bar-wrap {
+  background: var(--color-bg-surface);
+  box-shadow: 0 0 0 1px var(--color-bg-border), inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* 白色主題：streak */
+body.theme-white .streak-display {
+  background-color: rgba(245,159,0,0.08);
+  box-shadow: 0 0 0 1px rgba(245,159,0,0.25);
+  color: var(--color-secondary-500);
+  text-shadow: none;
+}
+body.theme-white .streak-label {
+  color: var(--color-secondary-700);
+}
+body.theme-white .streak-display.hot {
+  box-shadow: 0 0 0 1px rgba(245,159,0,0.5), 0 0 12px rgba(245,159,0,0.3);
+}
+
+/* 白色主題：primary 按鈕 */
+body.theme-white .btn-primary {
+  box-shadow:
+    inset 1px 1px 0 rgba(255,255,255,0.3),
+    3px 3px 0 #2c45b0,
+    var(--pixel-border-blue),
+    var(--shadow-glow-primary);
+}
+body.theme-white .btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-400);
+  transform: translate(-2px,-2px);
+  box-shadow:
+    inset 1px 1px 0 rgba(255,255,255,0.3),
+    5px 5px 0 #243a9a,
+    var(--pixel-border-blue),
+    0 0 16px rgba(59,91,219,0.4), 0 0 32px rgba(59,91,219,0.2);
+}
+body.theme-white .btn-primary:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #243a9a, var(--pixel-border-blue);
+}
+
+/* 白色主題：secondary 按鈕 */
+body.theme-white .btn-secondary {
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-bg-border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+body.theme-white .btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-bg-overlay);
+  color: var(--color-text-primary);
+  border-color: var(--color-primary-400);
+  transform: translate(-1px,-1px);
+  box-shadow: var(--pixel-border-blue), var(--shadow-glow-primary);
+}
+
+/* 白色主題：結果頁 score */
+body.theme-white .result-score {
+  color: var(--color-secondary-500);
+  text-shadow: 0 2px 16px rgba(245,159,0,0.3);
+}
+body.theme-white .result-score-sub {
+  color: var(--color-text-muted);
+}
+
+/* 白色主題：雷達/成就/弱點 區塊 */
+body.theme-white .radar-section,
+body.theme-white .achievement-section,
+body.theme-white .weak-section {
+  background: #ffffff;
+  border: 1px solid var(--color-bg-border);
+  box-shadow: var(--shadow-panel);
+}
+body.theme-white .radar-title {
+  color: var(--color-primary-500);
+}
+body.theme-white .weak-item {
+  border-bottom-color: var(--color-bg-border);
+}
+body.theme-white .weak-rank {
+  color: var(--color-error-500);
+}
+
+/* 白色主題：achievement badge */
+body.theme-white .achievement-badge {
+  background: var(--gradient-gold);
+  border: 1px solid var(--color-secondary-300);
+  box-shadow: var(--pixel-border-gold), var(--shadow-glow-gold), var(--shadow-panel);
+}
+body.theme-white .badge-name {
+  color: var(--color-secondary-700);
+}
+body.theme-white .badge-desc {
+  color: var(--color-secondary-500);
+}
+
+/* 白色主題：toast 通知 */
+body.theme-white .toast {
+  background: var(--gradient-gold);
+  border: 1px solid var(--color-secondary-300);
+  box-shadow: var(--pixel-border-gold), var(--shadow-glow-gold);
+  color: var(--color-secondary-700);
+}
+
+/* 白色主題：講義頁 */
+body.theme-white .handout-content {
+  background: #ffffff;
+  border: 1px solid var(--color-bg-border);
+  box-shadow: var(--shadow-panel);
+}
+body.theme-white .handout-title {
+  color: var(--color-primary-500);
+}
+body.theme-white .handout-meta {
+  color: var(--color-text-muted);
+}
+body.theme-white .handout-q {
+  background: var(--color-bg-surface);
+  box-shadow: 0 0 0 1px var(--color-bg-border);
+}
+body.theme-white .handout-q-num {
+  color: var(--color-error-500);
+}
+body.theme-white .handout-option.correct {
+  color: var(--color-success-500);
+}
+body.theme-white .handout-option.my-wrong {
+  color: var(--color-error-500);
+}
+body.theme-white .handout-analysis {
+  border-top-color: var(--color-bg-border);
+}
+body.theme-white .handout-analysis-title {
+  color: var(--color-primary-500);
+}
+
+/* 白色主題：全螢幕閃光透明度降低 */
+body.theme-white .flash-correct::before {
+  animation: screen-flash-white 400ms ease forwards;
+}
+body.theme-white .flash-wrong::before {
+  animation: screen-flash-white 400ms ease forwards;
+}
+@keyframes screen-flash-white {
+  0%   { opacity: 0.15; }
+  40%  { opacity: 0.08; }
+  100% { opacity: 0; }
+}

@@ -11,7 +11,7 @@
 
 | 原始檔 | 建置後變數 | 大小 | 筆數 |
 |---|---|---|---|
-| `data/questions.json` + `data/images/` | `window.__QD` | ~1.0 MB + 附圖 ~1.6 MB | 1,680 題（65 題附圖） |
+| `data/questions.json` | `window.__QD` | ~1.0 MB | 1,680 題（65 題附圖，圖檔另存 `data/images/`，~1.6 MB） |
 | `data/explanations.json` | `window.__EXP` | ~2.0 MB | 1,680 筆詳解 |
 | `data/topics.json` | `window.__TOPICS` | ~0.2 MB | 18 科 / 379 考點 |
 | `data/topic_intros.json` | `window.__TOPIC_INTROS` | ~0.9 MB | 18 科 / 379 考點講義 |
@@ -41,7 +41,7 @@
 | `year` | `int` | `113` | 民國年（109–115） |
 | `exam_type` | `string` | `"進階內科"` | `通論` / `進階內科` / `進階外科` |
 | `source` | `string` | `"【公告試題】113年度進階專科護理_內科.pdf"` | 原始 PDF 檔名 |
-| `image` | `string?` | `"data:image/jpeg;base64,..."` | **只存在於建置後的 `__QD`**：`data/images/<id>.jpg` 存在時由 `build.py` 加入 |
+| `image` | `string?` | `"data/images/2038.jpg"` | **只存在於建置後的 `__QD`**：`data/images/<id>.jpg` 存在時由 `build.py` 加入；預設為相對路徑，`--embed-images` 時為 `data:image/jpeg;base64,...` |
 
 **題庫分布**：109–115 年 × 通論／進階內科／進階外科，共 21 份試卷，每份 80 題，合計 1,680 題。
 
@@ -196,7 +196,7 @@
 }
 ```
 
-> 舊版快照的 `userAnswers[].q` 會連同題目物件一起存，現已移除（附圖以 data URI 內嵌，存進快照可能超出配額）。還原時仍相容舊格式。
+> 舊版快照的 `userAnswers[].q` 會連同題目物件一起存，現已移除（當時附圖以 data URI 內嵌，存進快照可能超出配額）。還原時仍相容舊格式。
 
 ### 2.3 `Note`（筆記；也是匯出／匯入 JSON 的格式）
 
