@@ -6,11 +6,6 @@
   border-color: var(--color-primary-500);
   box-shadow: 0 0 0 2px rgba(10, 90, 255, 0.15);
 }
-#notebook-search:focus {
-  outline: none;
-  border-color: var(--color-primary-500);
-}
-/* 需排在 #notebook-search:focus 之後：原 inline 邊框會蓋過 focus 的 border-color */
 #screen-notebook-screen .nb-field {
   border-radius: 6px;
   border: 1px solid var(--color-bg-border);
@@ -23,6 +18,10 @@
   flex: 1;
   min-width: 180px;
   padding: 8px 14px;
+}
+#screen-notebook-screen .nb-search:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
 }
 .nb-sort { padding: 8px 12px; }
 .nb-wrap {

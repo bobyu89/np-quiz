@@ -186,4 +186,3 @@ marked v15 預設不做 HTML sanitize，而「匯入筆記」會載入他人分�
 ## 尚未處理
 
 - **inline `onclick`**：仍以 inline `onclick` 呼叫全域函式（重構時刻意保留，避免改變行為）。若日後改成事件委派，可順便把全域函式收進模組。
-- **筆記本搜尋框的聚焦顏色**：`#notebook-search:focus` 的邊框色被後面權重較高的 `#screen-notebook-screen .nb-field` 蓋過（重構前是被 inline style 蓋過），聚焦時看不出變化；重構時維持原樣未修。修法：把 focus 規則改為 `#screen-notebook-screen .nb-field:focus` 並排在其後。
